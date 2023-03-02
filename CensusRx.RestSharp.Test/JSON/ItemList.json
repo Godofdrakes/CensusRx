@@ -1,0 +1,34 @@
+{
+  "item_list": [
+    {
+      "item_id": "7108",
+      "item_type_id": "26",
+      "item_category_id": "7",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Reaper DMG",
+        "en": "Reaper DMR",
+        "es": "Reaper DMR",
+        "fr": "Moissonneur DMR",
+        "it": "Reaper DMR",
+        "tr": "Biçici DMR"
+      },
+      "description": {
+        "de": "Der kräftige und präzise Reaper DMG wurde zur Erfüllung des Bedarfs jener Soldaten entwickelt, die Unterstützung aus der Entfernung bevorzugen. Nur für NK.",
+        "en": "The powerful and accurate Reaper DMR was developed to fulfill the needs of soldiers who prefer to provide support from a distance. NC use only.",
+        "es": "El potente y preciso Reaper DMR fue creado para cubrir las necesidades de aquellos soldados que prefieren la asistencia a distancia. Solo para NC.",
+        "fr": "Précis et très puissant, le Moissonneur DMR a été conçu pour répondre aux besoins des soldats qui préfèrent apporter leur soutien d'une certaine distance. NC uniquement.",
+        "it": "Il Reaper DMR, preciso e potente, è stato sviluppato per soddisfare le necessità dei soldati che preferiscono fornire sostegno a distanza. Esclusivo NC.",
+        "tr": "Güçlü ve isabetli Biçici DMR, uzak bir mesafeden destek sağlamayı tercih eden askerlerin ihtiyaçlarını karşılaması için üretildi. Yalnızca Yeni Birleşim kullanımı için."
+      },
+      "faction_id": "2",
+      "max_stack_size": "1",
+      "image_set_id": "2747",
+      "image_id": "5316",
+      "image_path": "/files/ps2/images/static/5316.png",
+      "skill_set_id": "134",
+      "is_default_attachment": "0"
+    }
+  ],
+  "returned": 1
+}
