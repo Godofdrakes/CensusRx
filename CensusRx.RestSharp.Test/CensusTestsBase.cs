@@ -1,16 +1,25 @@
 ﻿using System.Reactive.Linq;
+using ReactiveUI;
 using RestSharp;
 using RichardSzalay.MockHttp;
+using Splat;
 
 namespace CensusRx.RestSharp.Test;
 
 [TestFixture]
 public abstract class CensusTestsBase
 {
+	public sealed class TestingCensusService : ReactiveObject, ICensusService
+	{
+		public string Endpoint => "http://localhost";
+		public string ServiceId => string.Empty;
+		public string Namespace => CensusNamespace.PLANETSIDE_PC;
+	}
+
 	public sealed class TestingCensusClient : CensusClient
 	{
 		public TestingCensusClient(RestClientOptions? options = default)
-			: base(CensusNamespace.PLANETSIDE_PC, options: options) { }
+			: base(new TestingCensusService(), options: options) { }
 
 		protected override IObservable<RestResponse> ExecuteRequest(RestRequest restRequest)
 		{
@@ -21,7 +30,7 @@ public abstract class CensusTestsBase
 
 	public MockHttpMessageHandler MessageHandler { get; }
 	public TestingCensusClient CensusClient { get; }
-	
+
 	protected CensusTestsBase()
 	{
 		this.MessageHandler = new MockHttpMessageHandler();
@@ -40,14 +49,21 @@ public abstract class CensusTestsBase
 	public void SetUp()
 	{
 		this.MessageHandler.Clear();
-		this.MessageHandler.Fallback
-			.Throw(message =>
-				new NotImplementedException($"No handler registered for request: {message.RequestUri}"));
+		this.MessageHandler.Fallback.Throw(message => new NotImplementedException(
+			$"No handler registered for request: {message.RequestUri}"));
 
-		PerTestSetUp();
+		var locator = new ModernDependencyResolver();
+
+		locator.RegisterConstant<HttpMessageHandler>(MessageHandler);
+		locator.RegisterConstant<ICensusService>(CensusClient.Service);
+		locator.RegisterConstant<ICensusClient>(CensusClient);
+
+		PerTestSetUp(locator);
+
+		Locator.SetLocator(locator);
 	}
 
-	protected virtual void PerTestSetUp()
+	protected virtual void PerTestSetUp(IMutableDependencyResolver dependencyResolver)
 	{
 		
 	}

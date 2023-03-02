@@ -30,7 +30,7 @@ public class CensusSearchViewModelTests : CensusTestsBase
 	[Test]
 	public void PropagatesResults() => new TestScheduler().With(scheduler =>
 	{
-		MessageHandler.Expect(CensusJson.GetEndpoint() + "*")
+		MessageHandler.Expect("http://localhost/get/ps2/character")
 			.RespondWithJsonFile(CensusJsonData.CHARACTER_LIST);
 
 		var viewModel = new TestSearchViewModel(this.CensusClient, scheduler);

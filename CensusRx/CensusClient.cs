@@ -2,30 +2,31 @@
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using RestSharp;
+using Splat;
 
 namespace CensusRx;
 
 public class CensusClient : ICensusClient
 {
+	public ICensusService Service { get; }
+
 	public RestClient RestClient { get; }
 
-	public string Namespace { get; }
-
 	public CensusClient(
-		string @namespace,
-		string? serviceId = default,
+		ICensusService? censusService = default,
 		RestClientOptions? options = default)
 	{
+		Service = censusService ?? Locator.Current.GetServiceChecked<ICensusService>();
+
 		options ??= new RestClientOptions
 		{
 			ThrowOnDeserializationError = true,
 			ThrowOnAnyError = true,
 		};
 
-		options.BaseUrl = new Uri(CensusJson.GetEndpoint(serviceId));
+		options.BaseUrl = Service.GetEndpoint();
 
 		this.RestClient = new RestClient(options).UseSerializer(() => CensusJson.Serializer);
-		this.Namespace = @namespace;
 	}
 
 	protected virtual IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
@@ -34,15 +35,15 @@ public class CensusClient : ICensusClient
 	public IObservable<T> ExecuteRequest<T>(RestRequest request) =>
 		ExecuteRequest(request).UnwrapCensusCollection<T>();
 
-	public IObservable<T> Get<T>(ICensusClient.RequestBuilder<T> requestBuilder) where T : ICensusObject
+	public IObservable<T> Get<T>(ICensusClient.RequestBuilder<T> requestBuilder)
+		where T : ICensusObject
 	{
-		var restRequest = new RestRequest($"/get/{Namespace}/{typeof(T).Name.ToLower()}");
-		CensusRequest<T>.Build(requestBuilder)
-			.ForEachParam(param => restRequest.AddQueryParameter(param.key, param.value, false));
+		var restRequest = Service.CreateGetRequest<T>().Build(requestBuilder);
 		return ExecuteRequest(restRequest).UnwrapCensusCollection<T>();
 	}
 
-	public IObservable<int> Count<T>(ICensusClient.RequestBuilder<T> requestBuilder) where T : ICensusObject
+	public IObservable<int> Count<T>(ICensusClient.RequestBuilder<T> requestBuilder)
+		where T : ICensusObject
 	{
 		throw new NotImplementedException();
 	}

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using System.Windows;
 using CensusRx.Interfaces;
 using CensusRx.Model;
@@ -17,14 +18,20 @@ namespace CensusRx.WPF
 	{
 		private void App_OnStartup(object sender, StartupEventArgs e)
 		{
-			var config = new ConfigurationBuilder()
-				.AddJsonFile("service.json", true, false)
-				.Build();
+			Locator.CurrentMutable.RegisterLazySingleton<ICensusService>(() =>
+			{
+				var basePath = Directory.GetCurrentDirectory();
+				var config = new ConfigurationBuilder()
+					.SetBasePath(basePath)
+					.AddJsonFile("appsettings.json", false, true)
+					.AddUserSecrets(Assembly.GetExecutingAssembly())
+					.Build();
 
-			var censusClient = new CensusClient(CensusNamespace.PLANETSIDE_PC, config["serviceId"]);
+				return new CensusServiceViewModel(config);
+			});
 
 			Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-			Locator.CurrentMutable.RegisterConstant<ICensusClient>(censusClient);
+			Locator.CurrentMutable.RegisterLazySingleton<ICensusClient>(() => new CensusClient());
 
 			var mainWindow = new MainWindowView
 			{

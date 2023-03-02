@@ -25,8 +25,9 @@ public class CensusClientTests : CensusTestsBase
 	[Test]
 	public void RequestCharacterList()
 	{
-		MessageHandler.Expect($"{CensusJson.GetEndpoint()}/get/ps2/character")
+		MessageHandler.Expect($"http://localhost/get/ps2/character")
 			.WithQueryString("name.first_lower", "naozumi")
+			.WithQueryString("c:limit", "10")
 			.RespondWithJsonFile(CensusJsonData.CHARACTER_LIST);
 
 		var observer = new TestObserver<Character>
@@ -37,7 +38,8 @@ public class CensusClientTests : CensusTestsBase
 
 		CensusClient.Get<Character>(request => request
 				.Where(character => character.Name.FirstLower)
-				.IsEqualTo("naozumi"))
+				.IsEqualTo("naozumi")
+				.LimitTo(10))
 			.Subscribe(observer);
 
 		observer.AssertResultCount(4);

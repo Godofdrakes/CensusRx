@@ -1,19 +1,23 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using CensusRx.Interfaces;
+﻿using CensusRx.Interfaces;
+using RestSharp;
 
 namespace CensusRx.Model;
+
+public static class CensusRequest
+{
+	public static RestRequest Build<T>(this RestRequest restRequest, ICensusClient.RequestBuilder<T> requestBuilder)
+		where T : ICensusObject
+	{
+		var request = new CensusRequest<T>();
+		requestBuilder.Invoke(request);
+		request.Bind(restRequest);
+		return restRequest;
+	}
+}
 
 public sealed class CensusRequest<T> : ICensusRequest<T>
 	where T : ICensusObject
 {
-	public static CensusRequest<T> Build(ICensusClient.RequestBuilder<T> requestBuilder)
-	{
-		var request = new CensusRequest<T>();
-		requestBuilder.Invoke(request);
-		return request;
-	}
-
 	private string? TempString { get; set; }
 
 	private List<(string key, CensusMatch value)> QueryParams { get; } = new();
@@ -37,11 +41,12 @@ public sealed class CensusRequest<T> : ICensusRequest<T>
 		return this;
 	}
 
-	public void ForEachParam(Action<(string key, CensusMatch value)> action)
+	public void Bind(RestRequest restRequest)
 	{
 		if (TempString is not null)
 			throw new InvalidOperationException("TempString is not null");
 
-		foreach (var param in this.QueryParams) action.Invoke(param);
+		foreach (var (key, value) in this.QueryParams)
+			restRequest.AddQueryParameter(key, value, false);
 	}
 }
