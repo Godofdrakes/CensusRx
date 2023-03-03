@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Net;
+using System.Reactive.Linq;
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using RestSharp;
@@ -32,17 +33,30 @@ public class CensusClient : ICensusClient
 	protected virtual IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
 		Observable.FromAsync(token => RestClient.ExecuteAsync(restRequest, token));
 
-	public IObservable<T> ExecuteRequest<T>(RestRequest request) =>
-		ExecuteRequest(request).UnwrapCensusCollection<T>();
-
-	public IObservable<T> Get<T>(ICensusClient.RequestBuilder<T> requestBuilder)
-		where T : ICensusObject
+	private static string GetResponseContent(RestResponse restResponse)
 	{
-		var restRequest = Service.CreateGetRequest<T>().Build(requestBuilder);
-		return ExecuteRequest(restRequest).UnwrapCensusCollection<T>();
+		if (restResponse.StatusCode != HttpStatusCode.OK)
+		{
+			throw new InvalidOperationException("restResponse.StatusCode != HttpStatusCode.OK");
+		}
+
+		if (restResponse.Content is null)
+		{
+			throw new InvalidOperationException("restResponse.Content is null");
+		}
+
+		return restResponse.Content;
 	}
 
-	public IObservable<int> Count<T>(ICensusClient.RequestBuilder<T> requestBuilder)
+	public IObservable<string> Get<T>(ICensusRequest<T>.RequestBuilder requestBuilder)
+		where T : ICensusObject
+	{
+		var censusRequest = CensusRequest<T>.Build(requestBuilder);
+		var restRequest = Service.CreateGetRequest<T>().Bind(censusRequest);
+		return ExecuteRequest(restRequest).Select(GetResponseContent);
+	}
+
+	public IObservable<int> Count<T>(ICensusRequest<T>.RequestBuilder requestBuilder)
 		where T : ICensusObject
 	{
 		throw new NotImplementedException();

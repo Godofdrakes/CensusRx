@@ -20,29 +20,22 @@ public class CharacterSearchViewModel : CensusSearchViewModel<Character>
 
 	private string _name = string.Empty;
 
-	public CharacterSearchViewModel(IScreen? hostScreen = default, ICensusClient? censusClient = default, IScheduler? scheduler = default)
-		: base(hostScreen, censusClient, scheduler)
+	public CharacterSearchViewModel(IScreen? hostScreen = default, ICensusClient? censusClient = default)
+		: base(hostScreen, censusClient)
 	{
 		var nameIsValid = this.WhenAnyValue(model => model.Name)
 			.Select(name => !string.IsNullOrEmpty(name));
 
-		var isExecuting = this.ExecuteRequest.IsExecuting;
-
 		var canExecute = nameIsValid.CombineLatest(
-			isExecuting,
+			ExecuteRequest.IsExecuting,
 			(valid, executing) => valid && !executing);
 
-		this.ValidationRule(
-			model => model.Name,
-			nameIsValid,
-			"You must specify a valid name");
-
-		NameSearch = ReactiveCommand.CreateFromObservable((string name) => this.ExecuteRequest.Execute(request =>
-					request
-						.LimitTo(10)
+		NameSearch = ReactiveCommand.CreateFromObservable((string name) =>
+				ExecuteRequest.Execute(request => request
 						.Where(character => character.Name.FirstLower)
-						.StartsWith(name.ToLower()))
-				.Select(_ => Unit.Default),
+						.StartsWith(name.ToLower())
+						.LimitTo(10))
+					.Select(_ => Unit.Default),
 			canExecute);
 	}
 }

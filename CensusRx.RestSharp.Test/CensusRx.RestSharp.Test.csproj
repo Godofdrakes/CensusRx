@@ -37,6 +37,10 @@
       <EmbeddedResource Include="JSON\FactionList.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="JSON\CharacterListEmpty.json" />
+      <EmbeddedResource Include="JSON\CharacterListEmpty.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

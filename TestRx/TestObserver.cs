@@ -162,30 +162,25 @@ public class TestObserver<T> : IObserver<T>
 		return this;
 	}
 
+	public TestObserver<T> AssertValueCount(int count) => AssertValues(Has.Count.EqualTo(count));
+
 	public TestObserver<T> AssertValues(params T[] values) =>
-		this.AssertValues(Is.EquivalentTo(values));
+		AssertValueCount(values.Length).AssertValues(Is.EquivalentTo(values));
 
-	public TestObserver<T> AssertSingleValue(IResolveConstraint constraint)
+	public TestObserver<T> AssertLastValue(IResolveConstraint constraint)
 	{
-		Assert.That(Emissions, Has.Count.EqualTo(1));
-		Assert.That(Emissions.First(), constraint);
+		Assert.That(Emissions.Last(), constraint);
 		return this;
 	}
 
-	public TestObserver<T> AssertLastValue(T value)
-	{
-		Assert.That(Emissions, Is.Not.Empty);
-		Assert.That(Emissions.Last(), Is.EqualTo(value));
-		return this;
-	}
+	public TestObserver<T> AssertLastValue(T value) => AssertLastValue(Is.EqualTo(value));
+
+	public TestObserver<T> AssertCompletion() =>
+		this.AssertCompletedOnce().AssertNoExceptions();
 
 	public TestObserver<T> AssertResults(params T[] values) =>
-		this.AssertCompletedOnce()
-			.AssertNoExceptions()
-			.AssertValues(values);
+		this.AssertCompletion().AssertValues(values);
 
 	public TestObserver<T> AssertResultCount(int count) =>
-		this.AssertNoExceptions()
-			.AssertCompletedOnce()
-			.AssertValues(Has.Count.EqualTo(count));
+		this.AssertCompletion().AssertValueCount(count);
 }

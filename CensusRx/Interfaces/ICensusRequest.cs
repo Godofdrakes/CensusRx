@@ -1,13 +1,17 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using CensusRx.Model;
+using RestSharp;
 
 namespace CensusRx.Interfaces;
 
 public interface ICensusRequest<T> where T : ICensusObject
 {
+	delegate void RequestBuilder(ICensusRequest<T> request);
+
 	ICensusRequest<T> Where(string query);
 	ICensusRequest<T> Matches(CensusMatch censusMatch);
+	ICensusRequest<T> Bind(Action<(string key, CensusMatch value)> bindAction);
 }
 
 public static class CensusRequest
@@ -37,6 +41,13 @@ public static class CensusRequest
 		visitor.Visit(expression.Body);
 		return censusRequest.Where(string.Join(".", visitor.PathStack
 			.Select(info => namingPolicy?.ConvertName(info.Name) ?? info.Name)));
+	}
+
+	public static RestRequest Bind<T>(this RestRequest restRequest, ICensusRequest<T> censusRequest)
+		where T : ICensusObject
+	{
+		censusRequest.Bind(tuple => restRequest.AddQueryParameter(tuple.key, tuple.value, false));
+		return restRequest;
 	}
 
 	public static ICensusRequest<T> IsEqualTo<T>(this ICensusRequest<T> censusRequest, string value)

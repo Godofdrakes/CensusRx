@@ -3,6 +3,7 @@ using ReactiveUI;
 using RestSharp;
 using RichardSzalay.MockHttp;
 using Splat;
+using TestRx;
 
 namespace CensusRx.RestSharp.Test;
 
@@ -21,11 +22,9 @@ public abstract class CensusTestsBase
 		public TestingCensusClient(RestClientOptions? options = default)
 			: base(new TestingCensusService(), options: options) { }
 
-		protected override IObservable<RestResponse> ExecuteRequest(RestRequest restRequest)
-		{
+		protected override IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
 			// make requests blocking so tests run synchronously
-			return Observable.Defer(() => Observable.Return(RestClient.Execute(restRequest)));
-		}
+			Observable.Defer(() => Observable.Return(RestClient.Execute(restRequest)));
 	}
 
 	public MockHttpMessageHandler MessageHandler { get; }
@@ -63,11 +62,29 @@ public abstract class CensusTestsBase
 		Locator.SetLocator(locator);
 	}
 
-	protected virtual void PerTestSetUp(IMutableDependencyResolver dependencyResolver)
+	protected virtual void PerTestSetUp(IMutableDependencyResolver dependencyResolver) { }
+
+	public static TestObserver<T> TestCensusObservable<T>(Func<IObservable<T>> builder)
+		where T : ICensusObject
 	{
-		
+		var observer = new TestObserver<T>
+		{
+			ValueWriter = (writer, value) => writer.WriteLine(value.Id),
+			AutoLog = true,
+		};
+
+		builder.Invoke().Subscribe(observer);
+		return observer;
 	}
 
-	public static void WriteCensusObjectId(TextWriter writer, ICensusObject censusObject) =>
-		writer.WriteLine(censusObject.Id);
+	public static TestObserver<T> TestObservable<T>(Func<IObservable<T>> builder)
+	{
+		var observer = new TestObserver<T>
+		{
+			AutoLog = true,
+		};
+
+		builder.Invoke().Subscribe(observer);
+		return observer;
+	}
 }

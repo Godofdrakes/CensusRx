@@ -1,23 +1,17 @@
 ﻿using CensusRx.Interfaces;
-using RestSharp;
 
 namespace CensusRx.Model;
-
-public static class CensusRequest
-{
-	public static RestRequest Build<T>(this RestRequest restRequest, ICensusClient.RequestBuilder<T> requestBuilder)
-		where T : ICensusObject
-	{
-		var request = new CensusRequest<T>();
-		requestBuilder.Invoke(request);
-		request.Bind(restRequest);
-		return restRequest;
-	}
-}
 
 public sealed class CensusRequest<T> : ICensusRequest<T>
 	where T : ICensusObject
 {
+	public static CensusRequest<T> Build(ICensusRequest<T>.RequestBuilder requestBuilder)
+	{
+		var request = new CensusRequest<T>();
+		requestBuilder.Invoke(request);
+		return request;
+	}
+
 	private string? TempString { get; set; }
 
 	private List<(string key, CensusMatch value)> QueryParams { get; } = new();
@@ -36,17 +30,19 @@ public sealed class CensusRequest<T> : ICensusRequest<T>
 		if (TempString is null)
 			throw new InvalidOperationException("TempString is null");
 
-		QueryParams.Add(new (TempString, censusMatch));
+		QueryParams.Add((TempString, censusMatch));
 		TempString = null;
 		return this;
 	}
 
-	public void Bind(RestRequest restRequest)
+	public ICensusRequest<T> Bind(Action<(string key, CensusMatch value)> bindAction)
 	{
 		if (TempString is not null)
 			throw new InvalidOperationException("TempString is not null");
 
-		foreach (var (key, value) in this.QueryParams)
-			restRequest.AddQueryParameter(key, value, false);
+		foreach (var pair in this.QueryParams)
+			bindAction.Invoke(pair);
+
+		return this;
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using System.Net;
 using RichardSzalay.MockHttp;
 
-namespace CensusRx.RestSharp.Test;
+namespace CensusRx.RestSharp.Test.JSON;
 
 public static class CensusJsonData
 {
 	public const string MEDIA_TYPE = "application/json";
 	public const string CHARACTER = "Character.json";
 	public const string CHARACTER_LIST = "CharacterList.json";
+	public const string CHARACTER_LIST_EMPTY = "CharacterListEmpty.json";
 	public const string FACTION_LIST = "FactionList.json";
 	
 	private static string GetJsonFilePath(string file) =>

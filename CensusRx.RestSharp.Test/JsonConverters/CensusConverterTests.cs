@@ -1,61 +1,52 @@
-﻿using System.Text.Json;
-using CensusRx.Model;
+﻿using System.Reactive.Linq;
+using CensusRx.RestSharp.Test.JSON;
 
 namespace CensusRx.RestSharp.Test.JsonConverters;
 
 [TestFixture]
-public class CensusConverterTests
+public class CensusConverterTests : CensusTestsBase
 {
-	public static JsonDocument ParseJsonFile(string file) => JsonDocument.Parse(CensusJsonData.GetJsonFile(file));
-
 	[Test]
 	public void DeserializeCharacter()
 	{
-		using var document = ParseJsonFile(CensusJsonData.CHARACTER);
+		var json = CensusJsonData.GetJsonFile(CensusJsonData.CHARACTER);
 
-		var characters = document.UnwrapCensusCollection<Character>().ToList();
+		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Character>()
+			.ToObservable());
 
-		Assert.That(characters, Is.Not.Null);
-		Assert.That(characters, Is.Not.Empty);
-		Assert.That(characters, Has.Count.EqualTo(1));
-
-		var character = characters!.FirstOrDefault();
-
-		Assert.That(character, Is.Not.Null);
-		Assert.Multiple(() =>
-		{
-			Assert.That(character!.CharacterId, Is.Not.EqualTo(0));
-			Assert.That(character!.Name, Is.Not.EqualTo(Character.CharacterName.Invalid));
-			Assert.That(character!.Certs, Is.Not.EqualTo(Character.CharacterCerts.Zero));
-		});
+		observer.AssertResultCount(1)
+			.AssertValues(Has.None.Null)
+			.AssertValues(Has.One.Matches((Character c) => c.Id == 5428016459719850385))
+			.AssertValues(Has.One.Matches((Character c) => c.Name.First == "Naozumi"))
+			.AssertValues(Has.One.Matches((Character c) => c.Certs.AvailablePoints == 1339));
 	}
 
 	[Test]
 	public void DeserializeCharacterList()
 	{
-		using var document = ParseJsonFile(CensusJsonData.CHARACTER_LIST);
+		var json = CensusJsonData.GetJsonFile(CensusJsonData.CHARACTER_LIST);
 
-		var characters = document.UnwrapCensusCollection<Character>().ToList();
+		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Character>()
+			.ToObservable());
 
-		Assert.That(characters, Is.Not.Null);
-		Assert.That(characters, Is.Not.Empty);
-		Assert.That(characters, Has.Count.EqualTo(4));
+		observer.AssertResultCount(4)
+			.AssertValues(Has.None.Null);
 	}
 
 	[Test]
 	public void DeserializeFactionList()
 	{
-		using var document = ParseJsonFile(CensusJsonData.FACTION_LIST);
+		var json = CensusJsonData.GetJsonFile(CensusJsonData.FACTION_LIST);
 
-		var factions = document.UnwrapCensusCollection<Faction>().ToList();
+		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Faction>()
+			.ToObservable());
 
-		Assert.That(factions, Is.Not.Null);
-		Assert.That(factions, Is.Not.Empty);
-		Assert.That(factions, Has.Count.EqualTo(5));
-		Assert.That(factions, Has.One.Matches((Faction faction) => faction.CodeTag == "None"));
-		Assert.That(factions, Has.One.Matches((Faction faction) => faction.CodeTag == "VS"));
-		Assert.That(factions, Has.One.Matches((Faction faction) => faction.CodeTag == "NC"));
-		Assert.That(factions, Has.One.Matches((Faction faction) => faction.CodeTag == "TR"));
-		Assert.That(factions, Has.One.Matches((Faction faction) => faction.CodeTag == "NSO"));
+		observer.AssertResultCount(5)
+			.AssertValues(Has.None.Null)
+			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "None"))
+			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "VS"))
+			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "NC"))
+			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "TR"))
+			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "NSO"));
 	}
 }
