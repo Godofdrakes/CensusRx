@@ -15,7 +15,7 @@ public class Faction : ICensusObject
 	public long ImageSetId { get; set; }
 	public long ImageId { get; set; }
 	public string ImagePath { get; set; } = string.Empty;
-	public string CodeTag { get; set; }
+	public string CodeTag { get; set; } = string.Empty;
 	//public int UserSelectable { get; set; }
 
 	public long Id => FactionId;
