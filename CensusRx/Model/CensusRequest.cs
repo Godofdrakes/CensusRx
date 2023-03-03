@@ -5,7 +5,7 @@ namespace CensusRx.Model;
 public sealed class CensusRequest<T> : ICensusRequest<T>
 	where T : ICensusObject
 {
-	public static CensusRequest<T> Build(ICensusRequest<T>.RequestBuilder requestBuilder)
+	public static CensusRequest<T> Build(RequestBuilder<T> requestBuilder)
 	{
 		var request = new CensusRequest<T>();
 		requestBuilder.Invoke(request);

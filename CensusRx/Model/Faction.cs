@@ -20,18 +20,7 @@ public class Faction : ICensusObject
 
 	public long Id => FactionId;
 
-	public Uri ImageUri
-	{
-		get
-		{
-			var builder = new UriBuilder(CensusConstants.ENDPOINT)
-			{
-				Path = ImagePath,
-			};
-
-			return builder.Uri;
-		}
-	}
-
 	public override string ToString() => Name.En;
+
+	public Uri GetImageUri(ICensusService censusService) => new(censusService.Endpoint + ImagePath);
 }

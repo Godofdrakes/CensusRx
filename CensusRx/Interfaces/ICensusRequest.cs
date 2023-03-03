@@ -5,10 +5,10 @@ using RestSharp;
 
 namespace CensusRx.Interfaces;
 
+public delegate void RequestBuilder<T>(ICensusRequest<T> request) where T : ICensusObject;
+
 public interface ICensusRequest<T> where T : ICensusObject
 {
-	delegate void RequestBuilder(ICensusRequest<T> request);
-
 	ICensusRequest<T> Where(string query);
 	ICensusRequest<T> Matches(CensusMatch censusMatch);
 	ICensusRequest<T> Bind(Action<(string key, CensusMatch value)> bindAction);

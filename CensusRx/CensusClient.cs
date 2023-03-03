@@ -48,7 +48,7 @@ public class CensusClient : ICensusClient
 		return restResponse.Content;
 	}
 
-	public IObservable<string> Get<T>(ICensusRequest<T>.RequestBuilder requestBuilder)
+	public IObservable<string> Get<T>(RequestBuilder<T> requestBuilder)
 		where T : ICensusObject
 	{
 		var censusRequest = CensusRequest<T>.Build(requestBuilder);
@@ -56,7 +56,7 @@ public class CensusClient : ICensusClient
 		return ExecuteRequest(restRequest).Select(GetResponseContent);
 	}
 
-	public IObservable<int> Count<T>(ICensusRequest<T>.RequestBuilder requestBuilder)
+	public IObservable<int> Count<T>(RequestBuilder<T> requestBuilder)
 		where T : ICensusObject
 	{
 		throw new NotImplementedException();

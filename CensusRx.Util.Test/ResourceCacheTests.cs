@@ -6,7 +6,7 @@ using TestRx;
 
 namespace CensusRx.Util.Test;
 
-[TestFixture, Ignore("not implemented")]
+[TestFixture]
 public class ResourceCacheTests
 {
 	public MockHttpMessageHandler MessageHandler { get; }
@@ -40,46 +40,40 @@ public class ResourceCacheTests
 
 	private void TestGetInternal(string uri, string text) => new TestScheduler().With(scheduler =>
 	{
-		var observer = new TestObserver<string>
-		{
-			AutoLog = true,
-		};
+		var observer = new TestObserver<string>();
 
 		TestContext.WriteLine($"uri: {uri}");
-
-		Cache.Get(new Uri(uri)).Subscribe(observer);
+		
+		var observable = Cache.Get(new Uri(uri));
+		
+		observable.Subscribe(observer);
 
 		Assert.DoesNotThrow(() =>
 		{
 			scheduler.Start();
-		    MessageHandler.VerifyNoOutstandingExpectation();
+
+			// todo: eliminate the need for this
+			// ideally this test would be single-threaded but the web request is async
+			observable.Wait();
+
+			MessageHandler.VerifyNoOutstandingExpectation();
 		    MessageHandler.VerifyNoOutstandingRequest();
 	    });
 
 	    observer.AssertResults(text);
 	});
 
-    [TestCase("foo")]
-	public void TestGet(string text)
+	[Test]
+	public void GetCached()
 	{
-		var fullUri = $"http://localhost/get/{text}";
+		const string fullUri = $"http://localhost/get/foo";
 
-		MessageHandler.Expect(fullUri).Respond("text/plain", text);
-
-		TestGetInternal(fullUri, text);
-	}
-
-	[TestCase("foo")]
-	public void TestGetCached(string text)
-	{
-		var fullUri = $"http://localhost/get/{text}";
-
-		MessageHandler.Expect(fullUri).Respond("text/plain", text);
+		MessageHandler.Expect(fullUri).Respond("text/plain", "bar");
 
 		// get once as normal
-		TestGetInternal(fullUri, text);
+		TestGetInternal(fullUri, "bar");
 
 		// get again, which should just return the cached value
-		TestGetInternal(fullUri, text);
+		TestGetInternal(fullUri, "bar");
 	}
 }

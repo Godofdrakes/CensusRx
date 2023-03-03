@@ -10,7 +10,7 @@ public class TestObserver<T> : IObserver<T>
 	private List<T> Emissions { get; } = new();
 
 	public string Label { get; set; } = string.Empty;
-	public bool AutoLog { get; set; } = false;
+	public bool AutoLog { get; set; } = true;
 	
 	public TextWriter LogWriter { get; set; }
 

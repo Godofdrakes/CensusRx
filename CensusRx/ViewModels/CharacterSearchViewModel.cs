@@ -1,16 +1,14 @@
-﻿using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using ReactiveUI;
-using ReactiveUI.Validation.Extensions;
+using Splat;
 
 namespace CensusRx.ViewModels;
 
-public class CharacterSearchViewModel : CensusSearchViewModel<Character>
+public class CharacterSearchViewModel : CensusSearchViewModel<CharacterViewModel>
 {
-	public ReactiveCommand<string, Unit> NameSearch { get; }
+	public ReactiveCommand<string, string> NameSearch { get; }
 
 	public string Name
 	{
@@ -21,21 +19,25 @@ public class CharacterSearchViewModel : CensusSearchViewModel<Character>
 	private string _name = string.Empty;
 
 	public CharacterSearchViewModel(IScreen? hostScreen = default, ICensusClient? censusClient = default)
-		: base(hostScreen, censusClient)
+		: base(hostScreen)
 	{
+		censusClient ??= Locator.Current.GetServiceChecked<ICensusClient>();
+
 		var nameIsValid = this.WhenAnyValue(model => model.Name)
 			.Select(name => !string.IsNullOrEmpty(name));
 
-		var canExecute = nameIsValid.CombineLatest(
-			ExecuteRequest.IsExecuting,
-			(valid, executing) => valid && !executing);
-
 		NameSearch = ReactiveCommand.CreateFromObservable((string name) =>
-				ExecuteRequest.Execute(request => request
-						.Where(character => character.Name.FirstLower)
-						.StartsWith(name.ToLower())
-						.LimitTo(10))
-					.Select(_ => Unit.Default),
-			canExecute);
+		{
+			return censusClient.Get<Character>(request => request
+				.Where(character => character.Name.FirstLower)
+				.StartsWith(name.ToLower())
+				.LimitTo(10));
+		}, nameIsValid);
+
+		NameSearch
+			.Select(json => json.UnwrapCensusCollection<Character>())
+			.Subscribe(characters =>
+				ResultCache.Edit(cache =>
+					cache.Load(characters.Select(character => new CharacterViewModel(character)))));
 	}
 }

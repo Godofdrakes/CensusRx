@@ -7,6 +7,7 @@
                                 xmlns:local="clr-namespace:CensusRx.WPF.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:censusViewModels="clr-namespace:CensusRx.ViewModels;assembly=CensusRx"
+                                xmlns:cachedImage="clr-namespace:CachedImage;assembly=CachedImage"
                                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                                 mc:Ignorable="d"
                                 d:DesignHeight="300" d:DesignWidth="300">
@@ -37,8 +38,16 @@
 			HeadersVisibility="Column"
 			ItemsSource="{Binding Results}">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Faction" Binding="{Binding FactionId}"/>
-				<DataGridTextColumn Header="Name" Binding="{Binding Name.First}" Width="*"/>
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<cachedImage:Image ImageUrl="{Binding Faction.ImageUri, FallbackValue={x:Null}}"
+							                   ToolTip="{Binding Faction.Faction.Name, FallbackValue=Unknown}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="Faction" Binding="{Binding Faction.Faction.CodeTag, FallbackValue=?}"/>
+				<DataGridTextColumn Header="Name" Binding="{Binding Character.Name.First}" Width="*"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</DockPanel>

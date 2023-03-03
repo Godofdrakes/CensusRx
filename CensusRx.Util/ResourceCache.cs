@@ -22,11 +22,11 @@ public class ResourceCache<T>
 			var httpClient = GetChecked(this.HttpClient);
 			var contentHandler = GetChecked(this.ContentHandler);
 
-			var observable = Observable.Using<HttpContent,HttpResponseMessage>(
+			var observable = Observable.Using(
 				token => httpClient.GetAsync(uri, token),
 				(message, _) => Task.FromResult(Observable.Return(message.EnsureSuccessStatusCode().Content)))
 				.SelectMany(contentHandler.Invoke)
-				.Replay(1);
+				.PublishLast();
 			observable.Connect();
 			return observable;
 		}, maxSize);
@@ -41,7 +41,7 @@ public class ResourceCache<T>
 
 		return property;
 	}
-	
+
 	public IObservable<T> Get(Uri key) => Cache.Get(key);
 
 	public bool TryGet(Uri key, out IObservable<T>? result) => Cache.TryGet(key, out result);

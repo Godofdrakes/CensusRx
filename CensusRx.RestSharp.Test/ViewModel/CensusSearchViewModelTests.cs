@@ -17,30 +17,18 @@ public class CensusSearchViewModelTests : CensusTestsBase
 		public RoutingState Router { get; } = new();
 	}
 
-	private class TestSearchViewModel : CensusSearchViewModel<Character>
-	{
-		public TestSearchViewModel(ICensusClient censusClient)
-			: base(new TestScreen(), censusClient) { }
-
-		public void GetCharactersByName(string name) => ExecuteRequest.Execute(request => request
-				.Where(character => character.Name.FirstLower)
-				.IsEqualTo(name.ToLower())
-				.LimitTo(10))
-			.Subscribe();
-	}
-
 	[Test]
 	public void PropagatesResults() => new TestScheduler().With(scheduler =>
 	{
 		MessageHandler.Expect("http://localhost/get/ps2/character")
 			.RespondWithJsonFile(CensusJsonData.CHARACTER_LIST);
 
-		var viewModel = new TestSearchViewModel(this.CensusClient);
+		var viewModel = new CharacterSearchViewModel(new TestScreen(), CensusClient);
 
 		// ReactiveCommand results are scheduled, must pump scheduler
 		Assert.DoesNotThrow(() =>
 		{
-			scheduler.Schedule(() => viewModel.GetCharactersByName("naozumi"));
+			scheduler.Schedule(() => viewModel.NameSearch.Execute("naozumi").Subscribe());
 			scheduler.Start();
 		});
 
