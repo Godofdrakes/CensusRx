@@ -13,7 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CachedImage" Version="0.1.15" />
       <PackageReference Include="MahApps.Metro" Version="2.4.9" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.3" />
@@ -25,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="DesignData" />
       <Folder Include="Properties" />
     </ItemGroup>
 

@@ -1,27 +1,38 @@
 ﻿using CensusRx.Interfaces;
 using CensusRx.Model;
 using ReactiveUI;
-using Splat;
 
 namespace CensusRx.ViewModels;
 
 public class CharacterViewModel : ReactiveObject, ICensusViewModel
 {
-	public Character Character { get; }
+	public ICensusObject CensusObject => _character;
 
-	public FactionViewModel? Faction => _faction.Value;
+	public CharacterName Name
+	{
+		get => _name.Value;
+		set => this.RaiseAndSetIfChanged(ref _character.Name, value);
+	}
 
-	public ICensusObject CensusObject => Character;
+	public long FactionId
+	{
+		get => _factionId.Value;
+		set => this.RaiseAndSetIfChanged(ref _character.FactionId, value);
+	}
 
-	private readonly ObservableAsPropertyHelper<FactionViewModel?> _faction;
+	private Character _character;
+
+	private ObservableAsPropertyHelper<CharacterName> _name;
+	private ObservableAsPropertyHelper<long> _factionId;
+
+	public CharacterViewModel() : this(new Character()) { }
 
 	public CharacterViewModel(Character character)
 	{
-		var factionCache = Locator.Current.GetServiceChecked<ICensusCache<FactionViewModel>>();
-
-		Character = character;
-
-		_faction = factionCache.Get(character.FactionId)
-			.ToProperty(this, model => model.Faction, initialValue: null);
+		_character = character;
+		_name = this.WhenAnyValue(model => model._character.Name)
+			.ToProperty(this, model => model.Name);
+		_factionId = this.WhenAnyValue(model => model._character.FactionId)
+			.ToProperty(this, model => model.FactionId);
 	}
 }

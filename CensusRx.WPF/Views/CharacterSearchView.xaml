@@ -7,48 +7,38 @@
                                 xmlns:local="clr-namespace:CensusRx.WPF.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:censusViewModels="clr-namespace:CensusRx.ViewModels;assembly=CensusRx"
-                                xmlns:cachedImage="clr-namespace:CachedImage;assembly=CachedImage"
                                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                                 mc:Ignorable="d"
                                 d:DesignHeight="300" d:DesignWidth="300">
-	<d:ReactiveUserControl.DataContext>
-		<censusViewModels:CharacterSearchViewModel />
-	</d:ReactiveUserControl.DataContext>
+    <d:ReactiveUserControl.DataContext>
+        <censusViewModels:CharacterSearchViewModel>
+        </censusViewModels:CharacterSearchViewModel>
+    </d:ReactiveUserControl.DataContext>
 
-	<DockPanel>
-		<Grid DockPanel.Dock="Top">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
+            <TextBox x:Name="NameInput"
+                     mah:TextBoxHelper.Watermark="Character Name"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
-			<TextBox x:Name="NameInput"
-			         mah:TextBoxHelper.Watermark="Character Name"
-			         mah:TextBoxHelper.ClearTextButton="True"
-			         Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Column="1" Content="Search"
+                    Command="{Binding NameSearch}"
+                    CommandParameter="{Binding Name}" />
+        </Grid>
 
-			<Button Grid.Column="1" Content="Search"
-			        Command="{Binding NameSearch}"
-			        CommandParameter="{Binding Name}"/>
-		</Grid>
-
-		<DataGrid x:Name="DataGrid"
-			AutoGenerateColumns="False"
-			HeadersVisibility="Column"
-			ItemsSource="{Binding Results}">
-			<DataGrid.Columns>
-				<DataGridTemplateColumn>
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<cachedImage:Image ImageUrl="{Binding Faction.ImageUri, FallbackValue={x:Null}}"
-							                   ToolTip="{Binding Faction.Faction.Name, FallbackValue=Unknown}"/>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
-				<DataGridTextColumn Header="Faction" Binding="{Binding Faction.Faction.CodeTag, FallbackValue=?}"/>
-				<DataGridTextColumn Header="Name" Binding="{Binding Character.Name.First}" Width="*"/>
-			</DataGrid.Columns>
-		</DataGrid>
-	</DockPanel>
+        <DataGrid x:Name="DataGrid"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  ItemsSource="{Binding Results}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name.First}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </reactiveUi:ReactiveUserControl>

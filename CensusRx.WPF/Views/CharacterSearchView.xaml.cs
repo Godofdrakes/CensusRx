@@ -11,6 +11,10 @@ public partial class CharacterSearchView
 		this.WhenActivated(d =>
 		{
 			this.DataContext = ViewModel;
+
+			d(this.OneWayBind(ViewModel,
+				model => model.Results,
+				view => view.DataGrid.ItemsSource));
 		});
 	}
 }
