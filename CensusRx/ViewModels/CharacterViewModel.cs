@@ -8,20 +8,16 @@ public class CharacterViewModel : ReactiveObject, ICensusViewModel
 {
 	public ICensusObject CensusObject => _character;
 
-	public CharacterName Name
+	public Character Character
 	{
-		get => _name.Value;
-		set => this.RaiseAndSetIfChanged(ref _character.Name, value);
+		get => _character;
+		set => this.RaiseAndSetIfChanged(ref _character, value);
 	}
 
-	public long FactionId
-	{
-		get => _factionId.Value;
-		set => this.RaiseAndSetIfChanged(ref _character.FactionId, value);
-	}
+	public CharacterName Name => _name.Value;
+	public long FactionId => _factionId.Value;
 
 	private Character _character;
-
 	private ObservableAsPropertyHelper<CharacterName> _name;
 	private ObservableAsPropertyHelper<long> _factionId;
 
@@ -30,9 +26,9 @@ public class CharacterViewModel : ReactiveObject, ICensusViewModel
 	public CharacterViewModel(Character character)
 	{
 		_character = character;
-		_name = this.WhenAnyValue(model => model._character.Name)
+		_name = this.WhenAnyValue(model => model.Character.Name)
 			.ToProperty(this, model => model.Name);
-		_factionId = this.WhenAnyValue(model => model._character.FactionId)
+		_factionId = this.WhenAnyValue(model => model.Character.FactionId)
 			.ToProperty(this, model => model.FactionId);
 	}
 }

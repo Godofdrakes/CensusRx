@@ -176,7 +176,7 @@ public class TestObserver<T> : IObserver<T>
 	public TestObserver<T> AssertLastValue(T value) => AssertLastValue(Is.EqualTo(value));
 
 	public TestObserver<T> AssertCompletion() =>
-		this.AssertCompletedOnce().AssertNoExceptions();
+		this.AssertNoExceptions().AssertCompletedOnce();
 
 	public TestObserver<T> AssertResults(params T[] values) =>
 		this.AssertCompletion().AssertValues(values);

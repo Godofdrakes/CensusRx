@@ -4,10 +4,10 @@ namespace CensusRx.Model;
 
 public class Character : ICensusObject
 {
-	public long CharacterId;
-	public CharacterName Name = CharacterName.Invalid;
-	public CharacterCerts Certs = CharacterCerts.Zero;
-	public long FactionId = Faction.NONE;
+	public long CharacterId { get; set; }
+	public CharacterName Name { get; set; } = CharacterName.Invalid;
+	public CharacterCerts Certs { get; set; } = CharacterCerts.Zero;
+	public long FactionId { get; set; } = Faction.NONE;
 
 	public long Id => CharacterId;
 }
