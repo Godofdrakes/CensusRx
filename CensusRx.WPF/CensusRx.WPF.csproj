@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DesignData" />
       <Folder Include="Properties" />
     </ItemGroup>
 

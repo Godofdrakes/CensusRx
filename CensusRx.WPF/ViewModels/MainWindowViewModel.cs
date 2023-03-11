@@ -25,6 +25,12 @@ public class MainWindowViewModel : WindowViewModel
 				ToolTip = "Search for characters",
 				ViewModel = new CharacterSearchViewModel(this),
 			});
+			cache.AddOrUpdate(new CensusMenuItem
+			{
+				Label = "Settings",
+				ToolTip = "Settings",
+				ViewModel = new CensusSettingsViewModel(this)
+			});
 		});
 
 		this.NavigationMenuItems = menuItems;

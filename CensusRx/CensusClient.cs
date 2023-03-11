@@ -25,7 +25,7 @@ public class CensusClient : ICensusClient
 			ThrowOnAnyError = true,
 		};
 
-		options.BaseUrl = Service.GetEndpoint();
+		options.BaseUrl = Service.GetEndpointUri();
 
 		this.RestClient = new RestClient(options).UseSerializer(() => CensusJson.Serializer);
 	}
