@@ -1,15 +1,21 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows;
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using CensusRx.ViewModels;
+using CensusRx.WPF.Interfaces;
+using CensusRx.WPF.ServiceModules;
 using CensusRx.WPF.ViewModels;
 using CensusRx.WPF.Views;
-using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Splat;
+
+using Expression = System.Linq.Expressions.Expression;
 
 namespace CensusRx.WPF;
 
@@ -18,18 +24,35 @@ namespace CensusRx.WPF;
 /// </summary>
 public partial class App
 {
+	private static Func<object> TypeFactory(TypeInfo typeInfo)
+	{
+		var parameterlessConstructor = typeInfo.DeclaredConstructors.FirstOrDefault(ci => ci.IsPublic && ci.GetParameters().Length == 0);
+		if (parameterlessConstructor is null)
+		{
+			throw new Exception($"Failed to register type {typeInfo.FullName} because it's missing a parameterless constructor.");
+		}
+
+		return Expression.Lambda<Func<object>>(Expression.New(parameterlessConstructor)).Compile();
+	}
+
+	private List<IServiceModule> LoadedModules { get; } = new();
+
 	private void App_OnStartup(object sender, StartupEventArgs e)
 	{
-		Locator.CurrentMutable.RegisterLazySingleton<ICensusService>(() =>
+		foreach (var type in Assembly.GetExecutingAssembly().DefinedTypes
+			         .Where(type => type is { IsClass: true, IsAbstract: false })
+			         .Where(type => type.ImplementedInterfaces.Contains(typeof(IServiceModule))))
 		{
-			var registry = Locator.Current.GetService<PropertyReferenceRegistry>();
-			var config = new ConfigurationBuilder()
-				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("appsettings.json", false, false)
-				.AddUserSecrets(Assembly.GetExecutingAssembly())
-				.Build();
-			return new CensusServiceViewModel(config);
-		});
+			Debug.WriteLine($"Loading service module: {type.FullName}");
+
+			var module = (IServiceModule)TypeFactory(type).Invoke();
+			if (module is null)
+			{
+				throw new Exception();
+			}
+
+			LoadedModules.Add(module);
+		}
 
 		Locator.CurrentMutable.RegisterLazySingleton<ICensusCache<FactionViewModel>>(() =>
 		{
@@ -43,9 +66,17 @@ public partial class App
 			return cache;
 		});
 
-		Locator.CurrentMutable.RegisterLazySingletonAnd<PropertyReferenceRegistry>()
-			.RegisterLazySingletonAnd<ICensusClient>(() => new CensusClient())
-			.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+		foreach (var module in LoadedModules)
+		{
+			Debug.WriteLine($"Registering service module: {module.GetType().FullName}");
+			module.Register(Locator.CurrentMutable);
+		}
+
+		foreach (var module in LoadedModules)
+		{
+			Debug.WriteLine($"Starting service module: {module.GetType().FullName}");
+			module.Startup(Locator.Current);
+		}
 
 		var mainWindow = new MainWindowView
 		{

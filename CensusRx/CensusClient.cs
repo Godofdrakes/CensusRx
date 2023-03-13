@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using RestSharp;
-using Splat;
 
 namespace CensusRx;
 
@@ -14,10 +13,10 @@ public class CensusClient : ICensusClient
 	public RestClient RestClient { get; }
 
 	public CensusClient(
-		ICensusService? censusService = default,
+		ICensusService censusService,
 		RestClientOptions? options = default)
 	{
-		Service = censusService ?? Locator.Current.GetServiceChecked<ICensusService>();
+		Service = censusService;
 
 		options ??= new RestClientOptions
 		{

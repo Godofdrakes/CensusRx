@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using CensusRx.WPF.ServiceModules;
+using ReactiveUI;
 using Splat;
 
 namespace CensusRx.WPF.ViewModels;
