@@ -11,9 +11,9 @@ public class CensusSettingsViewModel : ReactiveObject, IRoutableViewModel
 
 	public PropertyReferenceRegistry PropertyRegistry { get; }
 
-	public CensusSettingsViewModel(IScreen? hostScreen = default, PropertyReferenceRegistry? propertyRegistry = default)
+	public CensusSettingsViewModel(IScreen hostScreen, PropertyReferenceRegistry? propertyRegistry = default)
 	{
-		HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>()!;
+		HostScreen = hostScreen;
 		PropertyRegistry = propertyRegistry ?? Locator.Current.GetService<PropertyReferenceRegistry>()!;
 	}
 }

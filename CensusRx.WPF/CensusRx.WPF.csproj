@@ -20,8 +20,10 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+      <PackageReference Include="ReactiveUI" Version="18.4.26" />
       <PackageReference Include="ReactiveUI.WPF" Version="18.4.22" />
       <PackageReference Include="Splat.Drawing" Version="14.6.8" />
+      <PackageReference Include="System.Reactive" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>

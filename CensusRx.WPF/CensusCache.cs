@@ -1,12 +1,14 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Collections.Generic;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CensusRx.Interfaces;
 using ReactiveUI;
 
-namespace CensusRx.ViewModels;
+namespace CensusRx.WPF;
 
-public class CensusCacheViewModel<T> : ReactiveObject, ICensusCache<T> where T : ICensusViewModel
+public class CensusCache<T> : ICensusCache<T> where T : ICensusViewModel
 {
 	private Dictionary<long, BehaviorSubject<T?>> Cache { get; }
 
@@ -14,7 +16,7 @@ public class CensusCacheViewModel<T> : ReactiveObject, ICensusCache<T> where T :
 
 	public IObserver<T> Precache => ReplaySubject.AsObserver();
 
-	public CensusCacheViewModel(int cacheSize)
+	public CensusCache(int cacheSize)
 	{
 		ReplaySubject = new ReplaySubject<T>(cacheSize, RxApp.MainThreadScheduler);
 		Cache = new Dictionary<long, BehaviorSubject<T?>>(cacheSize);

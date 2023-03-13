@@ -26,7 +26,7 @@ public class PropertyReferenceRegistry : IServiceModule
 	public void RegisterPropertySource(ReactiveObject sourceObject)
 	{
 		var properties = sourceObject.GetType().GetProperties()
-			.Where(prop => CustomAttributeExtensions.GetCustomAttribute<PropertyReferenceAttribute>((MemberInfo)prop) is not null)
+			.Where(prop => prop.GetCustomAttribute<PropertyReferenceAttribute>() is not null)
 			.Select(prop => new PropertyReference(sourceObject, prop));
 
 		_propertyCache.AddOrUpdate(properties);

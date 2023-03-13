@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Splat;
@@ -23,4 +24,9 @@ public static class LocatorEx
 
 		return service is not null;
 	}
+
+	public static T GetServiceChecked<T>(
+		this IReadonlyDependencyResolver dependencyResolver, string? contract = default) =>
+		dependencyResolver.GetService<T>(contract)
+		?? throw new InvalidOperationException($"No service registered for type {typeof(T).Name}");
 }

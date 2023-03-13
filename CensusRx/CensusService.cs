@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using CensusRx.Model;
-using ReactiveUI;
 using RestSharp;
 
 namespace CensusRx;

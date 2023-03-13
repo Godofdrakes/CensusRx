@@ -1,20 +1,16 @@
 ﻿<reactiveUi:ReactiveUserControl x:Class="CensusRx.WPF.Views.CharacterSearchView"
-                                x:TypeArguments="censusViewModels:CharacterSearchViewModel"
+                                x:TypeArguments="viewModels:CharacterSearchViewModel"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                 xmlns:local="clr-namespace:CensusRx.WPF.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
-                                xmlns:censusViewModels="clr-namespace:CensusRx.ViewModels;assembly=CensusRx"
                                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                                xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
                                 mc:Ignorable="d"
+                                d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
                                 d:DesignHeight="300" d:DesignWidth="300">
-    <d:ReactiveUserControl.DataContext>
-        <censusViewModels:CharacterSearchViewModel>
-        </censusViewModels:CharacterSearchViewModel>
-    </d:ReactiveUserControl.DataContext>
-
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -24,12 +20,9 @@
 
             <TextBox x:Name="NameInput"
                      mah:TextBoxHelper.Watermark="Character Name"
-                     mah:TextBoxHelper.ClearTextButton="True"
-                     Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                     mah:TextBoxHelper.ClearTextButton="True" />
 
-            <Button Grid.Column="1" Content="Search"
-                    Command="{Binding NameSearch}"
-                    CommandParameter="{Binding Name}" />
+            <Button Grid.Column="1" Content="Search" Command="{Binding NameSearch}" />
         </Grid>
 
         <DataGrid x:Name="DataGrid"
@@ -37,7 +30,7 @@
                   HeadersVisibility="Column"
                   ItemsSource="{Binding Results}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name.First}" Width="*" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Character.Name.First}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Windows;
 using CensusRx.Interfaces;
 using CensusRx.Model;
-using CensusRx.ViewModels;
 using CensusRx.WPF.Interfaces;
 using CensusRx.WPF.ServiceModules;
 using CensusRx.WPF.ViewModels;
@@ -56,15 +55,16 @@ public partial class App
 
 		Locator.CurrentMutable.RegisterLazySingleton<ICensusCache<FactionViewModel>>(() =>
 		{
-			var cache = new CensusCacheViewModel<FactionViewModel>(10);
+			var cache = new CensusCache<FactionViewModel>(10);
 			var client = Locator.Current.GetServiceChecked<ICensusClient>();
-			var service = Locator.Current.GetServiceChecked<ICensusService>();
 			client.Get<Faction>(request => request.LimitTo(10))
 				.SelectMany(json => json.UnwrapCensusCollection<Faction>())
-				.Select(faction => new FactionViewModel(faction, service))
+				.Select(faction => new FactionViewModel(faction))
 				.Subscribe(cache.Precache);
 			return cache;
 		});
+
+		Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
 		foreach (var module in LoadedModules)
 		{
