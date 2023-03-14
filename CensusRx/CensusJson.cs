@@ -1,8 +1,6 @@
-﻿using System.Reactive.Linq;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using JorgeSerrano.Json;
-using RestSharp.Serializers.Json;
 
 namespace CensusRx;
 
@@ -14,11 +12,13 @@ public static class CensusJson
 		PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy(),
 	};
 
-	public static SystemTextJsonSerializer Serializer => new(SerializerOptions);
-
 	public static IEnumerable<JsonElement> UnwrapCensusCollection(this string json)
 	{
 		using var document = JsonDocument.Parse(json);
+		
+		// The property names for a census collection change depending on what was requested
+		// but the format is always { <collection>: [array], count: [number] }
+		// Just grab the first array property and iterate over the elements within.
 
 		var elements = document.RootElement.EnumerateObject()
 			.First(prop => prop.Value.ValueKind == JsonValueKind.Array)

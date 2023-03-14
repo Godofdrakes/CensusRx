@@ -28,7 +28,7 @@ public class MainWindowViewModel : WindowViewModel
 			{
 				Label = "Settings",
 				ToolTip = "Settings",
-				ViewModel = new CensusSettingsViewModel(this)
+				ViewModel = new CensusSettingsViewModel(this),
 			});
 		});
 

@@ -7,14 +7,21 @@ using ReactiveUI;
 namespace CensusRx.WPF;
 
 [AttributeUsage(AttributeTargets.Property), MeansImplicitUse]
-public class PropertyReferenceAttribute : Attribute { }
+public class PropertyReferenceAttribute : Attribute
+{
+	public PropertyReferenceAttribute(bool isReadOnly = false)
+	{
+		IsReadOnly = isReadOnly;
+	}
+
+	public bool IsReadOnly { get; }
+}
 
 public class PropertyReference : ReactiveObject
 {
 	public string Name => PropertyInfo.Name;
 	public Type ValueType => PropertyInfo.PropertyType;
-	public bool CanRead => PropertyInfo.CanRead;
-	public bool CanWrite => PropertyInfo.CanWrite;
+	public bool IsReadOnly { get; }
 
 	public object? Value
 	{
@@ -35,11 +42,15 @@ public class PropertyReference : ReactiveObject
 		if (!propertyInfo.CanRead)
 			throw new ArgumentException($"{propertyInfo.Name} is not a readable property", nameof(propertyInfo));
 
+		var attribute = propertyInfo.GetCustomAttribute<PropertyReferenceAttribute>();
+
 		SourceObject = sourceObject;
 		PropertyInfo = propertyInfo;
 		_value = sourceObject.Changed
 			.Where(args => args.PropertyName == propertyInfo.Name)
 			.Select(_ => GetValue())
 			.ToProperty(this, model => model.Value, GetValue);
+
+		IsReadOnly = !propertyInfo.CanWrite || attribute?.IsReadOnly == true;
 	}
 }

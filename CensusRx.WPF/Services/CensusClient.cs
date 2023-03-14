@@ -1,13 +1,17 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Reactive.Linq;
 using CensusRx.Interfaces;
-using CensusRx.Model;
+using CensusRx.WPF.Interfaces;
+using ReactiveUI;
 using RestSharp;
 
-namespace CensusRx;
+namespace CensusRx.WPF.Services;
 
-public class CensusClient : ICensusClient
+public class CensusClient : ReactiveObject, ICensusClient
 {
+	public Guid Id { get; } = Guid.NewGuid();
+
 	public ICensusService Service { get; }
 
 	public RestClient RestClient { get; }
@@ -20,20 +24,21 @@ public class CensusClient : ICensusClient
 
 		options ??= new RestClientOptions
 		{
-			ThrowOnDeserializationError = true,
 			ThrowOnAnyError = true,
 		};
 
 		options.BaseUrl = Service.GetEndpointUri();
 
-		this.RestClient = new RestClient(options).UseSerializer(() => CensusJson.Serializer);
+		this.RestClient = new RestClient(options);
 	}
 
-	protected virtual IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
+	private IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
 		Observable.FromAsync(token => RestClient.ExecuteAsync(restRequest, token));
 
 	private static string GetResponseContent(RestResponse restResponse)
 	{
+		restResponse.ThrowIfError();
+
 		if (restResponse.StatusCode != HttpStatusCode.OK)
 		{
 			throw new InvalidOperationException("restResponse.StatusCode != HttpStatusCode.OK");
@@ -50,9 +55,8 @@ public class CensusClient : ICensusClient
 	public IObservable<string> Get<T>(RequestBuilder<T> requestBuilder)
 		where T : ICensusObject
 	{
-		var censusRequest = CensusRequest<T>.Build(requestBuilder);
-		var restRequest = Service.CreateGetRequest<T>().Bind(censusRequest);
-		return ExecuteRequest(restRequest).Select(GetResponseContent);
+		var request = Service.CreateGetRequest(requestBuilder);
+		return ExecuteRequest(request).Select(GetResponseContent);
 	}
 
 	public IObservable<int> Count<T>(RequestBuilder<T> requestBuilder)

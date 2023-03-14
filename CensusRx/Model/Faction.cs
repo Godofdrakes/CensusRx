@@ -21,6 +21,4 @@ public class Faction : ICensusObject
 	public long Id => FactionId;
 
 	public override string ToString() => Name.En;
-
-	public Uri GetImageUri(ICensusService censusService) => new(censusService.Endpoint + ImagePath);
 }

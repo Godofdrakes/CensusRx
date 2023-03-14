@@ -1,4 +1,4 @@
-﻿using CensusRx.WPF.ServiceModules;
+﻿using CensusRx.WPF.Services;
 using ReactiveUI;
 using Splat;
 

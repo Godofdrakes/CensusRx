@@ -11,6 +11,8 @@
                          xmlns:system="clr-namespace:System;assembly=System.Runtime"
                          xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                          xmlns:converters="clr-namespace:CensusRx.WPF.Converters"
+                         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                         xmlns:behaviors="clr-namespace:CensusRx.WPF.Behaviors"
                          mc:Ignorable="d"
                          d:DataContext="{d:DesignInstance viewModels:CensusSettingsViewModel}"
                          d:DesignHeight="300" d:DesignWidth="300">
@@ -32,7 +34,7 @@
 						<Setter Property="ContentTemplate">
 							<Setter.Value>
 								<DataTemplate DataType="{x:Type wpf:PropertyReference}">
-									<TextBlock Text="{Binding Value}" IsEnabled="False" />
+									<TextBlock Text="{Binding Value}" />
 								</DataTemplate>
 							</Setter.Value>
 						</Setter>
@@ -57,6 +59,18 @@
 
 	<DataGrid AutoGenerateColumns="False"
 	          ItemsSource="{Binding PropertyRegistry.PropertyReferences}">
+		<b:Interaction.Behaviors>
+			<behaviors:ReadOnlyRowBehavior/>
+		</b:Interaction.Behaviors>
+		<DataGrid.RowStyle>
+			<Style TargetType="DataGridRow" BasedOn="{StaticResource MahApps.Styles.DataGridRow}">
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding IsReadOnly}" Value="true">
+						<Setter Property="behaviors:ReadOnlyService.IsReadOnly" Value="true"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</DataGrid.RowStyle>
 		<DataGrid.Columns>
 			<DataGridTextColumn Header="Setting" Width="Auto" Binding="{Binding Name}" />
 			<DataGridTemplateColumn Header="Value" Width="*"

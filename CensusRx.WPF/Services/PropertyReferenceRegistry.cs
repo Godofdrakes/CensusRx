@@ -2,14 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using CensusRx.WPF.Interfaces;
 using DynamicData;
 using ReactiveUI;
-using Splat;
 
-namespace CensusRx.WPF.ServiceModules;
+namespace CensusRx.WPF.Services;
 
-public class PropertyReferenceRegistry : IServiceModule
+public class PropertyReferenceRegistry
 {
 	public ReadOnlyObservableCollection<PropertyReference> PropertyReferences => _propertyReferences;
 
@@ -31,11 +29,4 @@ public class PropertyReferenceRegistry : IServiceModule
 
 		_propertyCache.AddOrUpdate(properties);
 	}
-
-	public void Register(IMutableDependencyResolver locator)
-	{
-		locator.RegisterConstant(this);
-	}
-
-	public void Startup(IReadonlyDependencyResolver locator) { }
 }
