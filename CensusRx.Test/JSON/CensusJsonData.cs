@@ -1,7 +1,4 @@
-﻿using System.Net;
-using RichardSzalay.MockHttp;
-
-namespace CensusRx.RestSharp.Test.JSON;
+﻿namespace CensusRx.Test.JSON;
 
 public static class CensusJsonData
 {
@@ -21,7 +18,4 @@ public static class CensusJsonData
 		Assume.That(File.Exists(filePath), () => $"Missing json file: {file}" + Environment.NewLine);
 		return File.ReadAllText(filePath);
 	}
-
-	public static MockedRequest RespondWithJsonFile(this MockedRequest source, string file) =>
-		source.Respond(HttpStatusCode.OK, MEDIA_TYPE, GetJsonFile(file));
 }

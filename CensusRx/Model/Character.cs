@@ -10,4 +10,5 @@ public class Character : ICensusObject
 	public long FactionId { get; set; } = Faction.NONE;
 
 	public long Id => CharacterId;
+	public override string ToString() => Name.First;
 }

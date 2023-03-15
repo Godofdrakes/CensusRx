@@ -1,20 +1,21 @@
 ﻿using System.Reactive.Linq;
-using CensusRx.Model.RestSharp.Test.JSON;
+using CensusRx.Test.JSON;
 
-namespace CensusRx.RestSharp.Test.JsonConverters;
+namespace CensusRx.Test;
 
 [TestFixture]
-public class CensusConverterTests : CensusTestsBase
+public class CensusModelTests
 {
 	[Test]
 	public void DeserializeCharacter()
 	{
 		var json = CensusJsonData.GetJsonFile(CensusJsonData.CHARACTER);
 
-		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Character>()
-			.ToObservable());
+		var results = json.UnwrapCensusCollection<Character>()
+			.ToObservable()
+			.Test();
 
-		observer.AssertResultCount(1)
+		results.AssertResultCount(1)
 			.AssertValues(Has.None.Null)
 			.AssertValues(Has.One.Matches((Character c) => c.Id == 5428016459719850385))
 			.AssertValues(Has.One.Matches((Character c) => c.Name.First == "Naozumi"))
@@ -26,10 +27,11 @@ public class CensusConverterTests : CensusTestsBase
 	{
 		var json = CensusJsonData.GetJsonFile(CensusJsonData.CHARACTER_LIST);
 
-		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Character>()
-			.ToObservable());
+		var results = json.UnwrapCensusCollection<Character>()
+			.ToObservable()
+			.Test();
 
-		observer.AssertResultCount(4)
+		results.AssertResultCount(4)
 			.AssertValues(Has.None.Null);
 	}
 
@@ -38,10 +40,11 @@ public class CensusConverterTests : CensusTestsBase
 	{
 		var json = CensusJsonData.GetJsonFile(CensusJsonData.FACTION_LIST);
 
-		var observer = TestCensusObservable(() => json.UnwrapCensusCollection<Faction>()
-			.ToObservable());
+		var results = json.UnwrapCensusCollection<Faction>()
+			.ToObservable()
+			.Test();
 
-		observer.AssertResultCount(5)
+		results.AssertResultCount(5)
 			.AssertValues(Has.None.Null)
 			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "None"))
 			.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "VS"))

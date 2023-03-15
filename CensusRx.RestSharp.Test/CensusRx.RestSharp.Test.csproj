@@ -26,21 +26,9 @@
 
     <ItemGroup>
       <None Remove="JSON\Character.json" />
-      <EmbeddedResource Include="JSON\Character.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="JSON\CharacterList.json" />
-      <EmbeddedResource Include="JSON\CharacterList.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="JSON\FactionList.json" />
-      <EmbeddedResource Include="JSON\FactionList.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
       <None Remove="JSON\CharacterListEmpty.json" />
-      <EmbeddedResource Include="JSON\CharacterListEmpty.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
