@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using CensusRx.Interfaces;
-using CensusRx.WPF.Attributes;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
-using CensusRx.WPF.Services;
-using CensusRx.WPF.Views;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,35 +18,36 @@ public static class Program
 	public static void Main(string[] args)
 	{
 		var host = Host.CreateDefaultBuilder(args)
+#if DEBUG
+			.UseEnvironment("development")
+#endif
 			.ConfigureServices(services =>
 			{
-				services.AddSingleton<ICensusService, CensusService>();
-				services.AddSingleton<ICensusClient, CensusClient>();
-				services.AddSingleton<PropertyReferenceRegistry>();
-				services.AddViews(Assembly.GetExecutingAssembly());
-				services.AddViewModels(Assembly.GetExecutingAssembly());
-
 				// Make splat init using this service collection
 				services.UseMicrosoftDependencyResolver();
 
 				var resolver = Locator.CurrentMutable;
 				resolver.InitializeSplat();
 				resolver.InitializeReactiveUI();
+				resolver.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 			})
-			.ConfigureWpf(builder =>
+			.ConfigureServices(services =>
 			{
-				builder.UseApplication<App>();
-				builder.UseWindow<MainWindowView>();
+				var assembly = Assembly.GetExecutingAssembly();
+				services.AddAllServices(assembly);
+				//services.AddAllViewModels(assembly);
+				services.AddAllViews(assembly);
 			})
+			.ConfigureWpf(wpf => wpf.UseApplication<App>())
 			.UseWpfLifetime()
 			.Build();
 
 		// Make splat resolve using this service provider
-		//host.Services.UseMicrosoftDependencyResolver();
+		host.Services.UseMicrosoftDependencyResolver();
 		host.Run();
 	}
 
-	private static IServiceCollection AddViewModels(this IServiceCollection services, Assembly assembly)
+	private static IServiceCollection AddAllViewModels(this IServiceCollection services, Assembly assembly)
 	{
 		if (services is null) throw new ArgumentNullException(nameof(services));
 		if (assembly is null) throw new ArgumentNullException(nameof(assembly));
@@ -58,13 +56,14 @@ public static class Program
 		bool IsViewModel(TypeInfo ti) => ti.ImplementedInterfaces.Contains(typeof(IViewModel)) && !ti.IsAbstract;
 		foreach (var implementationType in assembly.DefinedTypes.Where(IsViewModel))
 		{
-			services.RegisterType(implementationType, implementationType);
+			services.AddService(implementationType, implementationType);
+			services.AddServiceInterfaces(implementationType);
 		}
 
 		return services;
 	}
 
-	private static IServiceCollection AddViews(this IServiceCollection services, Assembly assembly)
+	private static IServiceCollection AddAllViews(this IServiceCollection services, Assembly assembly)
 	{
 		if (services is null) throw new ArgumentNullException(nameof(services));
 		if (assembly is null) throw new ArgumentNullException(nameof(assembly));
@@ -80,30 +79,9 @@ public static class Program
 			// need to check for null because some classes may implement IViewFor but not IViewFor<T> - we don't care about those
 			if (serviceType is null) continue;
 
-			services.RegisterType(serviceType, implementationType);
+			services.AddService(serviceType, implementationType);
 		}
 
 		return services;
-	}
-
-	private static ServiceLifetime GetServiceLifetime(this Type type) =>
-		type.GetCustomAttribute<ServiceLifetimeAttribute>()?.Lifetime ?? ServiceLifetime.Transient;
-
-	private static void RegisterType(this IServiceCollection services, Type serviceType, Type implementationType)
-	{
-		switch (implementationType.GetServiceLifetime())
-		{
-			case ServiceLifetime.Singleton:
-				services.AddSingleton(serviceType, implementationType);
-				return;
-			case ServiceLifetime.Scoped:
-				services.AddScoped(serviceType, implementationType);
-				return;
-			case ServiceLifetime.Transient:
-				services.AddTransient(serviceType, implementationType);
-				return;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
 	}
 }

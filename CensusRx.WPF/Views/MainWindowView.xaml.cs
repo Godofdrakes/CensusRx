@@ -1,6 +1,5 @@
 ﻿using System.Reactive.Linq;
 using CensusRx.WPF.ViewModels;
-using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using ReactiveUI;
 
 namespace CensusRx.WPF.Views
@@ -8,20 +7,18 @@ namespace CensusRx.WPF.Views
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindowView : IWpfShell
+	public partial class MainWindowView
 	{
-		public MainWindowView(MainWindowViewModel viewModel)
+		public MainWindowView()
 		{
 			InitializeComponent();
-
-			this.ViewModel = viewModel;
 
 			this.WhenActivated(d =>
 			{
 				var selectedMenuItem =
 					this.WhenAnyValue(view => view.HamburgerMenu.SelectedItem)
 						.DistinctUntilChanged()
-						.Cast<CensusMenuItem>();
+						.Cast<CensusMenuItem?>();
 
 				selectedMenuItem
 					.Select(item => item?.ViewModel)

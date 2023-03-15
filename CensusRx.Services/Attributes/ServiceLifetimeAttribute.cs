@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using JetBrains.Annotations;
 
-namespace CensusRx.WPF.Attributes;
+namespace Microsoft.Extensions.DependencyInjection;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class), MeansImplicitUse]
 public class ServiceLifetimeAttribute : Attribute
 {
 	public ServiceLifetimeAttribute(ServiceLifetime lifetime)

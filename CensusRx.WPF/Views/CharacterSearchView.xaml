@@ -1,16 +1,16 @@
-﻿<reactiveUi:ReactiveUserControl x:Class="CensusRx.WPF.Views.CharacterSearchView"
-                                x:TypeArguments="viewModels:CharacterSearchViewModel"
-                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                                xmlns:local="clr-namespace:CensusRx.WPF.Views"
-                                xmlns:reactiveUi="http://reactiveui.net"
-                                xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                                xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
-                                mc:Ignorable="d"
-                                d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
-                                d:DesignHeight="300" d:DesignWidth="300">
+﻿<local:CensusUserControl x:Class="CensusRx.WPF.Views.CharacterSearchView"
+                         x:TypeArguments="viewModels:CharacterSearchViewModel"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:local="clr-namespace:CensusRx.WPF.Views"
+                         xmlns:reactiveUi="http://reactiveui.net"
+                         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                         xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
+                         mc:Ignorable="d"
+                         d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
+                         d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -19,6 +19,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBox x:Name="NameInput"
+                     Text="{Binding Name}"
                      mah:TextBoxHelper.Watermark="Character Name"
                      mah:TextBoxHelper.ClearTextButton="True" />
 
@@ -34,4 +35,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</reactiveUi:ReactiveUserControl>
+</local:CensusUserControl>

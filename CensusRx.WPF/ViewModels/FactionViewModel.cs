@@ -1,5 +1,6 @@
 ﻿using CensusRx.Interfaces;
 using CensusRx.Model;
+using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 
 namespace CensusRx.WPF.ViewModels;

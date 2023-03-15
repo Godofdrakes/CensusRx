@@ -12,10 +12,8 @@
                   Title="{Binding Title, Mode=OneTime}"
                   ResizeMode="CanResizeWithGrip"
                   mc:Ignorable="d"
+                  d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
                   Height="450" Width="800">
-	<d:WindowView.DataContext>
-		<viewModels:MainWindowViewModel />
-	</d:WindowView.DataContext>
 
 	<Window.Resources>
 		<DataTemplate x:Key="NavigationMenuItemTemplate" DataType="{x:Type viewModels:CensusMenuItem}">

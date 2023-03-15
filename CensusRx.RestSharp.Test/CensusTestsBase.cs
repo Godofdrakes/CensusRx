@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using CensusRx.Interfaces;
 using ReactiveUI;
 using RestSharp;
 using RichardSzalay.MockHttp;

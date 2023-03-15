@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace CensusRx.Model;
+namespace CensusRx;
 
 public enum CensusOperand
 {

@@ -1,10 +1,12 @@
 ﻿using System.Windows;
 using CensusRx.WPF.ViewModels;
 using MahApps.Metro.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
 namespace CensusRx.WPF.Views;
 
+[ServiceLifetime(ServiceLifetime.Transient)]
 public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 	where TViewModel : WindowViewModel
 {

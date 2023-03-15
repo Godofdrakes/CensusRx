@@ -1,5 +1,5 @@
 ﻿using System.Reactive.Linq;
-using CensusRx.RestSharp.Test.JSON;
+using CensusRx.Model.RestSharp.Test.JSON;
 using RestSharp;
 using RichardSzalay.MockHttp;
 using TestRx;

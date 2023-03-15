@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using CensusRx.Interfaces;
+using CensusRx.WPF.Interfaces;
 using DynamicData;
 using ReactiveUI;
 

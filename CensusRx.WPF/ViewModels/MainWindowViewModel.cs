@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using CensusRx.WPF.Interfaces;
 using DynamicData;
 
 namespace CensusRx.WPF.ViewModels;
@@ -10,7 +11,7 @@ public class MainWindowViewModel : WindowViewModel
 
 	private SourceCache<CensusMenuItem, Type> NavigationMenuCache { get; } = new(item => item.ViewModel.GetType());
 
-	public MainWindowViewModel()
+	public MainWindowViewModel(ICensusClient censusClient)
 	{
 		NavigationMenuCache.Connect()
 			.Bind(out var menuItems)
@@ -22,13 +23,7 @@ public class MainWindowViewModel : WindowViewModel
 			{
 				Label = "Character",
 				ToolTip = "Search for characters",
-				ViewModel = new CharacterSearchViewModel(this),
-			});
-			cache.AddOrUpdate(new CensusMenuItem
-			{
-				Label = "Settings",
-				ToolTip = "Settings",
-				ViewModel = new CensusSettingsViewModel(this),
+				ViewModel = new CharacterSearchViewModel(this, censusClient),
 			});
 		});
 

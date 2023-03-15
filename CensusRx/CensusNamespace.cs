@@ -1,4 +1,4 @@
-﻿namespace CensusRx.Model;
+﻿namespace CensusRx;
 
 public static class CensusNamespace
 {

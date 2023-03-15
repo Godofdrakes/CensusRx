@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using CensusRx.Model;
+using CensusRx.Interfaces;
 
-namespace CensusRx.Interfaces;
+namespace CensusRx.WPF.Interfaces;
 
 public delegate void RequestBuilder<T>(ICensusRequest<T> request) where T : ICensusObject;
 
@@ -10,10 +13,9 @@ public interface ICensusRequest<T> where T : ICensusObject
 {
 	ICensusRequest<T> Where(string query);
 	ICensusRequest<T> Matches(CensusMatch censusMatch);
-	ICensusRequest<T> Bind(Action<(string key, CensusMatch value)> bindAction);
 }
 
-public static class CensusRequest
+public static class ICensusRequest
 {
 	private class PropertyVisitor : ExpressionVisitor
 	{
