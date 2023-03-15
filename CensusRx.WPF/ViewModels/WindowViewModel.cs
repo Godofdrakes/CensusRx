@@ -1,11 +1,11 @@
-﻿using System;
-using System.Reactive;
+﻿using System.Reactive;
 using System.Reactive.Linq;
+using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 
 namespace CensusRx.WPF.ViewModels;
 
-public class WindowViewModel : ReactiveObject, IScreen
+public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
 {
 	public RoutingState Router { get; } = new();
 

@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Linq;
 using CensusRx.WPF.ViewModels;
+using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using ReactiveUI;
 
 namespace CensusRx.WPF.Views
@@ -7,11 +8,13 @@ namespace CensusRx.WPF.Views
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindowView
+	public partial class MainWindowView : IWpfShell
 	{
-		public MainWindowView()
+		public MainWindowView(MainWindowViewModel viewModel)
 		{
 			InitializeComponent();
+
+			this.ViewModel = viewModel;
 
 			this.WhenActivated(d =>
 			{
