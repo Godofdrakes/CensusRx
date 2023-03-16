@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
-using CensusRx.Interfaces;
 
-namespace CensusRx.WPF.Interfaces;
+namespace CensusRx.Interfaces;
 
 public delegate void RequestBuilder<T>(ICensusRequestBuilder<T> request) where T : ICensusObject;
 

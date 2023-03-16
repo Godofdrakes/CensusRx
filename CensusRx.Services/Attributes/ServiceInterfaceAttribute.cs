@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace CensusRx.Services;
 
 [AttributeUsage(AttributeTargets.Interface), MeansImplicitUse]
 public class ServiceInterfaceAttribute : Attribute { }

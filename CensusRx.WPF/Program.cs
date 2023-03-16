@@ -57,7 +57,6 @@ public static class Program
 		foreach (var implementationType in assembly.DefinedTypes.Where(IsViewModel))
 		{
 			services.AddService(implementationType, implementationType);
-			services.AddServiceInterfaces(implementationType);
 		}
 
 		return services;
@@ -74,7 +73,7 @@ public static class Program
 		{
 			// grab the first _implemented_ interface that also implements IViewFor, this should be the expected IViewFor<>
 			bool ImplementsViewFor(Type t) => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IViewFor));
-			var serviceType = implementationType.ImplementedInterfaces.FirstOrDefault(ImplementsViewFor);
+			var serviceType = implementationType.ImplementedInterfaces.FirstOrDefault(ImplementsViewFor)?.GetTypeInfo();
 
 			// need to check for null because some classes may implement IViewFor but not IViewFor<T> - we don't care about those
 			if (serviceType is null) continue;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using CensusRx.Model;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 
@@ -10,7 +10,7 @@ namespace CensusRx.WPF.ViewModels;
 
 public class CharacterSearchViewModel : CensusSearchViewModel<CharacterViewModel>
 {
-	public ReactiveCommand<Unit, string> NameSearch { get; }
+	public ReactiveCommand<object, string> NameSearch { get; }
 
 	public string Name
 	{
@@ -26,7 +26,7 @@ public class CharacterSearchViewModel : CensusSearchViewModel<CharacterViewModel
 		var nameIsValid = this.WhenAnyValue(model => model.Name)
 			.Select(name => !string.IsNullOrEmpty(name));
 		
-		NameSearch = ReactiveCommand.CreateFromObservable(() =>
+		NameSearch = ReactiveCommand.CreateFromObservable((object _) =>
 		{
 			return censusClient.Get<Character>(request => request
 				.Where(character => character.Name.FirstLower)

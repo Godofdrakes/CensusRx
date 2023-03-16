@@ -1,32 +1,43 @@
-﻿using System.Reactive.Linq;
-using CensusRx.WPF.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
+using MahApps.Metro.Controls;
 using ReactiveUI;
 
-namespace CensusRx.WPF.Views
+namespace CensusRx.WPF.Views;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindowView
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindowView
+	public MainWindowView()
 	{
-		public MainWindowView()
+		InitializeComponent();
+
+		this.WhenActivated(d =>
 		{
-			InitializeComponent();
+			// XAML bindings don't work on hamburger menu items, must be done in code
+			this.BindCommand(ViewModel, 
+				model => model.ResetViewModel,
+				view => view.CharacterItem,
+				model => model.CharacterSearch);
+			this.BindCommand(ViewModel, 
+				model => model.ResetViewModel,
+				view => view.CharacterItem2,
+				model => model.CharacterSearch2);
 
-			this.WhenActivated(d =>
-			{
-				var selectedMenuItem =
-					this.WhenAnyValue(view => view.HamburgerMenu.SelectedItem)
-						.DistinctUntilChanged()
-						.Cast<CensusMenuItem?>();
+			var firstItem = this.WhenAnyValue(view => view.HamburgerMenu.ItemsSource)
+				.OfType<ICollection<HamburgerMenuItemBase>>()
+				.Select(items => items.FirstOrDefault())
+				.WhereNotNull();
 
-				selectedMenuItem
-					.Select(item => item?.ViewModel)
-					.WhereNotNull()
-					.InvokeCommand(ViewModel, model => model.ResetViewModel);
+			firstItem.BindTo(this, view => view.HamburgerMenu.SelectedItem);
 
-				this.HamburgerMenu.SelectedIndex = 0;
-			});
-		}
+			// setting the selected item doesn't automatically invoke commands
+			firstItem.OfType<HamburgerMenuItem>()
+				.Subscribe(item => item.RaiseCommand());
+		});
 	}
 }

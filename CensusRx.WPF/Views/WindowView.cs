@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CensusRx.Services;
 using CensusRx.WPF.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,7 @@ public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 
 	protected WindowView()
 	{
-		this.WhenActivated(d => this.DataContext = this.ViewModel);
+		this.WhenAnyValue(control => control.ViewModel)
+			.BindTo(this, control => control.DataContext);
 	}
 }

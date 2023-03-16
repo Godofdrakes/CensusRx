@@ -8,30 +8,26 @@
                          xmlns:reactiveUi="http://reactiveui.net"
                          xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                          xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
+                         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                          mc:Ignorable="d"
                          d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
                          d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <TextBox x:Name="NameInput" DockPanel.Dock="Top"
+                 Style="{DynamicResource MahApps.Styles.TextBox.Button}"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 mah:TextBoxHelper.Watermark="Character Name"
+                 mah:TextBoxHelper.ButtonCommand="{Binding NameSearch, Mode=OneTime}"
+                 mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
+                 mah:TextBoxHelper.ButtonsAlignment="Left"/>
 
-            <TextBox x:Name="NameInput"
-                     Text="{Binding Name}"
-                     mah:TextBoxHelper.Watermark="Character Name"
-                     mah:TextBoxHelper.ClearTextButton="True" />
-
-            <Button Grid.Column="1" Content="Search" Command="{Binding NameSearch}" />
-        </Grid>
-
-        <DataGrid x:Name="DataGrid"
+        <DataGrid x:Name="DataGrid" IsReadOnly="True"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   ItemsSource="{Binding Results}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Character.Name.First}" Width="*" />
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Character.Name.First}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

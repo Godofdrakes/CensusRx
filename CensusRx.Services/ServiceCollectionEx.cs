@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CensusRx.Services;
 
@@ -20,15 +21,14 @@ public static class ServiceCollectionEx
 	{
 		foreach (var serviceImplementation in assembly.GetServices())
 		{
-			var serviceInterface = serviceImplementation.GetServiceInterface();
+			var serviceInterface = serviceImplementation.GetServiceInterface().GetTypeInfo();
 			services.AddService(serviceInterface, serviceImplementation);
 		}
 
 		return services;
 	}
 
-	public static IServiceCollection AddService(this IServiceCollection services, Type serviceType,
-		Type implementationType)
+	public static IServiceCollection AddService(this IServiceCollection services, TypeInfo serviceType, TypeInfo implementationType)
 	{
 		switch (implementationType.GetServiceLifetime())
 		{
@@ -45,18 +45,9 @@ public static class ServiceCollectionEx
 				throw new ArgumentOutOfRangeException();
 		}
 
-		return services;
-	}
-
-	public static IServiceCollection AddServiceInterfaces(this IServiceCollection services,
-		TypeInfo implementationType)
-	{
-		object? GetImplementationType(IServiceProvider provider) => provider.GetService(implementationType);
-
-		bool IsServiceInterface(MemberInfo type) => type.GetCustomAttribute<ServiceInterfaceAttribute>() is not null;
-		foreach (var serviceType in implementationType.ImplementedInterfaces.Where(IsServiceInterface))
+		if (serviceType.ImplementedInterfaces.Contains(typeof(IHostedService)))
 		{
-			services.AddTransient(serviceType, GetImplementationType!);
+			services.AddTransient(typeof(IHostedService), provider => provider.GetRequiredService(serviceType));
 		}
 
 		return services;

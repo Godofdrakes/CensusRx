@@ -2,10 +2,13 @@
 using System.Net;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CensusRx.Interfaces;
-using CensusRx.WPF.Interfaces;
+using CensusRx.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ReactiveUI;
 using RestSharp;
 
@@ -14,13 +17,13 @@ namespace CensusRx.WPF.Services;
 [ServiceLifetime(ServiceLifetime.Singleton)]
 public class CensusClient : ReactiveObject, ICensusClient
 {
-	public RestClient RestClient { get; }
+	private RestClient RestClient { get; }
 
 	public string Endpoint { get; }
 	public string ServiceId { get; }
 	public string Namespace { get; }
 
-	public CensusClient(IConfiguration configuration)
+	public CensusClient(IConfiguration configuration, IHostApplicationLifetime applicationLifetime)
 	{
 		var config = configuration.GetRequiredSection("CensusRx");
 
@@ -42,6 +45,8 @@ public class CensusClient : ReactiveObject, ICensusClient
 		};
 
 		this.RestClient = new RestClient(options);
+
+		applicationLifetime.ApplicationStopping.Register(() => this.RestClient.Dispose());
 	}
 
 	private IObservable<RestResponse> ExecuteRequest(RestRequest restRequest) =>
@@ -64,7 +69,7 @@ public class CensusClient : ReactiveObject, ICensusClient
 		return restResponse.Content;
 	}
 
-	RestRequest CreateGetRequest<T>(RequestBuilder<T> requestBuilder) where T : ICensusObject
+	private RestRequest CreateGetRequest<T>(RequestBuilder<T> requestBuilder) where T : ICensusObject
 	{
 		var restRequest = new RestRequest($"/get/{Namespace}/{typeof(T).Name.ToLower()}");
 
@@ -80,7 +85,7 @@ public class CensusClient : ReactiveObject, ICensusClient
 		return restRequest;
 	}
 
-	RestRequest CreateCountRequest<T>() where T : ICensusObject
+	private RestRequest CreateCountRequest<T>() where T : ICensusObject
 		=> new($"/count/{Namespace}/{typeof(T).Name.ToLower()}");
 
 	public IObservable<string> Get<T>(RequestBuilder<T> requestBuilder)
@@ -94,5 +99,16 @@ public class CensusClient : ReactiveObject, ICensusClient
 		where T : ICensusObject
 	{
 		throw new NotImplementedException();
+	}
+
+	public Task StartAsync(CancellationToken cancellationToken)
+	{
+		return Task.CompletedTask;
+	}
+
+	public Task StopAsync(CancellationToken cancellationToken)
+	{
+		RestClient.Dispose();
+		return Task.CompletedTask;
 	}
 }

@@ -9,39 +9,32 @@
                   xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
                   xmlns:reactiveUi="http://reactiveui.net"
                   xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                   Title="{Binding Title, Mode=OneTime}"
                   ResizeMode="CanResizeWithGrip"
                   mc:Ignorable="d"
                   d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
                   Height="450" Width="800">
-
-	<Window.Resources>
-		<DataTemplate x:Key="NavigationMenuItemTemplate" DataType="{x:Type viewModels:CensusMenuItem}">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="{Binding CompactPaneLength,
-						RelativeSource={RelativeSource AncestorType=mah:HamburgerMenu},
-						Mode=OneWay}" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
-
-				<ContentControl Grid.Column="0"
-				                HorizontalAlignment="Center"
-				                VerticalAlignment="Center"
-				                Content="{Binding Label[0]}"
-				                Focusable="False" />
-				<TextBlock Grid.Column="1"
-				           VerticalAlignment="Center"
-				           Text="{Binding Label}"/>
-			</Grid>
-		</DataTemplate>
-	</Window.Resources>
-
 	<mah:HamburgerMenu x:Name="HamburgerMenu"
 	                   IsPaneOpen="False"
 	                   DisplayMode="CompactOverlay"
-	                   ItemsSource="{Binding NavigationMenuItems}"
-	                   ItemTemplate="{StaticResource NavigationMenuItemTemplate}">
+	                   SelectedIndex="0">
+		<mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+			<DataTemplate>
+				<TextBlock Text="CensusRx" FontSize="20"
+				           HorizontalAlignment="Center"
+				           VerticalAlignment="Center"
+				           Foreground="{DynamicResource MahApps.Brushes.Text.Validation}"/>
+			</DataTemplate>
+		</mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+
+		<mah:HamburgerMenu.ItemsSource>
+			<mah:HamburgerMenuItemCollection>
+				<mah:HamburgerMenuIconItem x:Name="CharacterItem" Label="Character" Icon="{iconPacks:BootstrapIcons Kind=Person}"/>
+				<mah:HamburgerMenuIconItem x:Name="CharacterItem2" Label="Character2" Icon="{iconPacks:BootstrapIcons Kind=Person}"/>
+			</mah:HamburgerMenuItemCollection>
+		</mah:HamburgerMenu.ItemsSource>
+
 		<mah:HamburgerMenu.Content>
 			<reactiveUi:RoutedViewHost x:Name="RoutedViewHost"
 			                           Transition="Drop"

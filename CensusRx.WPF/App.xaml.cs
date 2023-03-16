@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using CensusRx.WPF.ViewModels;
 using CensusRx.WPF.Views;

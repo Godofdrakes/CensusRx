@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using CensusRx.Interfaces;
-using CensusRx.WPF.Interfaces;
+﻿using CensusRx.Interfaces;
 
-namespace CensusRx.WPF;
+namespace CensusRx;
 
 public sealed class CensusRequest<T> : ICensusRequestBuilder<T>
 	where T : ICensusObject
