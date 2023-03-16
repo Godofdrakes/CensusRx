@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
@@ -21,16 +22,8 @@ public static class Program
 #if DEBUG
 			.UseEnvironment("development")
 #endif
-			.ConfigureServices(services =>
-			{
-				// Make splat init using this service collection
-				services.UseMicrosoftDependencyResolver();
-
-				var resolver = Locator.CurrentMutable;
-				resolver.InitializeSplat();
-				resolver.InitializeReactiveUI();
-				resolver.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-			})
+			.ConfigureSplat()
+			.ConfigureWpf<App>()
 			.ConfigureServices(services =>
 			{
 				var assembly = Assembly.GetExecutingAssembly();
@@ -38,14 +31,28 @@ public static class Program
 				//services.AddAllViewModels(assembly);
 				services.AddAllViews(assembly);
 			})
-			.ConfigureWpf(wpf => wpf.UseApplication<App>())
-			.UseWpfLifetime()
 			.Build();
 
 		// Make splat resolve using this service provider
 		host.Services.UseMicrosoftDependencyResolver();
 		host.Run();
 	}
+
+	private static IHostBuilder ConfigureSplat(this IHostBuilder hostBuilder) => hostBuilder
+		.ConfigureServices(services =>
+		{
+			// Make splat init using this service collection
+			services.UseMicrosoftDependencyResolver();
+
+			var resolver = Locator.CurrentMutable;
+			resolver.InitializeSplat();
+			resolver.InitializeReactiveUI();
+			resolver.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+		});
+
+	private static IHostBuilder ConfigureWpf<T>(this IHostBuilder hostBuilder) where T : Application => hostBuilder
+		.ConfigureWpf(wpf => wpf.UseApplication<T>())
+		.UseWpfLifetime();
 
 	private static IServiceCollection AddAllViewModels(this IServiceCollection services, Assembly assembly)
 	{

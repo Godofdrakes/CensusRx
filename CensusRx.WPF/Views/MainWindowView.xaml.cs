@@ -23,10 +23,6 @@ public partial class MainWindowView
 				model => model.ResetViewModel,
 				view => view.CharacterItem,
 				model => model.CharacterSearch);
-			this.BindCommand(ViewModel, 
-				model => model.ResetViewModel,
-				view => view.CharacterItem2,
-				model => model.CharacterSearch2);
 
 			var firstItem = this.WhenAnyValue(view => view.HamburgerMenu.ItemsSource)
 				.OfType<ICollection<HamburgerMenuItemBase>>()
