@@ -1,11 +1,12 @@
-﻿using CensusRx.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CensusRx.Interfaces;
 
 namespace CensusRx.Model;
 
 public class ItemCategory : ICensusObject
 {
-	public long ItemCategoryId { get; set; }
-	public LocalizedString Name { get; set; } = LocalizedString.Invalid;
+	[JsonPropertyName("item_category_id")]
+	public long Id { get; set; }
 
-	public long Id => ItemCategoryId;
+	public LocalizedString Name { get; set; } = LocalizedString.Invalid;
 }

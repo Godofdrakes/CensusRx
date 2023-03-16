@@ -1,14 +1,16 @@
-﻿using CensusRx.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CensusRx.Interfaces;
 
 namespace CensusRx.Model;
 
 public class Character : ICensusObject
 {
-	public long CharacterId { get; set; }
+	[JsonPropertyName("character_id")]
+	public long Id { get; set; }
+
 	public CharacterName Name { get; set; } = CharacterName.Invalid;
 	public CharacterCerts Certs { get; set; } = CharacterCerts.Zero;
 	public long FactionId { get; set; } = Faction.NONE;
 
-	public long Id => CharacterId;
 	public override string ToString() => Name.First;
 }

@@ -2,11 +2,9 @@
 
 public static class CensusJsonData
 {
-	public const string MEDIA_TYPE = "application/json";
-	public const string CHARACTER = "Character.json";
-	public const string CHARACTER_LIST = "CharacterList.json";
-	public const string CHARACTER_LIST_EMPTY = "CharacterListEmpty.json";
-	public const string FACTION_LIST = "FactionList.json";
+	public static string Character => GetJsonFile("Character.json");
+	public static string CharacterList => GetJsonFile("CharacterList.json");
+	public static string FactionList => GetJsonFile("FactionList.json");
 	
 	private static string GetJsonFilePath(string file) =>
 		Path.Combine(TestContext.CurrentContext.TestDirectory, "JSON", file);

@@ -1,10 +1,13 @@
-﻿using CensusRx.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CensusRx.Interfaces;
 
 namespace CensusRx.Model;
 
 public class Item : ICensusObject
 {
-	public long ItemId { get; set; }
+	[JsonPropertyName("item_id")]
+	public long Id { get; set; }
+
 	public int ItemTypeId { get; set; }
 	public int ItemCategoryId { get; set; }
 	public bool IsVehicleWeapon { get; set; }
@@ -17,7 +20,4 @@ public class Item : ICensusObject
 	public string ImagePath { get; set; } = string.Empty;
 	public int SkillSetId { get; set; }
 	public bool IsDefaultAttachment { get; set; }
-
-	public long Id => ItemId;
-	public Uri ImageUri => new(ImagePath, UriKind.Relative);
 }

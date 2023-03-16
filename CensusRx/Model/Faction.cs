@@ -1,4 +1,5 @@
-﻿using CensusRx.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CensusRx.Interfaces;
 
 namespace CensusRx.Model;
 
@@ -10,15 +11,15 @@ public class Faction : ICensusObject
 	public const long TR = 3;
 	public const long NSO = 4;
 
-	public long FactionId { get; set; }
+	[JsonPropertyName("faction_id")]
+	public long Id { get; set; }
+
 	public LocalizedString Name { get; set; } = LocalizedString.Invalid;
 	public long ImageSetId { get; set; }
 	public long ImageId { get; set; }
 	public string ImagePath { get; set; } = string.Empty;
 	public string CodeTag { get; set; } = string.Empty;
 	//public int UserSelectable { get; set; }
-
-	public long Id => FactionId;
 
 	public override string ToString() => Name.En;
 }
