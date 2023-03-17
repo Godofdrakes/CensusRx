@@ -1,5 +1,7 @@
-﻿using CensusRx.Interfaces;
+﻿using System.Reactive.Linq;
+using CensusRx.Interfaces;
 using CensusRx.Model;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 
@@ -15,10 +17,17 @@ public class CharacterViewModel : ReactiveObject, ICensusViewModel
 		set => this.RaiseAndSetIfChanged(ref _character, value);
 	}
 
-	private Character _character;
+	public Faction? Faction => _faction.Value;
 
-	public CharacterViewModel(Character? character = default)
+	private Character _character;
+	private readonly ObservableAsPropertyHelper<Faction?> _faction;
+
+	public CharacterViewModel(ICensusCache censusCache, Character? character = default)
 	{
-		_character = character ?? new Character();
+		this._character = character ?? new Character();
+		this._faction = this.WhenAnyValue(model => model.Character.FactionId)
+			.Select(id => censusCache.Get<Faction>((long)id))
+			.Switch()
+			.ToProperty(this, model => model.Faction);
 	}
 }

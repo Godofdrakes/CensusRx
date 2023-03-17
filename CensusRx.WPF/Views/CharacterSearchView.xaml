@@ -13,13 +13,35 @@
                          d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
                          d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <TextBox x:Name="NameInput" DockPanel.Dock="Top"
-                 Style="{DynamicResource MahApps.Styles.TextBox.Button}"
-                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                 mah:TextBoxHelper.Watermark="Character Name"
-                 mah:TextBoxHelper.ButtonCommand="{Binding NameSearch, Mode=OneTime}"
-                 mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
-                 mah:TextBoxHelper.ButtonsAlignment="Left"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Grid.Column="0" x:Name="NameInput"
+                     Style="{DynamicResource MahApps.Styles.TextBox.Button}"
+                     mah:TextBoxHelper.Watermark="Character Name"
+                     mah:TextBoxHelper.ButtonCommand="{Binding SearchForCharacters, Mode=OneTime}"
+                     mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
+                     mah:TextBoxHelper.ButtonsAlignment="Left"/>
+
+            <ComboBox Grid.Column="1" x:Name="FactionInput" SelectedIndex="0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:FactionMatch}">
+                        <TextBlock Text="{Binding Label}"
+                                   HorizontalAlignment="Stretch"
+                                   TextAlignment="Center"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <viewModels:FactionMatch x:Name="FactionAny" Label="Any" FactionId="None"/>
+                <viewModels:FactionMatch x:Name="FactionVS" Label="VS" FactionId="VanuSovereignty"/>
+                <viewModels:FactionMatch x:Name="FactionNC" Label="NC" FactionId="NewConglomerate"/>
+                <viewModels:FactionMatch x:Name="FactionTR" Label="TR" FactionId="TerranRepublic"/>
+                <viewModels:FactionMatch x:Name="FactionNSO" Label="NSO" FactionId="NSOperatives"/>
+            </ComboBox>
+        </Grid>
 
         <DataGrid x:Name="DataGrid" IsReadOnly="True"
                   AutoGenerateColumns="False"

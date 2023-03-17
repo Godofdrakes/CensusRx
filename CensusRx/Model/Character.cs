@@ -10,7 +10,7 @@ public class Character : ICensusObject
 
 	public CharacterName Name { get; set; } = CharacterName.Invalid;
 	public CharacterCerts Certs { get; set; } = CharacterCerts.Zero;
-	public long FactionId { get; set; } = Faction.NONE;
+	public FactionId FactionId { get; set; } = FactionId.None;
 
 	public override string ToString() => Name.First;
 }

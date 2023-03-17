@@ -13,6 +13,7 @@ public class CensusModelTests
 		.AssertResultCount(1)
 		.AssertValues(Has.None.Null)
 		.AssertValues(Has.One.Matches((Character c) => c.Id == 5428016459719850385))
+		.AssertValues(Has.One.Matches((Character c) => c.FactionId == FactionId.NewConglomerate))
 		.AssertValues(Has.One.Matches((Character c) => c.Name.First == "Naozumi"))
 		.AssertValues(Has.One.Matches((Character c) => c.Certs.AvailablePoints == 1339));
 
@@ -29,9 +30,9 @@ public class CensusModelTests
 		.ToObservable().Test()
 		.AssertResultCount(5)
 		.AssertValues(Has.None.Null)
-		.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "None"))
-		.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "VS"))
-		.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "NC"))
-		.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "TR"))
-		.AssertValues(Has.One.Matches((Faction faction) => faction.CodeTag == "NSO"));
+		.AssertValues(Has.One.Matches((Faction faction) => faction.FactionId == FactionId.None))
+		.AssertValues(Has.One.Matches((Faction faction) => faction.FactionId == FactionId.VanuSovereignty))
+		.AssertValues(Has.One.Matches((Faction faction) => faction.FactionId == FactionId.NewConglomerate))
+		.AssertValues(Has.One.Matches((Faction faction) => faction.FactionId == FactionId.TerranRepublic))
+		.AssertValues(Has.One.Matches((Faction faction) => faction.FactionId == FactionId.NSOperatives));
 }

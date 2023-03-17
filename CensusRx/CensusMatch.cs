@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
+using CensusRx.Model;
 
 namespace CensusRx;
 
@@ -33,7 +35,7 @@ public enum CensusOperand
 public readonly record struct CensusMatch(CensusOperand Operand, string Value)
 {
 	public static CensusMatch IsEqualTo(string value) => new(CensusOperand.IsEqualTo, value);
-	public static CensusMatch IsEqualTo(int value) => new(CensusOperand.IsEqualTo, value.ToString());
+	public static CensusMatch IsEqualTo(object value) => IsEqualTo(JsonSerializer.Serialize(value, CensusJson.SerializerOptions));
 
 	public static CensusMatch LessThan(string value) => new(CensusOperand.LessThan, value);
 	public static CensusMatch LessThan(int value) => new(CensusOperand.LessThan, value.ToString());

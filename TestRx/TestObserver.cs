@@ -126,9 +126,9 @@ public class TestObserver<T> : IObserver<T>
 	public TestObserver<T> AssertDidNotComplete() =>
 		this.AssertCompletions(Is.EqualTo(0), "Sequence completed one or more times");
 
-	public TestObserver<T> AssertExceptions(IResolveConstraint constraint)
+	public TestObserver<T> AssertExceptions(IResolveConstraint constraint, string? message = default)
 	{
-		Assert.That(Exceptions, constraint);
+		Assert.That(Exceptions, constraint, message);
 		return this;
 	}
 
@@ -154,7 +154,7 @@ public class TestObserver<T> : IObserver<T>
 		AssertSingleException(Is.AssignableTo<TException>());
 
 	public TestObserver<T> AssertNoExceptions() =>
-		this.AssertExceptions(Is.Empty);
+		this.AssertExceptions(Is.Empty, "Sequence threw one or more exceptions");
 
 	public TestObserver<T> AssertValues(IResolveConstraint constraint)
 	{
