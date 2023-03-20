@@ -2,7 +2,8 @@
 
 namespace CensusRx.WPF.Interfaces;
 
-public interface ICensusViewModel
+public interface ICensusViewModel<T>
+	where T : ICensusObject
 {
-	ICensusObject CensusObject { get; }
+	T CensusObject { get; }
 }

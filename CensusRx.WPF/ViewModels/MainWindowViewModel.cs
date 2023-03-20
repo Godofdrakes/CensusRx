@@ -1,4 +1,5 @@
 ﻿using CensusRx.Services;
+using CensusRx.Services.Interfaces;
 
 namespace CensusRx.WPF.ViewModels;
 

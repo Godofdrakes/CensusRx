@@ -2,7 +2,7 @@
 
 namespace CensusRx;
 
-public sealed class CensusRequest<T> : ICensusRequestBuilder<T>
+public sealed class CensusRequest<T> : ICensusRequest<T>
 	where T : ICensusObject
 {
 	private class MatchBuilder : ICensusMatchBuilder<T>
@@ -17,7 +17,7 @@ public sealed class CensusRequest<T> : ICensusRequestBuilder<T>
 			Query = query;
 		}
 
-		public ICensusRequestBuilder<T> Matches(CensusMatch censusMatch)
+		public ICensusRequest<T> Matches(CensusMatch censusMatch)
 		{
 			CensusRequest.QueryParams.Add(Query, censusMatch);
 			return CensusRequest;

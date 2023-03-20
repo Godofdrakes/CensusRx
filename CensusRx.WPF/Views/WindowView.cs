@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using CensusRx.Services;
+using CensusRx.Services.Attributes;
 using CensusRx.WPF.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.Extensions.DependencyInjection;

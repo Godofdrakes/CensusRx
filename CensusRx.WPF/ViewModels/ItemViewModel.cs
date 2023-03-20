@@ -5,18 +5,18 @@ using ReactiveUI;
 
 namespace CensusRx.WPF.ViewModels;
 
-public class FactionViewModel : ReactiveObject, ICensusViewModel<Faction>
+public class ItemViewModel : ReactiveObject, ICensusViewModel<Item>
 {
-	public Faction CensusObject
+	public Item CensusObject
 	{
 		get => _censusObject;
 		set => this.RaiseAndSetIfChanged(ref _censusObject, value);
 	}
 
-	private Faction _censusObject;
+	private Item _censusObject;
 
-	public FactionViewModel(Faction? faction = default)
+	public ItemViewModel(Item? item = default)
 	{
-		_censusObject = faction ?? new Faction();
+		_censusObject = item ?? new Item();
 	}
 }

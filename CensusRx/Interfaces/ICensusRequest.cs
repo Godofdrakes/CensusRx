@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace CensusRx.Interfaces;
 
-public delegate void RequestBuilder<T>(ICensusRequestBuilder<T> request) where T : ICensusObject;
+public delegate void RequestBuilder<T>(ICensusRequest<T> request) where T : ICensusObject;
 
 internal sealed class PropertyVisitor : ExpressionVisitor
 {
@@ -33,13 +33,14 @@ internal sealed class PropertyVisitor : ExpressionVisitor
 
 public interface ICensusMatchBuilder<T> where T : ICensusObject
 {
-	ICensusRequestBuilder<T> Matches(CensusMatch censusMatch);
+	ICensusRequest<T> Matches(CensusMatch censusMatch);
 
-	ICensusRequestBuilder<T> IsEqualTo(string value) => Matches(CensusMatch.IsEqualTo(value));
-	ICensusRequestBuilder<T> StartsWith(string value) => Matches(CensusMatch.StartsWith(value));
+	ICensusRequest<T> IsEqualTo(string value) => Matches(CensusMatch.IsEqualTo(value));
+	ICensusRequest<T> StartsWith(string value) => Matches(CensusMatch.StartsWith(value));
+	ICensusRequest<T> Contains(string value) => Matches(CensusMatch.Contains(value));
 }
 
-public interface ICensusRequestBuilder<T> where T : ICensusObject
+public interface ICensusRequest<T> where T : ICensusObject
 {
 	ICensusMatchBuilder<T> Where(string query);
 
@@ -55,5 +56,5 @@ public interface ICensusRequestBuilder<T> where T : ICensusObject
 		return Where(visitor.ToString());
 	}
 
-	ICensusRequestBuilder<T> LimitTo(int count) => Where("c:limit").IsEqualTo(count.ToString());
+	ICensusRequest<T> LimitTo(int count) => Where("c:limit").IsEqualTo(count.ToString());
 }

@@ -22,7 +22,7 @@
             <TextBox Grid.Column="0" x:Name="NameInput"
                      Style="{DynamicResource MahApps.Styles.TextBox.Button}"
                      mah:TextBoxHelper.Watermark="Character Name"
-                     mah:TextBoxHelper.ButtonCommand="{Binding SearchForCharacters, Mode=OneTime}"
+                     mah:TextBoxHelper.ButtonCommand="{Binding Search, Mode=OneTime}"
                      mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
                      mah:TextBoxHelper.ButtonsAlignment="Left"/>
 
@@ -49,7 +49,7 @@
                   ItemsSource="{Binding Results}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name"
-                                    Binding="{Binding Character.Name.First}" Width="*" />
+                                    Binding="{Binding CensusObject.Name.First}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

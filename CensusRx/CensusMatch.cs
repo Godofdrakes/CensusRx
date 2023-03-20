@@ -32,7 +32,7 @@ public enum CensusOperand
 }
 
 [StackTraceHidden, DebuggerStepThrough]
-public readonly record struct CensusMatch(CensusOperand Operand, string Value)
+public readonly record struct CensusMatch(CensusOperand Operand, string Value) : IEquatable<string>
 {
 	public static CensusMatch IsEqualTo(string value) => new(CensusOperand.IsEqualTo, value);
 	public static CensusMatch IsEqualTo(object value) => IsEqualTo(JsonSerializer.Serialize(value, CensusJson.SerializerOptions));
@@ -57,6 +57,9 @@ public readonly record struct CensusMatch(CensusOperand Operand, string Value)
 
 	public static CensusMatch IsNot(string value) => new(CensusOperand.IsNot, value);
 	public static CensusMatch IsNot(int value) => new(CensusOperand.IsNot, value.ToString());
+
+	// String equality makes writing tests easier
+	public bool Equals(string? other) => string.Equals(this.ToString(), other, StringComparison.Ordinal);
 
 	public override string ToString() => Operand switch
 	{
