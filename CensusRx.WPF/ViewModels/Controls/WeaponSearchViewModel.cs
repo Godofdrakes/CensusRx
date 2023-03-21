@@ -50,9 +50,8 @@ public class WeaponSearchViewModel : CensusSearchViewModel<Item>
 			request.Where(item => item.ItemCategoryId).Matches(CategoryMatch.Value);
 		}
 
-		request.Join(builder => builder
-				.Insert(item => item.Weapon)
-				.Insert(item => item.WeaponDatasheet))
+		request.Join(item => item.WeaponDatasheet)
+			.Join(item => item.Weapon)
 			.CaseSensitive(false)
 			.LimitTo(100);
 	}

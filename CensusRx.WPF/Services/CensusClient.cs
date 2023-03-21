@@ -84,20 +84,41 @@ public class CensusClient : ReactiveObject, ICensusClient
 			}
 
 			return ValueTask.CompletedTask;
-		}
+		},
 	};
 
 	private RestRequest CreateGetRequest<T>(RequestBuilder<T> requestBuilder) where T : ICensusObject
 	{
 		var restRequest = CreateRequest($"/get/{Namespace}/{typeof(T).Name.ToLower()}");
 
-		var censusRequest = new CensusRequest<T>();
+		var censusRequest = new CensusRequest<T>
+		{
+			NamingPolicy = CensusJson.NamingPolicy,
+		};
 
 		requestBuilder.Invoke(censusRequest);
 
 		foreach (var (key, value) in censusRequest.QueryParams)
 		{
 			restRequest.AddQueryParameter(key, value, false);
+		}
+
+		if (censusRequest.JoinArgs.Count > 0)
+		{
+			var builder = new StringBuilder();
+
+			for (var index = 0; index < censusRequest.JoinArgs.Count; index++)
+			{
+				var joinArgs = censusRequest.JoinArgs[index];
+				if (index != 0)
+				{
+					builder.Append(',');
+				}
+
+				builder.Append($"type:{joinArgs.Type}^inject_at:{joinArgs.InjectAt}");
+			}
+
+			restRequest.AddQueryParameter("c:join", builder.ToString(), false);
 		}
 
 		return restRequest;

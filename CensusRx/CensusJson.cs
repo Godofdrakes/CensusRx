@@ -6,10 +6,12 @@ namespace CensusRx;
 
 public static class CensusJson
 {
+	public static JsonNamingPolicy NamingPolicy { get; } = new JsonSnakeCaseNamingPolicy();
+
 	public static JsonSerializerOptions SerializerOptions => new()
 	{
 		NumberHandling = JsonNumberHandling.AllowReadingFromString,
-		PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy(),
+		PropertyNamingPolicy = NamingPolicy,
 	};
 
 	public static IEnumerable<JsonElement> UnwrapCensusCollection(this string json)
