@@ -25,5 +25,8 @@ public class WeaponDatasheet : ICensusObject
 
 	public LocalizedString Range { get; init; } = LocalizedString.Invalid;
 
-	public override string ToString() => Id.ToString();
+	public override string ToString()
+	{
+		return $"{nameof(WeaponDatasheet)} {{ {nameof(Id)} = {Id} }}";
+	}
 }

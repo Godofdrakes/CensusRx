@@ -22,9 +22,9 @@ public sealed class CensusRequest<T> : ICensusRequest<T>
 			Query = query;
 		}
 
-		public ICensusRequest<T> Matches(CensusMatch censusMatch)
+		public ICensusRequest<T> Matches(string match)
 		{
-			CensusRequest.QueryParams.Add(Query, censusMatch);
+			CensusRequest.QueryParams.Add(Query, match);
 			return CensusRequest;
 		}
 	}
@@ -79,8 +79,7 @@ public sealed class CensusRequest<T> : ICensusRequest<T>
 
 	public JsonNamingPolicy? NamingPolicy { get; set; }
 
-	// todo: make this string,string ?
-	public Dictionary<string, CensusMatch> QueryParams { get; } = new();
+	public Dictionary<string, string> QueryParams { get; } = new();
 
 	public List<CensusJoinArgs> JoinArgs { get; } = new();
 

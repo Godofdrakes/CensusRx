@@ -1,5 +1,4 @@
 ﻿using System.Reactive.Linq;
-using CensusRx.Model;
 using ReactiveUI;
 
 namespace CensusRx.WPF.ViewModels;
@@ -12,23 +11,33 @@ public class FactionMatch : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _label, value);
 	}
 
-	public FactionId FactionId
+	public long? FactionId
 	{
 		get => _factionId;
 		set => this.RaiseAndSetIfChanged(ref _factionId, value);
 	}
 
-	public CensusMatch? Match => _match.Value;
+	public string? Match => _match.Value;
 
 	private string _label = string.Empty;
-	private FactionId _factionId = FactionId.None;
+	private long? _factionId;
 
-	private readonly ObservableAsPropertyHelper<CensusMatch?> _match;
+	private readonly ObservableAsPropertyHelper<string?> _match;
 
 	public FactionMatch()
 	{
+		string? CreateFactionMatch(long? factionId)
+		{
+			if (factionId is not null)
+			{
+				return CensusMatch.IsEqualTo(factionId.Value, CensusJson.SerializerOptions);
+			}
+
+			return null;
+		}
+
 		_match = this.WhenAnyValue(x => x.FactionId)
-			.Select(id => (CensusMatch?)(id != FactionId.None ? CensusMatch.IsEqualTo(id) : null))
+			.Select(CreateFactionMatch)
 			.ToProperty(this, x => x.Match);
 	}
 }

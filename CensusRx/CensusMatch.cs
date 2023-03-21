@@ -32,45 +32,46 @@ public enum CensusOperand
 }
 
 [StackTraceHidden, DebuggerStepThrough]
-public readonly record struct CensusMatch(CensusOperand Operand, string Value) : IEquatable<string>
+public static class CensusMatch
 {
-	public static CensusMatch IsEqualTo(string value) => new(CensusOperand.IsEqualTo, value);
-	public static CensusMatch IsEqualTo(object value) => IsEqualTo(JsonSerializer.Serialize(value, CensusJson.SerializerOptions));
-
-	public static CensusMatch LessThan(string value) => new(CensusOperand.LessThan, value);
-	public static CensusMatch LessThan(int value) => new(CensusOperand.LessThan, value.ToString());
-
-	public static CensusMatch LessThanOrEqualTo(string value) => new(CensusOperand.LessThanOrEqualTo, value);
-	public static CensusMatch LessThanOrEqualTo(int value) => new(CensusOperand.LessThanOrEqualTo, value.ToString());
-
-	public static CensusMatch GreaterThan(string value) => new(CensusOperand.GreaterThan, value);
-	public static CensusMatch GreaterThan(int value) => new(CensusOperand.GreaterThan, value.ToString());
-
-	public static CensusMatch GreaterThanOrEqualTo(string value) => new(CensusOperand.GreaterThanOrEqualTo, value);
-
-	public static CensusMatch GreaterThanOrEqualTo(int value) =>
-		new(CensusOperand.GreaterThanOrEqualTo, value.ToString());
-
-	public static CensusMatch StartsWith(string value) => new(CensusOperand.StartsWith, value);
-
-	public static CensusMatch Contains(string value) => new(CensusOperand.Contains, value);
-
-	public static CensusMatch IsNot(string value) => new(CensusOperand.IsNot, value);
-	public static CensusMatch IsNot(int value) => new(CensusOperand.IsNot, value.ToString());
-
-	// String equality makes writing tests easier
-	public bool Equals(string? other) => string.Equals(this.ToString(), other, StringComparison.Ordinal);
-
-	public override string ToString() => Operand switch
+	private static Dictionary<CensusOperand, char> OperandPrefix { get; } = new()
 	{
-		CensusOperand.IsEqualTo => Value,
-		CensusOperand.LessThan => '<' + Value,
-		CensusOperand.LessThanOrEqualTo => '[' + Value,
-		CensusOperand.GreaterThan => '>' + Value,
-		CensusOperand.GreaterThanOrEqualTo => ']' + Value,
-		CensusOperand.StartsWith => '^' + Value,
-		CensusOperand.Contains => '*' + Value,
-		CensusOperand.IsNot => '!' + Value,
-		_ => throw new ArgumentOutOfRangeException(),
+		{ CensusOperand.LessThan, '<' },
+		{ CensusOperand.LessThanOrEqualTo, '[' },
+		{ CensusOperand.GreaterThan, '>' },
+		{ CensusOperand.GreaterThanOrEqualTo, ']' },
+		{ CensusOperand.StartsWith, '^' },
+		{ CensusOperand.Contains, '*' },
+		{ CensusOperand.IsNot, '!' },
 	};
+	
+	private static string Prefix(CensusOperand operand, string value) => operand switch
+	{
+		CensusOperand.IsEqualTo => value,
+		CensusOperand.LessThan => '<' + value,
+		CensusOperand.LessThanOrEqualTo => '[' + value,
+		CensusOperand.GreaterThan => '>' + value,
+		CensusOperand.GreaterThanOrEqualTo => ']' + value,
+		CensusOperand.StartsWith => '^' + value,
+		CensusOperand.Contains => '*' + value,
+		CensusOperand.IsNot => '!' + value,
+		_ => throw new ArgumentOutOfRangeException(nameof(operand)),
+	};
+
+	public static string IsEqualTo(string value) => Prefix(CensusOperand.IsEqualTo, value);
+	public static string IsEqualTo(object value, JsonSerializerOptions? serializerOptions) => IsEqualTo(JsonSerializer.Serialize(value, serializerOptions));
+
+	public static string LessThan(string value) => Prefix(CensusOperand.LessThan, value);
+
+	public static string LessThanOrEqualTo(string value) => Prefix(CensusOperand.LessThanOrEqualTo, value);
+
+	public static string GreaterThan(string value) => Prefix(CensusOperand.GreaterThan, value);
+
+	public static string GreaterThanOrEqualTo(string value) => Prefix(CensusOperand.GreaterThanOrEqualTo, value);
+
+	public static string StartsWith(string value) => Prefix(CensusOperand.StartsWith, value);
+
+	public static string Contains(string value) => Prefix(CensusOperand.Contains, value);
+
+	public static string IsNot(string value) => Prefix(CensusOperand.IsNot, value);
 }

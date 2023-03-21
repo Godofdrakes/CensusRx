@@ -24,5 +24,13 @@ public class Item : ICensusObject
 	public Weapon? Weapon { get; init; }
 	public WeaponDatasheet? WeaponDatasheet { get; init; }
 
-	public override string ToString() => Name.En;
+	public override string ToString()
+	{
+		if (string.IsNullOrEmpty(Name.En))
+		{
+			return $"Unknown {{ {nameof(Id)} = {Id} }}";
+		}
+
+		return $"{Name.En} {{ {nameof(Id)} = {Id} }}";
+	}
 }

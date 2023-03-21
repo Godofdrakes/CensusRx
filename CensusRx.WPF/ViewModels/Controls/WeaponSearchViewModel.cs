@@ -9,8 +9,8 @@ namespace CensusRx.WPF.ViewModels;
 public class WeaponSearchViewModel : CensusSearchViewModel<Item>
 {
 	private string _name = string.Empty;
-	private CensusMatch? _factionMatch;
-	private CensusMatch? _categoryMatch;
+	private string? _factionMatch;
+	private string? _categoryMatch;
 
 	public string Name
 	{
@@ -18,13 +18,13 @@ public class WeaponSearchViewModel : CensusSearchViewModel<Item>
 		set => this.RaiseAndSetIfChanged(ref _name, value);
 	}
 
-	public CensusMatch? FactionMatch
+	public string? FactionMatch
 	{
 		get => _factionMatch;
 		set => this.RaiseAndSetIfChanged(ref _factionMatch, value);
 	}
 
-	public CensusMatch? CategoryMatch
+	public string? CategoryMatch
 	{
 		get => _categoryMatch;
 		set => this.RaiseAndSetIfChanged(ref _categoryMatch, value);
@@ -42,12 +42,12 @@ public class WeaponSearchViewModel : CensusSearchViewModel<Item>
 
 		if (FactionMatch is not null)
 		{
-			request.Where(item => item.FactionId).Matches(FactionMatch.Value);
+			request.Where(item => item.FactionId).IsEqualTo(FactionMatch);
 		}
 
 		if (CategoryMatch is not null)
 		{
-			request.Where(item => item.ItemCategoryId).Matches(CategoryMatch.Value);
+			request.Where(item => item.ItemCategoryId).IsEqualTo(CategoryMatch);
 		}
 
 		request.Join(item => item.WeaponDatasheet)

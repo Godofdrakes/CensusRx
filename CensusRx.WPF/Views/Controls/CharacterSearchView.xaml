@@ -9,6 +9,7 @@
 	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
 	xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+	xmlns:model="clr-namespace:CensusRx.Model;assembly=CensusRx"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance viewModels:CharacterSearchViewModel}"
 	d:DesignHeight="300" d:DesignWidth="300">
@@ -34,11 +35,11 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 
-				<viewModels:FactionMatch x:Name="FactionAny" Label="Any" FactionId="None" />
-				<viewModels:FactionMatch x:Name="FactionVS" Label="VS" FactionId="VanuSovereignty" />
-				<viewModels:FactionMatch x:Name="FactionNC" Label="NC" FactionId="NewConglomerate" />
-				<viewModels:FactionMatch x:Name="FactionTR" Label="TR" FactionId="TerranRepublic" />
-				<viewModels:FactionMatch x:Name="FactionNSO" Label="NSO" FactionId="NSOperatives" />
+				<viewModels:FactionMatch x:Name="FactionAny" Label="Any" />
+				<viewModels:FactionMatch x:Name="FactionVS" Label="VS" FactionId="{x:Static model:Faction.VanuSovereignty}" />
+				<viewModels:FactionMatch x:Name="FactionNC" Label="NC" FactionId="{x:Static model:Faction.NewConglomerate}" />
+				<viewModels:FactionMatch x:Name="FactionTR" Label="TR" FactionId="{x:Static model:Faction.TerranRepublic}" />
+				<viewModels:FactionMatch x:Name="FactionNSO" Label="NSO" FactionId="{x:Static model:Faction.NSOperatives}" />
 			</ComboBox>
 		</Grid>
 

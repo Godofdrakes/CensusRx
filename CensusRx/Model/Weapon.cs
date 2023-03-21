@@ -20,5 +20,8 @@ public class Weapon : ICensusObject
 	public float MeleeDetectWidth { get; init; }
 	public float MeleeDetectHeight { get; init; }
 
-	public override string ToString() => Id.ToString();
+	public override string ToString()
+	{
+		return $"{nameof(Weapon)} {{ {nameof(Id)} = {Id} }}";
+	}
 }

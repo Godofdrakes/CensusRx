@@ -12,7 +12,7 @@ public class CensusModelTests
 		.AssertResultCount(4)
 		.AssertValues(Has.None.Null)
 		.AssertValues(Has.One.Property(nameof(Character.Id)).EqualTo(5428016459719850385))
-		.AssertValues(Has.Some.Property(nameof(Character.FactionId)).EqualTo(FactionId.NewConglomerate))
+		.AssertValues(Has.Some.Property(nameof(Character.FactionId)).EqualTo(Faction.NewConglomerate))
 		.AssertValues(Has.One.Property(nameof(Character.Name)).Property("First").EqualTo("Naozumi"));
 
 	[Test]
@@ -21,11 +21,11 @@ public class CensusModelTests
 		.ToObservable().Test()
 		.AssertResultCount(5)
 		.AssertValues(Has.None.Null)
-		.AssertValues(Has.One.Property(nameof(Item.FactionId)).EqualTo(FactionId.None))
-		.AssertValues(Has.One.Property(nameof(Item.FactionId)).EqualTo(FactionId.VanuSovereignty))
-		.AssertValues(Has.One.Property(nameof(Item.FactionId)).EqualTo(FactionId.NewConglomerate))
-		.AssertValues(Has.One.Property(nameof(Item.FactionId)).EqualTo(FactionId.TerranRepublic))
-		.AssertValues(Has.One.Property(nameof(Item.FactionId)).EqualTo(FactionId.NSOperatives));
+		.AssertValues(Has.One.Property(nameof(Faction.Id)).EqualTo(Faction.None))
+		.AssertValues(Has.One.Property(nameof(Faction.Id)).EqualTo(Faction.VanuSovereignty))
+		.AssertValues(Has.One.Property(nameof(Faction.Id)).EqualTo(Faction.NewConglomerate))
+		.AssertValues(Has.One.Property(nameof(Faction.Id)).EqualTo(Faction.TerranRepublic))
+		.AssertValues(Has.One.Property(nameof(Faction.Id)).EqualTo(Faction.NSOperatives));
 
 	[Test]
 	public void DeserializeItemList() => CensusJsonData.ItemList

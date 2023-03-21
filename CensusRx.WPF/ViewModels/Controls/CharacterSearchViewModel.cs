@@ -12,7 +12,7 @@ public class CharacterSearchViewModel : CensusSearchViewModel<Character>
 	private readonly ICensusCache _censusCache;
 
 	private string _name = string.Empty;
-	private CensusMatch? _factionMatch;
+	private long? _factionId;
 
 	public string Name
 	{
@@ -20,10 +20,10 @@ public class CharacterSearchViewModel : CensusSearchViewModel<Character>
 		set => this.RaiseAndSetIfChanged(ref _name, value);
 	}
 
-	public CensusMatch? FactionMatch
+	public long? FactionId
 	{
-		get => _factionMatch;
-		set => this.RaiseAndSetIfChanged(ref _factionMatch, value);
+		get => _factionId;
+		set => this.RaiseAndSetIfChanged(ref _factionId, value);
 	}
 
 	public CharacterSearchViewModel(IScreen hostScreen, ICensusClient censusClient, ICensusCache censusCache)
@@ -39,16 +39,16 @@ public class CharacterSearchViewModel : CensusSearchViewModel<Character>
 
 	protected override void BuildCensusRequest(ICensusRequest<Character> request)
 	{
-		request
-			.Where(character => character.Name.FirstLower)
-			.StartsWith(Name.ToLower())
-			.LimitTo(100);
+		request.Where(character => character.Name.FirstLower)
+			.StartsWith(Name.ToLower());
 
-		if (FactionMatch is not null)
+		if (FactionId is not null)
 		{
 			request.Where(character => character.FactionId)
-				.Matches(FactionMatch.Value);
+				.IsEqualTo(FactionId.Value, CensusJson.SerializerOptions);
 		}
+
+		request.LimitTo(100);
 	}
 
 	protected override ICensusViewModel<Character> CreateViewModel(Character model)

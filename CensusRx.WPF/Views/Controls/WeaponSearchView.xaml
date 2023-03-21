@@ -1,77 +1,80 @@
 ﻿<local:CensusUserControl x:TypeArguments="viewModels:WeaponSearchViewModel"
-	x:Class="CensusRx.WPF.Views.WeaponSearchView"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:CensusRx.WPF.Views"
-	xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-	xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-	xmlns:markup="clr-namespace:CensusRx.WPF.Markup"
-	xmlns:model="clr-namespace:CensusRx.Model;assembly=CensusRx"
-	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance viewModels:WeaponSearchViewModel}"
-	d:DesignHeight="250" d:DesignWidth="900">
-	<DockPanel>
-		<Grid DockPanel.Dock="Top">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="80" />
-			</Grid.ColumnDefinitions>
+                         x:Class="CensusRx.WPF.Views.WeaponSearchView"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:local="clr-namespace:CensusRx.WPF.Views"
+                         xmlns:viewModels="clr-namespace:CensusRx.WPF.ViewModels"
+                         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                         xmlns:model="clr-namespace:CensusRx.Model;assembly=CensusRx"
+                         mc:Ignorable="d"
+                         d:DataContext="{d:DesignInstance viewModels:WeaponSearchViewModel}"
+                         d:DesignHeight="250" d:DesignWidth="900">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
 
-			<TextBox x:Name="NameInput" Grid.Column="0"
-				Style="{DynamicResource MahApps.Styles.TextBox.Button}"
-				mah:TextBoxHelper.Watermark="Character Name"
-				mah:TextBoxHelper.ButtonCommand="{Binding Search, Mode=OneTime}"
-				mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
-				mah:TextBoxHelper.ButtonsAlignment="Left" />
+            <TextBox x:Name="NameInput" Grid.Column="0"
+                     Style="{DynamicResource MahApps.Styles.TextBox.Button}"
+                     mah:TextBoxHelper.Watermark="Character Name"
+                     mah:TextBoxHelper.ButtonCommand="{Binding Search, Mode=OneTime}"
+                     mah:TextBoxHelper.ButtonContent="{iconPacks:BootstrapIcons Kind=Search}"
+                     mah:TextBoxHelper.ButtonsAlignment="Left" />
 
-			<ComboBox x:Name="FactionInput" Grid.Column="1" SelectedIndex="0">
-				<ComboBox.ItemTemplate>
-					<DataTemplate DataType="{x:Type viewModels:FactionMatch}">
-						<TextBlock Text="{Binding Label}"
-							HorizontalAlignment="Stretch"
-							TextAlignment="Center" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
+            <ComboBox x:Name="FactionInput" Grid.Column="1" SelectedIndex="0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:FactionMatch}">
+                        <TextBlock Text="{Binding Label}"
+                                   HorizontalAlignment="Stretch"
+                                   TextAlignment="Center" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
 
-				<viewModels:FactionMatch x:Name="FactionAny" Label="Any" FactionId="None" />
-				<viewModels:FactionMatch x:Name="FactionVS" Label="VS" FactionId="VanuSovereignty" />
-				<viewModels:FactionMatch x:Name="FactionNC" Label="NC" FactionId="NewConglomerate" />
-				<viewModels:FactionMatch x:Name="FactionTR" Label="TR" FactionId="TerranRepublic" />
-				<viewModels:FactionMatch x:Name="FactionNSO" Label="NSO" FactionId="NSOperatives" />
-			</ComboBox>
-		</Grid>
+                <viewModels:FactionMatch x:Name="FactionAny" Label="Any" />
+                <viewModels:FactionMatch x:Name="FactionVS" Label="VS"
+                                         FactionId="{x:Static model:Faction.VanuSovereignty}" />
+                <viewModels:FactionMatch x:Name="FactionNC" Label="NC"
+                                         FactionId="{x:Static model:Faction.NewConglomerate}" />
+                <viewModels:FactionMatch x:Name="FactionTR" Label="TR"
+                                         FactionId="{x:Static model:Faction.TerranRepublic}" />
+                <viewModels:FactionMatch x:Name="FactionNSO" Label="NSO"
+                                         FactionId="{x:Static model:Faction.NSOperatives}" />
+            </ComboBox>
+        </Grid>
 
-		<DataGrid x:Name="DataGrid" IsReadOnly="True"
-			AutoGenerateColumns="False"
-			HeadersVisibility="Column"
-			ItemsSource="{Binding Results}">
-			<DataGrid.Columns>
-				<DataGridTemplateColumn Header="Faction">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<TextBlock x:Name="FactionIdText" Text="None"/>
-							<DataTemplate.Triggers>
-								<DataTrigger Binding="{Binding CensusObject.FactionId}" Value="1">
-									<Setter TargetName="FactionIdText" Property="Text" Value="VS"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding CensusObject.FactionId}" Value="2">
-									<Setter TargetName="FactionIdText" Property="Text" Value="NC"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding CensusObject.FactionId}" Value="3">
-									<Setter TargetName="FactionIdText" Property="Text" Value="TR"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding CensusObject.FactionId}" Value="3">
-									<Setter TargetName="FactionIdText" Property="Text" Value="NSO"/>
-								</DataTrigger>
-							</DataTemplate.Triggers>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
-				<DataGridTextColumn Header="Weapon" Width="*" Binding="{Binding CensusObject.Name.En}" />
-			</DataGrid.Columns>
-		</DataGrid>
-	</DockPanel>
+        <DataGrid x:Name="DataGrid" IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  ItemsSource="{Binding Results}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Faction">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="FactionIdText" Text="None" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding CensusObject.FactionId}" Value="1">
+                                    <Setter TargetName="FactionIdText" Property="Text" Value="VS" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CensusObject.FactionId}" Value="2">
+                                    <Setter TargetName="FactionIdText" Property="Text" Value="NC" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CensusObject.FactionId}" Value="3">
+                                    <Setter TargetName="FactionIdText" Property="Text" Value="TR" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CensusObject.FactionId}" Value="3">
+                                    <Setter TargetName="FactionIdText" Property="Text" Value="NSO" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Weapon" Width="*" Binding="{Binding CensusObject.Name.En}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </local:CensusUserControl>

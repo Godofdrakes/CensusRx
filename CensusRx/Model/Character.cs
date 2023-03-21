@@ -10,7 +10,15 @@ public class Character : ICensusObject
 
 	public CharacterName Name { get; init; } = CharacterName.Invalid;
 	public CharacterCerts Certs { get; init; } = CharacterCerts.Zero;
-	public FactionId FactionId { get; init; } = FactionId.None;
+	public long FactionId { get; init; } = Faction.None;
 
-	public override string ToString() => Name.First;
+	public override string ToString()
+	{
+		if (string.IsNullOrEmpty(Name.First))
+		{
+			return $"Unknown {{ {nameof(Id)} = {Id} }}";
+		}
+
+		return $"{Name.First} {{ {nameof(Id)} = {Id} }}";
+	}
 }

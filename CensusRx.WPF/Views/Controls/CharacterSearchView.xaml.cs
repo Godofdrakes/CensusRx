@@ -27,7 +27,7 @@ public partial class CharacterSearchView
 			this.WhenAnyValue(view => view.FactionInput.SelectedItem)
 				.OfType<FactionMatch>()
 				.Select(item => item.Match)
-				.BindTo(ViewModel, model => model.FactionMatch);
+				.BindTo(ViewModel, model => model.FactionId);
 		});
 	}
 }
