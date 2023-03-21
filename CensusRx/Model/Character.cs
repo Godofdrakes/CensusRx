@@ -6,11 +6,11 @@ namespace CensusRx.Model;
 public class Character : ICensusObject
 {
 	[JsonPropertyName("character_id")]
-	public long Id { get; set; }
+	public long Id { get; init; }
 
-	public CharacterName Name { get; set; } = CharacterName.Invalid;
-	public CharacterCerts Certs { get; set; } = CharacterCerts.Zero;
-	public FactionId FactionId { get; set; } = FactionId.None;
+	public CharacterName Name { get; init; } = CharacterName.Invalid;
+	public CharacterCerts Certs { get; init; } = CharacterCerts.Zero;
+	public FactionId FactionId { get; init; } = FactionId.None;
 
 	public override string ToString() => Name.First;
 }

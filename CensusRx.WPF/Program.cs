@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
+using CensusRx.WPF.Services;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +31,7 @@ public static class Program
 				services.AddAllServices(assembly);
 				//services.AddAllViewModels(assembly);
 				services.AddAllViews(assembly);
+				services.AddSingleton<ICreatesCommandBinding, CreatesCommandBindingViaTextBoxHelper>();
 			})
 			.Build();
 

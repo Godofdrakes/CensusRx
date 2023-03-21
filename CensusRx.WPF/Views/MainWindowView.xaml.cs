@@ -21,8 +21,14 @@ public partial class MainWindowView
 			// XAML bindings don't work on hamburger menu items, must be done in code
 			this.BindCommand(ViewModel, 
 				model => model.ResetViewModel,
-				view => view.CharacterItem,
+				view => view.CharacterSearch,
 				model => model.CharacterSearch);
+			this.BindCommand(ViewModel,
+				model => model.ResetViewModel,
+				view => view.WeaponSearch,
+				model => model.WeaponSearch);
+
+			this.Bind(ViewModel, model => model.LastRequest, view => view.LastRequest.Text);
 
 			var firstItem = this.WhenAnyValue(view => view.HamburgerMenu.ItemsSource)
 				.OfType<ICollection<HamburgerMenuItemBase>>()

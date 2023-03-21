@@ -1,34 +1,251 @@
 {
   "item_list": [
     {
-      "item_id": "7108",
+      "item_id": "1",
+      "item_type_id": "26",
+      "item_category_id": "2",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Mag-Cutter",
+        "en": "Mag-Cutter",
+        "es": "Mag-Cutter",
+        "fr": "Mag-Cutter",
+        "it": "Mag-Cutter",
+        "tr": "Mag-Kesici"
+      },
+      "description": {
+        "de": "Der Mag-Cutter des Neuen Konglomerats ist durch einen leistungsstarken Elektromagneten gekennzeichnet, der in der Lage ist, durch feindliche Panzerung zu schneiden.",
+        "en": "The New Conglomerate's Mag-Cutter features a powerful electromagnet capable of cutting through enemy body armor.",
+        "es": "El Mag-Cutter del Nuevo Conglomerado contiene un poderoso electroimán que puede atravesar las armaduras de los enemigos.",
+        "fr": "Le Mag-Cutter du Nouveau Conglomérat comporte un électroaimant puissant capable de percer n'importe quelle armure ennemie.",
+        "it": "Il Mag-Cutter del Nuovo Conglomerato dispone di un potente elettromagnete che riesce a tagliare l'armatura del nemico.",
+        "tr": "Yeni Birleşim'in Mag-Kesici'si düşman vücut zırhını delebilen güçlü bir elektromıknatıs özelliğini taşımaktadır."
+      },
+      "faction_id": "2",
+      "max_stack_size": "1",
+      "image_set_id": "322",
+      "image_id": "963",
+      "image_path": "/files/ps2/images/static/963.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "2",
+      "item_type_id": "26",
+      "item_category_id": "3",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "NC4 Mag-Shot",
+        "en": "NC4 Mag-Shot",
+        "es": "NC4 Mag-Shot",
+        "fr": "NC4 Mag-Shot",
+        "it": "NC4 Mag-Shot",
+        "tr": "NC4 Mag-Shot"
+      },
+      "description": {
+        "de": "Die vielseitige Standardwaffe NC4 MAG-Shot war die erste Pistole, die die Gauß-Technologie nutzte. Nur für NK.",
+        "en": "The versatile standard-issue NC4 Mag-Shot was the first pistol to utilize Gauss technology. NC use only.",
+        "es": "La versátil NC4 Mag-Shot estándar fue la primera pistola que utilizó tecnología Gauss. Solo para NC",
+        "fr": "Le modèle de base polyvalent du NC4 Mag-Shot a été le premier pistolet à utiliser la technologie Gauss. NC uniquement.",
+        "it": "La versatile Mag-Shot NC4 standard è stata la prima pistola a tecnologia Gauss. Esclusivo NC.",
+        "tr": "Çok amaçlı standart üretim NC4 Mag-Shot, Gauss teknolojisini kullanan ilk tabancadır. Yalnızca Yeni Birleşim kullanımı için."
+      },
+      "faction_id": "2",
+      "max_stack_size": "1",
+      "image_set_id": "202",
+      "image_id": "2432",
+      "image_path": "/files/ps2/images/static/2432.png",
+      "skill_set_id": "105",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "3",
+      "item_type_id": "26",
+      "item_category_id": "8",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "AF-19 Mercenary",
+        "en": "AF-19 Mercenary",
+        "es": "AF-19 Mercenary",
+        "fr": "AF-19 Mercenary",
+        "it": "AF-19 Mercenary",
+        "tr": "AF-19 Paralı Asker"
+      },
+      "description": {
+        "de": "Der AF-19 Mercenary wurde wegen seiner niedrigen Produktionskosten zum Standard-Karabiner des NKs. Er hat einen kontrollierbaren Rückstoß, was ihn bei kurzer bis mittlerer Distanz effektiv macht. Nur für NK.",
+        "en": "The AF-19 Mercenary became the standard issue carbine for the NC due to its low production costs. It features controllable recoil that makes it effective at close to medium ranges. NC use only.",
+        "es": "La AF-19 Mercenary se convirtió en la carabina estándar del NC por su bajo coste de producción. Se caracteriza por su controlable retroceso, lo que la hace eficaz frente a objetivos a corta o media distancia. Solo para NC",
+        "fr": "L'AF-19 Mercenary est devenu la carabine de base du NC grâce à son faible coût de production. Son recul est contrôlable, ce qui le rend efficace à courte ou moyenne portée. NC uniquement.",
+        "it": "La Mercenary AF-19 è diventata la carabina standard dell'NC grazie al suo basso costo di produzione. Dispone di un rinculo controllabile che la rende molto efficace nelle brevi o medie distanze. Esclusivo NC.",
+        "tr": "AF-19 Paralı Asker, düşük üretim maliyetinden dolayi standart piyade tüfeğidir. Geri tepmesi kontrol edilebilen, kısa ve orta menzilde etkili bir silahtir. Yalnızca Yeni Birleşim kullanımı için."
+      },
+      "faction_id": "2",
+      "max_stack_size": "1",
+      "image_set_id": "2751",
+      "image_id": "5322",
+      "image_path": "/files/ps2/images/static/5322.png",
+      "skill_set_id": "123",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "4",
       "item_type_id": "26",
       "item_category_id": "7",
       "is_vehicle_weapon": "0",
       "name": {
-        "de": "Reaper DMG",
-        "en": "Reaper DMR",
-        "es": "Reaper DMR",
-        "fr": "Moissonneur DMR",
-        "it": "Reaper DMR",
-        "tr": "Biçici DMR"
+        "de": "NC1 Gaußgewehr",
+        "en": "NC1 Gauss Rifle",
+        "es": "Rifle Gauss NC1",
+        "fr": "Fusil Gauss NC1",
+        "it": "Fucile Gauss NC1",
+        "tr": "NC1 Gauss Tüfeği"
       },
       "description": {
-        "de": "Der kräftige und präzise Reaper DMG wurde zur Erfüllung des Bedarfs jener Soldaten entwickelt, die Unterstützung aus der Entfernung bevorzugen. Nur für NK.",
-        "en": "The powerful and accurate Reaper DMR was developed to fulfill the needs of soldiers who prefer to provide support from a distance. NC use only.",
-        "es": "El potente y preciso Reaper DMR fue creado para cubrir las necesidades de aquellos soldados que prefieren la asistencia a distancia. Solo para NC.",
-        "fr": "Précis et très puissant, le Moissonneur DMR a été conçu pour répondre aux besoins des soldats qui préfèrent apporter leur soutien d'une certaine distance. NC uniquement.",
-        "it": "Il Reaper DMR, preciso e potente, è stato sviluppato per soddisfare le necessità dei soldati che preferiscono fornire sostegno a distanza. Esclusivo NC.",
-        "tr": "Güçlü ve isabetli Biçici DMR, uzak bir mesafeden destek sağlamayı tercih eden askerlerin ihtiyaçlarını karşılaması için üretildi. Yalnızca Yeni Birleşim kullanımı için."
+        "de": "Das Standard-Gaußgewehr NC1 war die erste erfolgreiche Einführung der Gaußgewehr-Technologie in kleinen Waffen. Nur für NK.",
+        "en": "The standard issue NC1 Gauss Rifle was the first successful implementation of coilgun technology in small arms. NC use only.",
+        "es": "El rifle NC1 Gauss estándar representó la primera implementación de tecnología coilgun en armas pequeñas. Solo para NC",
+        "fr": "Le fusil Gauss NC1 standard représente la première application réussie de la technologie de canon magnétique aux armes de petit calibre. NC uniquement.",
+        "it": "Il fucile Gauss NC1 standard rappresenta la prima applicazione riuscita della tecnologia di accelerazione magnetica nelle armi di piccole dimensioni. Esclusivo NC.",
+        "tr": "Standart üretim NC1 Gauss Tüfeği, bobinsilahı teknolojisininin hafif silahlara ilk başarılı uygulanmasıdır. Yalnızca Yeni Birleşim kullanımı için."
       },
       "faction_id": "2",
       "max_stack_size": "1",
-      "image_set_id": "2747",
-      "image_id": "5316",
-      "image_path": "/files/ps2/images/static/5316.png",
-      "skill_set_id": "134",
+      "image_set_id": "2745",
+      "image_id": "5310",
+      "image_path": "/files/ps2/images/static/5310.png",
+      "skill_set_id": "132",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "6",
+      "item_type_id": "4",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Paket \"Neuer Rekrut\"",
+        "en": "New Recruit Pack",
+        "es": "Pack de nuevo recluta",
+        "fr": "Pack de nouvelle recrue",
+        "it": "Pacchetto nuova recluta",
+        "tr": "Yeni Asker Paketi"
+      },
+      "max_stack_size": "1",
+      "image_set_id": "135",
+      "image_id": "322",
+      "image_path": "/files/ps2/images/static/322.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "7",
+      "item_type_id": "26",
+      "item_category_id": "139",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Spawn-Leuchte",
+        "en": "Spawn Beacon",
+        "es": "Baliza de apariciones",
+        "fr": "Balise de réapparition",
+        "it": "Faro di rigenerazione",
+        "tr": "Canlandırma Kontrol İşareti"
+      },
+      "description": {
+        "de": "Eine Signalleuchte zum schnellen Absetzen von Truppmitgliedern in einen Bereich aus geringer Höhe.",
+        "en": "A signal-emitting beacon that allows squad members to drop pod into an area from low orbit.",
+        "es": "Una baliza que emite una señal y permite a los miembros del escuadrón aterrizar con cápsula dentro de una zona desde una órbita baja.",
+        "fr": "Une balise émettrice de signaux qui permet aux membres de l'escouade de lancer un module de déploiement à partir d'une orbite basse.",
+        "it": "Faro emettitore di segnali che permette ai membri della squadra di inserirsi a caldo nell'area.",
+        "tr": "Manga üyelerinin alçak yörüngeden anlık alana gelebilmelerine olanak tanıyan sinyal saçıcı bir kontrol işaretidir."
+      },
+      "faction_id": "0",
+      "max_stack_size": "1",
+      "image_set_id": "1568",
+      "image_id": "3056",
+      "image_path": "/files/ps2/images/static/3056.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "8",
+      "item_type_id": "1",
+      "activatable_ability_id": "80",
+      "is_vehicle_weapon": "0",
+      "max_stack_size": "1",
+      "image_set_id": "135",
+      "image_id": "322",
+      "image_path": "/files/ps2/images/static/322.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "9",
+      "item_type_id": "39",
+      "item_category_id": "103",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Stachelpanzer",
+        "en": "Spike Armor",
+        "es": "Armadura de púas",
+        "fr": "Armure à pointes",
+        "it": "Corazza chiodata",
+        "tr": "Çivili Zırh"
+      },
+      "description": {
+        "de": "Schulterstacheln",
+        "en": "Spikes of the shoulder",
+        "es": "Hombreras con pinchos",
+        "fr": "Pointes sur l'épaulette",
+        "it": "Puntali della spalla",
+        "tr": "Omuz çivileri"
+      },
+      "faction_id": "3",
+      "max_stack_size": "1",
+      "image_set_id": "344",
+      "image_id": "1008",
+      "image_path": "/files/ps2/images/static/1008.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "10",
+      "item_type_id": "4",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "\"Boot Camp\"-Paket",
+        "en": "Boot Camp Pack",
+        "es": "Paquete Campamento de reclutas",
+        "fr": "Pack Camp d'entraînement",
+        "it": "Pacchetto Boot camp",
+        "tr": "Boot Camp Pack"
+      },
+      "max_stack_size": "1",
+      "image_set_id": "35",
+      "image_id": "142",
+      "image_path": "/files/ps2/images/static/142.png",
+      "is_default_attachment": "0"
+    },
+    {
+      "item_id": "13",
+      "item_type_id": "26",
+      "item_category_id": "2",
+      "is_vehicle_weapon": "0",
+      "name": {
+        "de": "Kettenmesser",
+        "en": "Chainblade",
+        "es": "Chainblade",
+        "fr": "Lame-tronçonneuse",
+        "it": "Chainblade",
+        "tr": "Testerekılıç"
+      },
+      "description": {
+        "de": "Die rasiermesser-scharfen Zähne des Kettenmessers haben sich als äußertst effektiv im Nahkampf bewiesen.",
+        "en": "The Chainblade knife's razor sharp teeth have proven extremely effective in close quarters combat.",
+        "es": "Los afilados dientes del cuchillo Chainblade han demostrado ser extremadamente eficaces en combates de corto alcance.",
+        "fr": "Les dents coupantes comme un rasoir de la lame de la tronçonneuse se sont révélées très efficaces en combat rapproché. ",
+        "it": "I denti super affilati della Chainblade si sono rivelati estremamente efficaci nei combattimenti a distanza ravvicinata.",
+        "tr": "Testere Kılıc'ın jilet gibi keskin dişlerinin yakın muharebede aşırı etkili olduğu kanıtlanmıştır."
+      },
+      "faction_id": "3",
+      "max_stack_size": "1",
+      "image_set_id": "354",
+      "image_id": "1038",
+      "image_path": "/files/ps2/images/static/1038.png",
       "is_default_attachment": "0"
     }
   ],
-  "returned": 1
+  "returned": 10
 }

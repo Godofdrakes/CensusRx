@@ -16,32 +16,40 @@
                   mc:Ignorable="d"
                   d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
                   d:DesignHeight="450" d:DesignWidth="800">
-	<mah:HamburgerMenu x:Name="HamburgerMenu"
-	                   IsPaneOpen="False"
-	                   DisplayMode="CompactOverlay"
-	                   SelectedIndex="0">
-		<mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
-			<DataTemplate>
-				<TextBlock Text="CensusRx" FontSize="20"
-				           HorizontalAlignment="Center"
-				           VerticalAlignment="Center"
-				           Foreground="{DynamicResource MahApps.Brushes.Text.Validation}"/>
-			</DataTemplate>
-		</mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+	<DockPanel>
+		<StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
+			<StatusBarItem>
+				<TextBlock x:Name="LastRequest" Text="https://example.com/foo/bar"/>
+			</StatusBarItem>
+		</StatusBar>
 
-		<mah:HamburgerMenu.ItemsSource>
-			<mah:HamburgerMenuItemCollection>
-				<mah:HamburgerMenuIconItem x:Name="CharacterItem" Label="Character" Icon="{iconPacks:BootstrapIcons Kind=Person}"/>
-				<mah:HamburgerMenuIconItem x:Name="CharacterItem2" Label="Character2" Icon="{iconPacks:BootstrapIcons Kind=Person}"/>
-			</mah:HamburgerMenuItemCollection>
-		</mah:HamburgerMenu.ItemsSource>
+		<mah:HamburgerMenu x:Name="HamburgerMenu"
+			IsPaneOpen="False"
+			DisplayMode="CompactOverlay"
+			SelectedIndex="0">
+			<mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+				<DataTemplate>
+					<TextBlock Text="CensusRx" FontSize="20"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Foreground="{DynamicResource MahApps.Brushes.Text.Validation}"/>
+				</DataTemplate>
+			</mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
 
-		<mah:HamburgerMenu.Content>
-			<reactiveUi:RoutedViewHost x:Name="RoutedViewHost"
-			                           Transition="Drop"
-			                           Direction="Down"
-			                           Router="{Binding Router}" />
-		</mah:HamburgerMenu.Content>
-	</mah:HamburgerMenu>
+			<mah:HamburgerMenu.ItemsSource>
+				<mah:HamburgerMenuItemCollection>
+					<mah:HamburgerMenuIconItem x:Name="CharacterSearch" Label="Characters" Icon="{iconPacks:BootstrapIcons Kind=Person}"/>
+					<mah:HamburgerMenuIconItem x:Name="WeaponSearch" Label="Weapons" Icon="{iconPacks:BootstrapIcons Kind=Search}"/>
+				</mah:HamburgerMenuItemCollection>
+			</mah:HamburgerMenu.ItemsSource>
+
+			<mah:HamburgerMenu.Content>
+				<reactiveUi:RoutedViewHost x:Name="RoutedViewHost"
+					Transition="Drop"
+					Direction="Down"
+					Router="{Binding Router}" />
+			</mah:HamburgerMenu.Content>
+		</mah:HamburgerMenu>
+	</DockPanel>
 
 </views:WindowView>

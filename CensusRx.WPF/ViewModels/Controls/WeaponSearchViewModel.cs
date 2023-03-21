@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
-using CensusRx.Interfaces;
+﻿using CensusRx.Interfaces;
 using CensusRx.Model;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
@@ -34,29 +31,30 @@ public class WeaponSearchViewModel : CensusSearchViewModel<Item>
 	}
 
 	public WeaponSearchViewModel(IScreen hostScreen, ICensusClient censusClient)
-		: base(hostScreen, censusClient)
-	{ }
+		: base(hostScreen, censusClient) { }
 
 	protected override void BuildCensusRequest(ICensusRequest<Item> request)
 	{
-		request
-			.Where(item => item.Name.En)
-			.StartsWith(Name)
-			.LimitTo(100);
+		if (!string.IsNullOrEmpty(Name))
+		{
+			request.Where(item => item.Name.En).StartsWith(Name);
+		}
 
 		if (FactionMatch is not null)
 		{
-			request
-				.Where(item => item.FactionId)
-				.Matches(FactionMatch.Value);
+			request.Where(item => item.FactionId).Matches(FactionMatch.Value);
 		}
 
 		if (CategoryMatch is not null)
 		{
-			request
-				.Where(item => item.ItemCategoryId)
-				.Matches(CategoryMatch.Value);
+			request.Where(item => item.ItemCategoryId).Matches(CategoryMatch.Value);
 		}
+
+		request.Join(builder => builder
+				.Insert(item => item.Weapon)
+				.Insert(item => item.WeaponDatasheet))
+			.CaseSensitive(false)
+			.LimitTo(100);
 	}
 
 	protected override ICensusViewModel<Item> CreateViewModel(Item model)

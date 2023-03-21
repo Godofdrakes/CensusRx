@@ -10,7 +10,7 @@ public class Item : ICensusObject
 
 	public int ItemTypeId { get; set; }
 	public int ItemCategoryId { get; set; }
-	public bool IsVehicleWeapon { get; set; }
+	//public bool IsVehicleWeapon { get; set; }
 	public LocalizedString Name { get; set; } = LocalizedString.Invalid;
 	public LocalizedString Description { get; set; } = LocalizedString.Invalid;
 	public int FactionId { get; set; }
@@ -19,5 +19,10 @@ public class Item : ICensusObject
 	public int ImageId { get; set; }
 	public string ImagePath { get; set; } = string.Empty;
 	public int SkillSetId { get; set; }
-	public bool IsDefaultAttachment { get; set; }
+	//public bool IsDefaultAttachment { get; set; }
+
+	public Weapon? Weapon { get; init; }
+	public WeaponDatasheet? WeaponDatasheet { get; init; }
+
+	public override string ToString() => Name.En;
 }

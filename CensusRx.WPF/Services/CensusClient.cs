@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,10 @@ public class CensusClient : ReactiveObject, ICensusClient
 	public string Endpoint { get; }
 	public string ServiceId { get; }
 	public string Namespace { get; }
+
+	public IObservable<Uri> LastRequest => LastRequestSubject.AsObservable();
+
+	private Subject<Uri> LastRequestSubject { get; } = new();
 
 	public CensusClient(IConfiguration configuration, IHostApplicationLifetime applicationLifetime)
 	{
@@ -69,9 +74,22 @@ public class CensusClient : ReactiveObject, ICensusClient
 		return restResponse.Content;
 	}
 
+	private RestRequest CreateRequest(string resource) => new(resource)
+	{
+		OnBeforeRequest = message =>
+		{
+			if (message.RequestUri is not null)
+			{
+				LastRequestSubject.OnNext(message.RequestUri);
+			}
+
+			return ValueTask.CompletedTask;
+		}
+	};
+
 	private RestRequest CreateGetRequest<T>(RequestBuilder<T> requestBuilder) where T : ICensusObject
 	{
-		var restRequest = new RestRequest($"/get/{Namespace}/{typeof(T).Name.ToLower()}");
+		var restRequest = CreateRequest($"/get/{Namespace}/{typeof(T).Name.ToLower()}");
 
 		var censusRequest = new CensusRequest<T>();
 
@@ -81,7 +99,7 @@ public class CensusClient : ReactiveObject, ICensusClient
 		{
 			restRequest.AddQueryParameter(key, value, false);
 		}
-		
+
 		return restRequest;
 	}
 
