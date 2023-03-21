@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CensusRx.Interfaces;
-using CensusRx.Services.Interfaces;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using DynamicData;
 using ReactiveUI;

@@ -1,7 +1,7 @@
 ﻿using System.Reactive.Linq;
 using CensusRx.Interfaces;
 using CensusRx.Model;
-using CensusRx.Services.Interfaces;
+using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 

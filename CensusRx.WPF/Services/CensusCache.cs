@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reactive.Subjects;
 using CensusRx.Interfaces;
 using CensusRx.Services;
-using CensusRx.Services.Attributes;
-using CensusRx.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CensusRx.WPF.Services;

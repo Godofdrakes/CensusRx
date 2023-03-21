@@ -1,8 +1,7 @@
 ﻿using CensusRx.Interfaces;
-using CensusRx.Services.Attributes;
 using Microsoft.Extensions.Hosting;
 
-namespace CensusRx.Services.Interfaces;
+namespace CensusRx.Services;
 
 [ServiceInterface]
 public interface ICensusClient : IHostedService

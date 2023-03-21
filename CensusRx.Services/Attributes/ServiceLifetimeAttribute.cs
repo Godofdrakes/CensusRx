@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CensusRx.Services.Attributes;
+namespace CensusRx.Services;
 
 [AttributeUsage(AttributeTargets.Class), MeansImplicitUse]
 public class ServiceLifetimeAttribute : Attribute

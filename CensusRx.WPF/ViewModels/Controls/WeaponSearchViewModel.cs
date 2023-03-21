@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using CensusRx.Interfaces;
 using CensusRx.Model;
 using CensusRx.Services;
-using CensusRx.Services.Interfaces;
 using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 

@@ -1,8 +1,7 @@
 ﻿using System.Reactive.Linq;
 using CensusRx.Interfaces;
-using CensusRx.Services.Attributes;
 
-namespace CensusRx.Services.Interfaces;
+namespace CensusRx.Services;
 
 [ServiceInterface]
 public interface ICensusCache

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using CensusRx.Services;
-using CensusRx.Services.Interfaces;
 using CensusRx.WPF.ViewModels;
 using CensusRx.WPF.Views;
 using Microsoft.Extensions.Hosting;
