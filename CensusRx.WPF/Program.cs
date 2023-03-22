@@ -49,7 +49,6 @@ public static class Program
 			var resolver = Locator.CurrentMutable;
 			resolver.InitializeSplat();
 			resolver.InitializeReactiveUI();
-			resolver.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 		});
 
 	private static IHostBuilder ConfigureWpf<T>(this IHostBuilder hostBuilder) where T : Application => hostBuilder
