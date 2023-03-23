@@ -30,13 +30,11 @@ public static class Program
 			{
 				var assembly = Assembly.GetExecutingAssembly();
 				services.AddAllServices(assembly);
-				//services.AddAllViewModels(assembly);
 				services.AddAllViews(assembly);
-				services.AddSingleton<ICreatesCommandBinding, CreatesCommandBindingViaTextBoxHelper>();
 
 				// Adding the theme manager instance directly crashes the application
 				// I don't know why
-				services.AddSingleton<ThemeManager>(_ => ThemeManager.Current);
+				services.AddSingleton(_ => ThemeManager.Current);
 			})
 			.Build();
 
