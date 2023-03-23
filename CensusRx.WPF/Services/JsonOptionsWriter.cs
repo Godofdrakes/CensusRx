@@ -4,31 +4,39 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using CensusRx.WPF.Interfaces;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace CensusRx.WPF.Services;
 
-public class JsonOptionsWriter : IOptionsWriter
+public class JsonOptionsWriter<T> : IOptionsWriter<T>
+	where T : class, new()
 {
 	private readonly IHostEnvironment _environment;
+	private readonly IOptionsMonitor<T> _optionsMonitor;
+	private readonly string _fileName;
+	private readonly string? _section;
 
 	private readonly JsonWriterOptions _writerOptions = new()
 	{
 		Indented = true,
 	};
 
-	public JsonOptionsWriter(IHostEnvironment environment)
+	public T Value => _optionsMonitor.CurrentValue;
+
+	public JsonOptionsWriter(IHostEnvironment environment, IOptionsMonitor<T> optionsMonitor, string fileName, string? section = default)
 	{
 		_environment = environment;
+		_optionsMonitor = optionsMonitor;
+		_fileName = fileName;
+		_section = section;
 	}
 
-	public void Write<T>(Action<OptionsWriterArguments<T>> writeAction) where T : new()
+	public T Get(string? name) => _optionsMonitor.Get(name);
+
+	public void Write(Action<T> writeAction)
 	{
-		var args = new OptionsWriterArguments<T>();
-
-		writeAction.Invoke(args);
-
 		var fileProvider = _environment.ContentRootFileProvider;
-		var fileInfo = fileProvider.GetFileInfo(args.File!);
+		var fileInfo = fileProvider.GetFileInfo(_fileName);
 
 		JsonNode json;
 
@@ -44,15 +52,19 @@ public class JsonOptionsWriter : IOptionsWriter
 			json = new JsonObject();
 		}
 
-		var node = JsonSerializer.SerializeToNode(args.Value);
+		var value = _optionsMonitor.CurrentValue;
+
+		writeAction.Invoke(value);
+
+		var node = JsonSerializer.SerializeToNode(value);
 		if (node is null)
 		{
 			throw new InvalidOperationException("failed to serialize value");
 		}
-
-		if (!string.IsNullOrEmpty(args.Section))
+		
+		if (!string.IsNullOrEmpty(_section))
 		{
-			json[args.Section] = node;
+			json[_section] = node;
 		}
 		else
 		{

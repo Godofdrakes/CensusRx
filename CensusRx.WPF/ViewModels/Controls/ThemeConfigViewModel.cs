@@ -61,17 +61,12 @@ public class ThemeConfigViewModel : ReactiveObject, IRoutableViewModel
 		{
 			themeManager.ChangeTheme(application, BaseColor!, ColorScheme!);
 
-			serviceProvider.TryGetService<IOptionsWriter>(writer =>
+			serviceProvider.TryGetService<IOptionsWriter<ThemeOptions>>(writer =>
 			{
-				writer.Write<ThemeOptions>(options =>
+				writer.Write(options =>
 				{
-					options.File = "appsettings.json";
-					options.Section = "ThemeManager";
-					options.Value = new ThemeOptions
-					{
-						BaseColor = BaseColor,
-						ColorScheme = ColorScheme,
-					};
+					options.BaseColor = BaseColor;
+					options.ColorScheme = ColorScheme;
 				});
 			});
 		});

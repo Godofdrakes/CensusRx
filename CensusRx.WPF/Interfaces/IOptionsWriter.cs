@@ -1,15 +1,12 @@
 ﻿using System;
+using Microsoft.Extensions.Options;
 
 namespace CensusRx.WPF.Interfaces;
 
-public class OptionsWriterArguments<T>
+public interface IOptionsWriter<out T> : IOptions<T>
+	where T : class, new()
 {
-	public T? Value { get; set; }
-	public string? File { get; set; }
-	public string? Section { get; set; }
-}
+	T Get(string? name);
 
-public interface IOptionsWriter
-{
-	void Write<T>(Action<OptionsWriterArguments<T>> writeAction) where T : new();
+	void Write(Action<T> writeAction);
 }

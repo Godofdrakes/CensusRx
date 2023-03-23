@@ -22,8 +22,6 @@ public partial class App
 
 	public App(
 		IHostEnvironment hostEnvironment,
-		ICensusClient censusClient,
-		ICensusCache censusCache,
 		IServiceProvider serviceProvider)
 	{
 		this.InitializeComponent();
@@ -35,7 +33,7 @@ public partial class App
 	{
 		var themeOptions = ServiceProvider.GetRequiredService<IOptions<ThemeOptions>>();
 		var themeManager = ServiceProvider.GetRequiredService<ThemeManager>();
-		
+
 		// todo apply theme initially
 
 		var isDevEnv = !HostEnvironment.EnvironmentName.Contains("prod", StringComparison.CurrentCultureIgnoreCase);
