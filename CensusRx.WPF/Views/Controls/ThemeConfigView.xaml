@@ -17,6 +17,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<TextBlock Grid.Column="0" Grid.Row="0" Margin="4" Text="Base Color" VerticalAlignment="Center" TextAlignment="Center" />
@@ -36,5 +37,7 @@
 				</DataTemplate>
 			</ComboBox.ItemTemplate>
 		</ComboBox>
+
+		<Button Grid.Column="0" Grid.Row="2" x:Name="ApplyChanges" Content="Apply"/>
 	</Grid>
 </local:CensusUserControl>

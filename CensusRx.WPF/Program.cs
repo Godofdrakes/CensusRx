@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
+using CensusRx.WPF.Options;
 using CensusRx.WPF.Services;
 using ControlzEx.Theming;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
@@ -35,6 +37,11 @@ public static class Program
 				// Adding the theme manager instance directly crashes the application
 				// I don't know why
 				services.AddSingleton(_ => ThemeManager.Current);
+			})
+			.ConfigureServices((context, services) =>
+			{
+				services.Configure<ThemeOptions>(context.Configuration.GetSection("ThemeManager"));
+				services.AddTransient<IOptionsWriter, JsonOptionsWriter>();
 			})
 			.Build();
 

@@ -10,6 +10,7 @@ public partial class ThemeConfigView
 
 		this.WhenActivated(d =>
 		{
+			this.BindCommand(ViewModel, model => model.ApplyChanges, view => view.ApplyChanges);
 			this.OneWayBind(ViewModel, model => model.AllColorSchemes, view => view.ColorScheme.ItemsSource);
 			this.OneWayBind(ViewModel, model => model.AllBaseColors, view => view.BaseColor.ItemsSource);
 			this.Bind(ViewModel, model => model.ColorScheme, view => view.ColorScheme.SelectedItem);

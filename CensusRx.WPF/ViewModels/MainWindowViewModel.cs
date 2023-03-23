@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using CensusRx.Services;
-using ControlzEx.Theming;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
 namespace CensusRx.WPF.ViewModels;
@@ -19,16 +18,14 @@ public class MainWindowViewModel : WindowViewModel
 
 	private readonly ObservableAsPropertyHelper<Uri?> _lastRequest;
 
-	public MainWindowViewModel(
-		Application application,
-		ICensusClient censusClient,
-		ICensusCache censusCache,
-		ThemeManager themeManager,
-		IConfiguration configuration)
+	public MainWindowViewModel(Application application, IServiceProvider serviceProvider)
 	{
+		var censusClient = serviceProvider.GetRequiredService<ICensusClient>();
+		var censusCache = serviceProvider.GetRequiredService<ICensusCache>();
+
 		CharacterSearch = new CharacterSearchViewModel(this, censusClient, censusCache);
 		WeaponSearch = new WeaponSearchViewModel(this, censusClient);
-		ThemeConfig = new ThemeConfigViewModel(this, application, themeManager, configuration);
+		ThemeConfig = new ThemeConfigViewModel(this, application, serviceProvider);
 
 		_lastRequest = censusClient.LastRequest
 			.ToProperty(this, viewModel => viewModel.LastRequest);
