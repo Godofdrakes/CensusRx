@@ -27,6 +27,10 @@ public partial class MainWindowView
 				model => model.ResetViewModel,
 				view => view.WeaponSearch,
 				model => model.WeaponSearch);
+			this.BindCommand(ViewModel,
+				model => model.ResetViewModel,
+				view => view.ThemeConfig,
+				model => model.ThemeConfig);
 
 			this.Bind(ViewModel, model => model.LastRequest, view => view.LastRequest.Text);
 

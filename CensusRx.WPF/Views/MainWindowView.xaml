@@ -44,6 +44,12 @@
 				</mah:HamburgerMenuItemCollection>
 			</mah:HamburgerMenu.ItemsSource>
 
+			<mah:HamburgerMenu.OptionsItemsSource>
+				<mah:HamburgerMenuItemCollection>
+					<mah:HamburgerMenuIconItem x:Name="ThemeConfig" Label="Theme" Icon="{iconPacks:BootstrapIcons Palette}" />
+				</mah:HamburgerMenuItemCollection>
+			</mah:HamburgerMenu.OptionsItemsSource>
+
 			<mah:HamburgerMenu.Content>
 				<reactiveUi:RoutedViewHost x:Name="RoutedViewHost"
 					Transition="Drop"
