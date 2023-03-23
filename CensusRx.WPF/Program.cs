@@ -5,6 +5,7 @@ using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
 using CensusRx.WPF.Services;
+using ControlzEx.Theming;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +33,10 @@ public static class Program
 				//services.AddAllViewModels(assembly);
 				services.AddAllViews(assembly);
 				services.AddSingleton<ICreatesCommandBinding, CreatesCommandBindingViaTextBoxHelper>();
+
+				// Adding the theme manager instance directly crashes the application
+				// I don't know why
+				services.AddSingleton<ThemeManager>(_ => ThemeManager.Current);
 			})
 			.Build();
 
