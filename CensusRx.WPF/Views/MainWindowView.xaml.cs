@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using ReactiveUI;
 
@@ -12,7 +13,7 @@ namespace CensusRx.WPF.Views;
 /// </summary>
 public partial class MainWindowView
 {
-	public MainWindowView()
+	public MainWindowView(ThemeManager themeManager) : base(themeManager)
 	{
 		InitializeComponent();
 
@@ -27,12 +28,9 @@ public partial class MainWindowView
 				model => model.ResetViewModel,
 				view => view.WeaponSearch,
 				model => model.WeaponSearch);
-			this.BindCommand(ViewModel,
-				model => model.ResetViewModel,
-				view => view.ThemeConfig,
-				model => model.ThemeConfig);
 
-			this.Bind(ViewModel, model => model.LastRequest, view => view.LastRequest.Text);
+			this.OneWayBind(ViewModel, model => model.Router, view => view.RoutedViewHost.Router);
+			this.OneWayBind(ViewModel, model => model.LastRequest, view => view.LastRequest.Text);
 
 			var firstItem = this.WhenAnyValue(view => view.HamburgerMenu.ItemsSource)
 				.OfType<ICollection<HamburgerMenuItemBase>>()

@@ -19,10 +19,19 @@ public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
 		set => this.RaiseAndSetIfChanged(ref _title, value);
 	}
 
-	private string _title;
+	public string? Theme
+	{
+		get => _theme;
+		set => this.RaiseAndSetIfChanged(ref _theme, value);
+	}
+
+	private string _title = string.Empty;
+	private string? _theme = string.Empty;
 
 	protected WindowViewModel()
 	{
+		Title = GetType().Assembly.FullName ?? GetType().Name;
+
 		var canRegressViewModel = this.WhenAnyValue(model => model.Router.NavigationStack.Count)
 			.Select(count => count > 0);
 		AdvanceViewModel = ReactiveCommand.CreateFromObservable((IRoutableViewModel model) =>
@@ -32,7 +41,5 @@ public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
 		RegressViewModel = ReactiveCommand.CreateFromObservable((Unit _) =>
 				Router.NavigateBack.Execute().Select(_ => Unit.Default),
 			canRegressViewModel);
-
-		this._title = GetType().Assembly.FullName ?? GetType().Name;
 	}
 }

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Windows;
-using CensusRx.Services;
-using CensusRx.WPF.Options;
 using CensusRx.WPF.ViewModels;
 using CensusRx.WPF.Views;
 using ControlzEx.Theming;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace CensusRx.WPF;
 
@@ -31,17 +27,15 @@ public partial class App
 
 	private void App_OnStartup(object sender, StartupEventArgs e)
 	{
-		var themeOptions = ServiceProvider.GetRequiredService<IOptions<ThemeOptions>>();
 		var themeManager = ServiceProvider.GetRequiredService<ThemeManager>();
-
-		// todo apply theme initially
 
 		var isDevEnv = !HostEnvironment.EnvironmentName.Contains("prod", StringComparison.CurrentCultureIgnoreCase);
 
-		this.MainWindow = new MainWindowView
+		this.MainWindow = new MainWindowView(themeManager)
 		{
 			ViewModel = new MainWindowViewModel(this, ServiceProvider)
 			{
+				Theme = "Dark.Blue",
 				Title = isDevEnv
 					? $"{HostEnvironment.ApplicationName} ({HostEnvironment.EnvironmentName})"
 					: HostEnvironment.ApplicationName,

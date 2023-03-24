@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Interfaces;
-using CensusRx.WPF.Options;
-using CensusRx.WPF.Services;
 using ControlzEx.Theming;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -38,18 +34,6 @@ public static class Program
 				// Adding the theme manager instance directly crashes the application
 				// I don't know why
 				services.AddSingleton(_ => ThemeManager.Current);
-			})
-			.ConfigureServices((context, services) =>
-			{
-				const string file = "appsettings.json";
-				const string section = "ThemeManager";
-				services.Configure<ThemeOptions>(context.Configuration.GetSection(section));
-				services.AddTransient<IOptionsWriter<ThemeOptions>, JsonOptionsWriter<ThemeOptions>>(provider =>
-				{
-					var environment = provider.GetRequiredService<IHostEnvironment>();
-					var optionsMonitor = provider.GetRequiredService<IOptionsMonitor<ThemeOptions>>();
-					return new JsonOptionsWriter<ThemeOptions>(environment, optionsMonitor, file, section);
-				});
 			})
 			.Build();
 
