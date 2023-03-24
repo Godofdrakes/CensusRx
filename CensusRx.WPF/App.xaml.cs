@@ -35,7 +35,7 @@ public partial class App
 		{
 			ViewModel = new MainWindowViewModel(this, ServiceProvider)
 			{
-				Theme = "Dark.Blue",
+				Theme = "Foo.Bar",
 				Title = isDevEnv
 					? $"{HostEnvironment.ApplicationName} ({HostEnvironment.EnvironmentName})"
 					: HostEnvironment.ApplicationName,
