@@ -51,9 +51,5 @@ public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 		this.WhenAnyValue(control => control.ViewModel)
 			.BindTo(this, control => control.DataContext);
 		this.OneWayBind(ViewModel, model => model.Title, window => window.Title);
-
-		this.WhenAnyValue(window => window.ViewModel!.Theme)
-			.WhereNotNull()
-			.Subscribe(theme => themeManager.ChangeTheme(this, theme));
 	}
 }

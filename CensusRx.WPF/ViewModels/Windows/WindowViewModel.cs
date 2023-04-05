@@ -19,14 +19,7 @@ public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
 		set => this.RaiseAndSetIfChanged(ref _title, value);
 	}
 
-	public string? Theme
-	{
-		get => _theme;
-		set => this.RaiseAndSetIfChanged(ref _theme, value);
-	}
-
 	private string _title = string.Empty;
-	private string? _theme = string.Empty;
 
 	protected WindowViewModel()
 	{
