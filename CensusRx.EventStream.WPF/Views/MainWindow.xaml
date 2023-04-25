@@ -1,0 +1,14 @@
+﻿<common:WindowView x:TypeArguments="local:MainWindowViewModel"
+	x:Class="CensusRx.EventStream.WPF.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:CensusRx.EventStream.WPF"
+	xmlns:common="clr-namespace:CensusRx.WPF.Common;assembly=CensusRx.WPF.Common"
+	mc:Ignorable="d"
+	Title="CensusRx.WPF" Height="450" Width="800">
+	<Grid>
+
+	</Grid>
+</common:WindowView>

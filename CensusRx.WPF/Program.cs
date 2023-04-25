@@ -23,7 +23,7 @@ public static class Program
 	{
 		var host = Host.CreateDefaultBuilder(args)
 #if DEBUG
-			.UseEnvironment("development")
+			.UseEnvironment(Environments.Development)
 #endif
 			.ConfigureSplat()
 			.ConfigureWpf<App>()
@@ -39,7 +39,9 @@ public static class Program
 			})
 			.Build();
 
-		return host.ConfigureSplat().RunAsync();
+		return host
+			.ConfigureSplat()
+			.RunAsync();
 	}
 
 	private static IServiceCollection AddAllViewModels(this IServiceCollection services, Assembly assembly)

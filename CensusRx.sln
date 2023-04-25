@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.Test", "CensusRx.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.WPF.Common", "CensusRx.WPF.Common\CensusRx.WPF.Common.csproj", "{F72D7637-A27C-46B4-A573-D7323D3C4A7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.EventStream", "CensusRx.EventStream\CensusRx.EventStream.csproj", "{C8DC8397-DB0C-406A-814A-A4ED4327B137}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.EventStream.WPF", "CensusRx.EventStream.WPF\CensusRx.EventStream.WPF.csproj", "{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,13 @@ Global
 		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DC8397-DB0C-406A-814A-A4ED4327B137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DC8397-DB0C-406A-814A-A4ED4327B137}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DC8397-DB0C-406A-814A-A4ED4327B137}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DC8397-DB0C-406A-814A-A4ED4327B137}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
