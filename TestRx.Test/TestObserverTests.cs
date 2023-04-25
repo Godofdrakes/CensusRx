@@ -4,30 +4,68 @@ using System.Runtime.CompilerServices;
 namespace TestRx.Test;
 
 [TestFixture]
-public class TestObserverTests
+public static class TestObserverTests
 {
-	public static TestObserver<int> TestValues([CallerMemberName] string label = "")
+	private static TestObserver<T> ObserveForTest<T>(this IObservable<T> sequence, [CallerMemberName] string label = "")
 	{
-		var observer = new TestObserver<int> { Label = label };
-		Observable.Range(1, 3).Subscribe(observer);
+		var observer = new TestObserver<T> { Label = label };
+		sequence.Subscribe(observer);
 		return observer;
 	}
 
 	[Test]
-	public void AssertValues() => TestValues().AssertValues(1, 2, 3);
+	public static void AssertValueCount()
+	{
+		Assert.That(() => Observable.Range(1, 3)
+				.ObserveForTest()
+				.AssertValueCount(3),
+			Throws.Nothing);
+
+		Assert.That(() => Observable.Range(1, 4)
+				.ObserveForTest()
+				.AssertValueCount(3),
+			Throws.TypeOf<AssertionException>());
+	}
 
 	[Test]
-	public void AssertNoExceptions() => TestValues().AssertNoExceptions();
+	public static void AssertValues()
+	{
+		Assert.That(() => Observable.Range(1, 3)
+				.ObserveForTest()
+				.AssertValues(1, 2, 3),
+			Throws.Nothing);
+
+		Assert.That(() => Observable.Range(1, 3)
+				.ObserveForTest()
+				.AssertValues(1, 2, 3, 4),
+			Throws.TypeOf<AssertionException>());
+	}
 
 	[Test]
-	public void AssertCompletedOnce() => TestValues().AssertCompletedOnce();
+	public static void AssertNoExceptions()
+	{
+		Assert.That(() => Observable.Range(1, 3)
+				.ObserveForTest()
+				.AssertNoExceptions(),
+			Throws.Nothing);
+
+		Assert.That(() => Observable.Throw<int>(new Exception())
+				.ObserveForTest()
+				.AssertNoExceptions(),
+			Throws.TypeOf<AssertionException>());
+	}
 
 	[Test]
-	public void AssertResults() => TestValues().AssertResults(1, 2, 3);
+	public static void AssertCompletedOnce()
+	{
+		Assert.That(() => Observable.Range(1, 3)
+				.ObserveForTest()
+				.AssertCompletedOnce(),
+			Throws.Nothing);
 
-	[Test]
-	public void AssertResultCount() => TestValues().AssertResultCount(3);
-
-	[Test]
-	public void AssertValueCount() => TestValues().AssertValueCount(3);
+		Assert.That(() => Observable.Never<int>()
+				.ObserveForTest()
+				.AssertCompletedOnce(),
+			Throws.TypeOf<AssertionException>());
+	}
 }
