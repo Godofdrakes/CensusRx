@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.Services", "Census
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.Test", "CensusRx.Test\CensusRx.Test.csproj", "{1CBD1A00-D065-44CE-AFA2-C659D2E34117}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.WPF.Common", "CensusRx.WPF.Common\CensusRx.WPF.Common.csproj", "{F72D7637-A27C-46B4-A573-D7323D3C4A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{1CBD1A00-D065-44CE-AFA2-C659D2E34117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CBD1A00-D065-44CE-AFA2-C659D2E34117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CBD1A00-D065-44CE-AFA2-C659D2E34117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72D7637-A27C-46B4-A573-D7323D3C4A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

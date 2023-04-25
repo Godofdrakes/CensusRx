@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using CensusRx.Services;
+using CensusRx.WPF.Common;
 using ControlzEx.Theming;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;

@@ -20,7 +20,6 @@ public partial class App
 		IHostEnvironment hostEnvironment,
 		IServiceProvider serviceProvider)
 	{
-		this.InitializeComponent();
 		this.HostEnvironment = hostEnvironment;
 		this.ServiceProvider = serviceProvider;
 	}
@@ -29,16 +28,14 @@ public partial class App
 	{
 		var themeManager = ServiceProvider.GetRequiredService<ThemeManager>();
 
-		var isDevEnv = !HostEnvironment.EnvironmentName.Contains("prod", StringComparison.CurrentCultureIgnoreCase);
+		var isDevEnv = HostEnvironment.EnvironmentName.Equals(Environments.Development);
 
 		this.MainWindow = new MainWindowView(themeManager)
 		{
-			ViewModel = new MainWindowViewModel(this, ServiceProvider)
-			{
-				Title = isDevEnv
-					? $"{HostEnvironment.ApplicationName} ({HostEnvironment.EnvironmentName})"
-					: HostEnvironment.ApplicationName,
-			},
+			Title = isDevEnv
+				? $"{HostEnvironment.ApplicationName} ({HostEnvironment.EnvironmentName})"
+				: HostEnvironment.ApplicationName,
+			ViewModel = new MainWindowViewModel(this, ServiceProvider),
 		};
 
 		this.MainWindow.Show();

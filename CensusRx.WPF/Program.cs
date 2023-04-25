@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using CensusRx.Services;
+using CensusRx.WPF.Common;
 using CensusRx.WPF.Interfaces;
 using ControlzEx.Theming;
 using Dapplo.Microsoft.Extensions.Hosting.Wpf;
@@ -17,7 +19,7 @@ namespace CensusRx.WPF;
 public static class Program
 {
 	[STAThread]
-	public static void Main(string[] args)
+	public static Task Main(string[] args)
 	{
 		var host = Host.CreateDefaultBuilder(args)
 #if DEBUG
@@ -37,25 +39,8 @@ public static class Program
 			})
 			.Build();
 
-		// Make splat resolve using this service provider
-		host.Services.UseMicrosoftDependencyResolver();
-		host.Run();
+		return host.ConfigureSplat().RunAsync();
 	}
-
-	private static IHostBuilder ConfigureSplat(this IHostBuilder hostBuilder) => hostBuilder
-		.ConfigureServices(services =>
-		{
-			// Make splat init using this service collection
-			services.UseMicrosoftDependencyResolver();
-
-			var resolver = Locator.CurrentMutable;
-			resolver.InitializeSplat();
-			resolver.InitializeReactiveUI();
-		});
-
-	private static IHostBuilder ConfigureWpf<T>(this IHostBuilder hostBuilder) where T : Application => hostBuilder
-		.ConfigureWpf(wpf => wpf.UseApplication<T>())
-		.UseWpfLifetime();
 
 	private static IServiceCollection AddAllViewModels(this IServiceCollection services, Assembly assembly)
 	{

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Reactive.Linq;
-using System.Windows;
-using CensusRx.Services;
-using CensusRx.WPF.ViewModels;
-using ControlzEx.Theming;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
-using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
-namespace CensusRx.WPF.Views;
+namespace CensusRx.WPF.Common;
 
-[ServiceLifetime(ServiceLifetime.Transient)]
 public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 	where TViewModel : WindowViewModel
 {
@@ -46,10 +39,9 @@ public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 		set => ViewModel = (TViewModel?)value;
 	}
 
-	protected WindowView(ThemeManager themeManager)
+	protected WindowView()
 	{
 		this.WhenAnyValue(control => control.ViewModel)
 			.BindTo(this, control => control.DataContext);
-		this.OneWayBind(ViewModel, model => model.Title, window => window.Title);
 	}
 }

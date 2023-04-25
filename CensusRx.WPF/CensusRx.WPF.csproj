@@ -11,27 +11,15 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CensusRx.Services\CensusRx.Services.csproj" />
+        <ProjectReference Include="..\CensusRx.WPF.Common\CensusRx.WPF.Common.csproj" />
         <ProjectReference Include="..\CensusRx\CensusRx.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapplo.Microsoft.Extensions.Hosting.Wpf" Version="1.0.4" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-        <PackageReference Include="MahApps.Metro" Version="2.4.9" />
-        <PackageReference Include="MahApps.Metro.IconPacks.BootstrapIcons" Version="4.11.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-        <PackageReference Include="ReactiveUI" Version="18.4.26" />
+        <PackageReference Include="ReactiveUI" Version="18.4.34" />
         <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
-        <PackageReference Include="ReactiveUI.WPF" Version="18.4.26" />
-        <PackageReference Include="RestSharp" Version="109.0.1" />
-        <PackageReference Include="Splat.Drawing" Version="14.6.8" />
-        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.6.8" />
+        <PackageReference Include="RestSharp" Version="110.2.0" />
         <PackageReference Include="System.Reactive" Version="5.0.0" />
     </ItemGroup>
 

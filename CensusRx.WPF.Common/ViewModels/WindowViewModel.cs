@@ -1,11 +1,10 @@
 ﻿using System.Reactive;
 using System.Reactive.Linq;
-using CensusRx.WPF.Interfaces;
 using ReactiveUI;
 
-namespace CensusRx.WPF.ViewModels;
+namespace CensusRx.WPF.Common;
 
-public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
+public abstract class WindowViewModel : ReactiveObject, IScreen
 {
 	public RoutingState Router { get; } = new();
 
@@ -13,18 +12,8 @@ public abstract class WindowViewModel : ReactiveObject, IViewModel, IScreen
 	public ReactiveCommand<IRoutableViewModel, Unit> ResetViewModel { get; }
 	public ReactiveCommand<Unit, Unit> RegressViewModel { get; }
 
-	public string Title
-	{
-		get => _title;
-		set => this.RaiseAndSetIfChanged(ref _title, value);
-	}
-
-	private string _title = string.Empty;
-
 	protected WindowViewModel()
 	{
-		Title = GetType().Assembly.FullName ?? GetType().Name;
-
 		var canRegressViewModel = this.WhenAnyValue(model => model.Router.NavigationStack.Count)
 			.Select(count => count > 0);
 		AdvanceViewModel = ReactiveCommand.CreateFromObservable((IRoutableViewModel model) =>

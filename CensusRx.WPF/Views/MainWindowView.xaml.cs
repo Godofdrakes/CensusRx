@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using CensusRx.Services;
 using ControlzEx.Theming;
 using MahApps.Metro.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
 namespace CensusRx.WPF.Views;
@@ -11,16 +13,17 @@ namespace CensusRx.WPF.Views;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
+[ServiceLifetime(ServiceLifetime.Transient)]
 public partial class MainWindowView
 {
-	public MainWindowView(ThemeManager themeManager) : base(themeManager)
+	public MainWindowView(ThemeManager themeManager)
 	{
 		InitializeComponent();
 
 		this.WhenActivated(d =>
 		{
 			// XAML bindings don't work on hamburger menu items, must be done in code
-			this.BindCommand(ViewModel, 
+			this.BindCommand(ViewModel,
 				model => model.ResetViewModel,
 				view => view.CharacterSearch,
 				model => model.CharacterSearch);
