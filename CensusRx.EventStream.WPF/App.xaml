@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:CensusRx.EventStream.WPF"
              Startup="App_OnStartup">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CensusRx.WPF.Common;component/MahApps.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
