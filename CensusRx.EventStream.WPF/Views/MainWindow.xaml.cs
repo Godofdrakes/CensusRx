@@ -1,7 +1,5 @@
-﻿using System.Reactive.Linq;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using CensusRx.WPF.Common;
-using ReactiveUI;
 
 namespace CensusRx.EventStream.WPF;
 

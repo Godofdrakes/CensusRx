@@ -12,7 +12,6 @@ public static class Program
 	[STAThread]
 	public static Task Main(string[] args) =>
 		Host.CreateDefaultBuilder(args)
-			.ConfigureLogging(builder => builder.AddConsole())
 			.ConfigureSplat()
 			.ConfigureWpf<App>()
 			.Build()
