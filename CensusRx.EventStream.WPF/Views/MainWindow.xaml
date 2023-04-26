@@ -7,8 +7,14 @@
 	xmlns:local="clr-namespace:CensusRx.EventStream.WPF"
 	xmlns:common="clr-namespace:CensusRx.WPF.Common;assembly=CensusRx.WPF.Common"
 	mc:Ignorable="d"
+	d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
 	Title="CensusRx.WPF" Height="450" Width="800">
-	<Grid>
 
-	</Grid>
+	<DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding WorldStatus, Mode=OneWay}">
+		<DataGrid.Columns>
+			<DataGridTextColumn Header="World" Binding="{Binding World}" Width="Auto" />
+			<DataGridTextColumn x:Name="DataGridStatusColumn" Header="Status"
+				Binding="{Binding IsOnline, Mode=OneWay}" Width="*" />
+		</DataGrid.Columns>
+	</DataGrid>
 </common:WindowView>

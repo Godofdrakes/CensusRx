@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reactive.Disposables;
+using System.Windows;
 using MahApps.Metro.Controls;
 using ReactiveUI;
 
@@ -41,7 +42,11 @@ public abstract class WindowView<TViewModel> : MetroWindow, IViewFor<TViewModel>
 
 	protected WindowView()
 	{
-		this.WhenAnyValue(control => control.ViewModel)
-			.BindTo(this, control => control.DataContext);
+		this.WhenActivated(d =>
+		{
+			this.WhenAnyValue(control => control.ViewModel)
+				.BindTo(this, control => control.DataContext)
+				.DisposeWith(d);
+		});
 	}
 }

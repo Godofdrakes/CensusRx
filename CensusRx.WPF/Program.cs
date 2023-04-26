@@ -2,17 +2,13 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 using CensusRx.Services;
 using CensusRx.WPF.Common;
 using CensusRx.WPF.Interfaces;
 using ControlzEx.Theming;
-using Dapplo.Microsoft.Extensions.Hosting.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReactiveUI;
-using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
 
 namespace CensusRx.WPF;
 
