@@ -14,6 +14,7 @@ public static class Program
 		Host.CreateDefaultBuilder(args)
 			.ConfigureSplat()
 			.ConfigureWpf<App>()
+			.ConfigureEventStream()
 			.Build()
 			.ConfigureSplat()
 			.RunAsync();
