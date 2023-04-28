@@ -5,6 +5,9 @@ namespace CensusRx.EventStream;
 public interface IZoneStatusInstance
 {
 	ZoneDefinition Id { get; }
+}
 
-	IEnumerable<IFacilityStatusInstance> Facilities { get; }
+internal class NullZoneStatusInstance : IZoneStatusInstance
+{
+	public ZoneDefinition Id { get; set; }
 }

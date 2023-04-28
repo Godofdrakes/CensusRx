@@ -1,5 +1,6 @@
 using DbgCensus.EventStream;
 using DbgCensus.EventStream.Abstractions.Objects.Control;
+using DbgCensus.EventStream.Abstractions.Objects.Events.Worlds;
 using DbgCensus.EventStream.EventHandlers.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +18,9 @@ public static class EventStreamHostBuilderEx
 
 			collection.AddCensusEventHandlingServices()
 				.AddPayloadObservable<IHeartbeat>()
+				.AddPayloadObservable<IContinentLock>()
+				.AddPayloadObservable<IFacilityControl>()
+				.AddPayloadObservable<IMetagameEvent>()
 				.AddSingleton<IWorldStatusService, WorldStatusService>()
 				.AddHostedService<EventStreamWorker>();
 		});
