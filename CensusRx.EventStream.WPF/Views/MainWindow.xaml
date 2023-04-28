@@ -7,31 +7,35 @@
 	xmlns:local="clr-namespace:CensusRx.EventStream.WPF"
 	xmlns:common="clr-namespace:CensusRx.WPF.Common;assembly=CensusRx.WPF.Common"
 	xmlns:eventStream="clr-namespace:CensusRx.EventStream;assembly=CensusRx.EventStream"
+	xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+	xmlns:designData="clr-namespace:CensusRx.EventStream.WPF.DesignData"
 	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
+	d:DataContext="{d:DesignInstance designData:NullMainWindowViewModel, IsDesignTimeCreatable=True}"
 	Title="CensusRx.WPF" Height="450" Width="800">
 
-	<DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding WorldStatus, Mode=OneWay}">
+	<DataGrid IsReadOnly="True" AutoGenerateColumns="False"
+		ItemsSource="{Binding WorldStatus, Mode=OneWay}">
 		<DataGrid.Columns>
 
-			<DataGridTextColumn Header="World" Binding="{Binding Id}" Width="Auto" />
+			<DataGridTextColumn Binding="{Binding Id}"
+				Header="World" Width="100" />
 
 			<DataGridTemplateColumn Header="Status">
 				<DataGridTemplateColumn.CellTemplate>
 					<DataTemplate DataType="{x:Type eventStream:IWorldStatusInstance}">
 
-						<TextBlock Text="Offline"/>
+						<TextBlock x:Name="TextBlock" Text="Online" />
 
 						<DataTemplate.Triggers>
-							<DataTrigger Binding="{Binding IsOnline}" Value="False">
-								<Setter Property="TextBlock.Text" Value="Online"/>
+							<DataTrigger Value="False" Binding="{Binding IsOnline}">
+								<Setter TargetName="TextBlock" Property="Text" Value="Offline" />
 							</DataTrigger>
 						</DataTemplate.Triggers>
 
 					</DataTemplate>
 				</DataGridTemplateColumn.CellTemplate>
 			</DataGridTemplateColumn>
-			
+
 		</DataGrid.Columns>
 	</DataGrid>
 </common:WindowView>
