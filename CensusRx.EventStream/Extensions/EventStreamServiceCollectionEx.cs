@@ -1,5 +1,7 @@
 using DbgCensus.EventStream.Abstractions.Objects;
 using DbgCensus.EventStream.EventHandlers.Abstractions;
+using DbgCensus.EventStream.EventHandlers.Extensions;
+using DbgCensus.EventStream.EventHandlers.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CensusRx.EventStream;
@@ -10,8 +12,10 @@ public static class EventStreamServiceCollectionEx
 		where T : IPayload
 	{
 		services.AddSingleton<ObservablePayloadHandler<T>>();
-		services.AddTransient<IPayloadHandler<T>>(GetPayloadObservable);
-		services.AddTransient<IPayloadObservable<T>>(GetPayloadObservable);
+		services.AddScoped<IPayloadHandler<T>>(GetPayloadObservable);
+		services.AddScoped<IPayloadObservable<T>>(GetPayloadObservable);
+		services.Configure<PayloadHandlerTypeRepository>(r => r.RegisterHandler<ObservablePayloadHandler<T>>());
+
 		return services;
 
 		ObservablePayloadHandler<T> GetPayloadObservable(IServiceProvider provider)
