@@ -6,15 +6,32 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:CensusRx.EventStream.WPF"
 	xmlns:common="clr-namespace:CensusRx.WPF.Common;assembly=CensusRx.WPF.Common"
+	xmlns:eventStream="clr-namespace:CensusRx.EventStream;assembly=CensusRx.EventStream"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
 	Title="CensusRx.WPF" Height="450" Width="800">
 
 	<DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding WorldStatus, Mode=OneWay}">
 		<DataGrid.Columns>
-			<DataGridTextColumn Header="World" Binding="{Binding World}" Width="Auto" />
-			<DataGridTextColumn x:Name="DataGridStatusColumn" Header="Status"
-				Binding="{Binding IsOnline, Mode=OneWay}" Width="*" />
+
+			<DataGridTextColumn Header="World" Binding="{Binding Id}" Width="Auto" />
+
+			<DataGridTemplateColumn Header="Status">
+				<DataGridTemplateColumn.CellTemplate>
+					<DataTemplate DataType="{x:Type eventStream:IWorldStatusInstance}">
+
+						<TextBlock Text="Offline"/>
+
+						<DataTemplate.Triggers>
+							<DataTrigger Binding="{Binding IsOnline}" Value="False">
+								<Setter Property="TextBlock.Text" Value="Online"/>
+							</DataTrigger>
+						</DataTemplate.Triggers>
+
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+			</DataGridTemplateColumn>
+			
 		</DataGrid.Columns>
 	</DataGrid>
 </common:WindowView>

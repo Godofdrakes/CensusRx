@@ -1,4 +1,5 @@
 using DbgCensus.EventStream;
+using DbgCensus.EventStream.Abstractions.Objects.Control;
 using DbgCensus.EventStream.EventHandlers.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@ public static class EventStreamHostBuilderEx
 				.GetSection(nameof(EventStreamOptions)));
 
 			collection.AddCensusEventHandlingServices()
-				.AddPayloadHandler<HeartbeatPayloadHandler>()
+				.AddPayloadObservable<IHeartbeat>()
 				.AddSingleton<IWorldStatusService, WorldStatusService>()
 				.AddHostedService<EventStreamWorker>();
 		});

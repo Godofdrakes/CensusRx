@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using CensusRx.WPF.Common;
 using DynamicData;
@@ -10,17 +11,17 @@ namespace CensusRx.EventStream.WPF;
 
 public class MainWindowViewModel : WindowViewModel
 {
-	private readonly ObservableCollectionExtended<WorldStatus> _worldStatus;
+	private readonly ObservableCollectionExtended<IWorldStatusInstance> _worldStatus;
 
-	public IEnumerable<WorldStatus> WorldStatus => _worldStatus;
+	public IEnumerable<IWorldStatusInstance> WorldStatus => _worldStatus;
 
 	public MainWindowViewModel(IWorldStatusService worldStatusService)
 	{
-		_worldStatus = new ObservableCollectionExtended<WorldStatus>();
-
-		worldStatusService.WorldStatusCache
+		_worldStatus = new ObservableCollectionExtended<IWorldStatusInstance>();
+		worldStatusService.Worlds
 			.Connect()
 			.ObserveOn(RxApp.MainThreadScheduler)
+			.SortBy(status => status.Id)
 			.Bind(_worldStatus)
 			.Subscribe();
 	}

@@ -1,36 +1,57 @@
-using System.Reactive;
+using System.Collections.Concurrent;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using DbgCensus.Core.Objects;
+using DbgCensus.EventStream.Abstractions.Objects.Control;
 using DynamicData;
+using DynamicData.Binding;
+using Microsoft.Extensions.Logging;
 
 namespace CensusRx.EventStream;
 
 internal class WorldStatusService : IWorldStatusService
 {
-	private readonly Subject<WorldStatus> _worldStatusChanged;
+	public IObservableCache<IWorldStatusInstance, WorldDefinition> Worlds => _worlds;
 
-	public IObserver<WorldStatus> WorldStatusChanged => _worldStatusChanged.AsObserver();
+	private readonly SourceCache<IWorldStatusInstance, WorldDefinition> _worlds;
+	private readonly IDictionary<string, WorldDefinition> _worldDefinitions;
+	private readonly ILogger<WorldStatusService> _logger;
 
-	public IObservableCache<WorldStatus, WorldDefinition> WorldStatusCache { get; }
-
-	public WorldStatusService()
+	public WorldStatusService(IPayloadObservable<IHeartbeat> heartbeatPayload, ILogger<WorldStatusService> logger)
 	{
-		_worldStatusChanged = new Subject<WorldStatus>();
-		WorldStatusCache = ObservableChangeSet.Create<WorldStatus, WorldDefinition>(
-				list =>
-					Enum.GetValues<WorldDefinition>()
-						.Select(world => new WorldStatus(world, false))
-						.ToObservable()
-						.Concat(_worldStatusChanged)
-						.Subscribe(list.AddOrUpdate),
-				status => status.World)
-			.AsObservableCache();
+		_logger = logger;
+		_worldDefinitions = new ConcurrentDictionary<string, WorldDefinition>();
+		_worlds = new SourceCache<IWorldStatusInstance, WorldDefinition>(instance => instance.Id);
+
+		var worldStatusChanged = heartbeatPayload.PayloadReceived
+			.SelectMany(heartbeat => heartbeat.Online.Select(CreateWorldStatus));
+
+		_worlds.AddOrUpdate(Enum.GetValues<WorldDefinition>()
+			.Select(world => new WorldStatusStatusInstance(world, worldStatusChanged
+				.Where(status => status.World == world)
+				.Select(status => status.IsOnline))));
+
+		if (logger.IsEnabled(LogLevel.Information))
+		{
+			void LogWorldStatusChanged(PropertyValue<IWorldStatusInstance, bool> prop) =>
+				_logger.LogInformation("{World} is {Status}",
+					prop.Sender.Id, prop.Value ? "Online" : "Offline");
+
+			_worlds.Connect()
+				.WhenPropertyChanged(world => world.IsOnline)
+				.Subscribe(LogWorldStatusChanged);
+		}
 	}
 
-	public IObservable<bool> GetWorldStatus(WorldDefinition world) => WorldStatusCache
-		.Connect()
-		.WatchValue(world)
-		.Select(status => status.IsOnline)
-		.DistinctUntilChanged();
+	private WorldStatus CreateWorldStatus(KeyValuePair<string, bool> pair)
+	{
+		if (!_worldDefinitions.TryGetValue(pair.Key, out var world))
+		{
+			world = Enum.GetValues<WorldDefinition>()
+				.First(definition => pair.Key.Contains(definition.ToString()));
+
+			_worldDefinitions.Add(pair.Key, world);
+		}
+
+		return new WorldStatus(world, pair.Value);
+	}
 }
