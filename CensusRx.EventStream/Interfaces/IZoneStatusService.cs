@@ -5,26 +5,22 @@ namespace CensusRx.EventStream;
 
 public interface IZoneStatusService
 {
-	public static IZoneStatusService Null { get; }
+	public static IZoneStatusService Null { get; } = new NullZoneStatusService();
 
-	IObservableCache<IZoneStatusInstance, ZoneDefinition> Zones { get; }
+	IObservableCache<IZoneStatusInstance, ZoneIdentifier> Zones { get; }
 }
 
 internal class NullZoneStatusService : IZoneStatusService
 {
-	public IObservableCache<IZoneStatusInstance, ZoneDefinition> Zones { get; }
+	public IObservableCache<IZoneStatusInstance, ZoneIdentifier> Zones { get; }
 
 	public NullZoneStatusService()
 	{
-		var zones = new SourceCache<IZoneStatusInstance, ZoneDefinition>(zone => zone.Id);
+		var zones = new SourceCache<IZoneStatusInstance, ZoneIdentifier>(IZoneStatusInstance.GetIdentifier);
 
-		foreach (var zoneDefinition in Enum.GetValues<ZoneDefinition>())
-		{
-			zones.AddOrUpdate(new NullZoneStatusInstance()
-			{
-				Id = zoneDefinition,
-			});
-		}
+		zones.AddOrUpdate(Enum.GetValues<WorldDefinition>()
+			.SelectMany(world => Enum.GetValues<ZoneDefinition>()
+				.Select(zone => new NullZoneStatusInstance(world, zone))));
 
 		Zones = zones;
 	}
