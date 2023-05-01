@@ -6,24 +6,18 @@ public record ZoneIdentifier(WorldDefinition World, ZoneDefinition Zone);
 
 public interface IZoneStatusInstance
 {
-	public static ZoneIdentifier GetIdentifier(IZoneStatusInstance zoneStatus)
-	{
-		return new ZoneIdentifier(zoneStatus.World, zoneStatus.Zone);
-	}
-
-	WorldDefinition World { get; }
-
-	ZoneDefinition Zone { get; }
+	ZoneIdentifier Identifier { get; }
+	
+	bool IsUnlocked { get; }
 }
 
-internal class NullZoneStatusInstance : IZoneStatusInstance
+internal sealed class NullZoneStatusInstance : IZoneStatusInstance
 {
-	public WorldDefinition World { get; }
-	public ZoneDefinition Zone { get; }
+	public ZoneIdentifier Identifier { get; }
+	public bool IsUnlocked { get; set; } = true;
 
-	public NullZoneStatusInstance(WorldDefinition world, ZoneDefinition zone)
+	public NullZoneStatusInstance(ZoneIdentifier identifier)
 	{
-		World = world;
-		Zone = zone;
+		Identifier = identifier;
 	}
 }

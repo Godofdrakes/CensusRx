@@ -1,66 +1,46 @@
-using System.Collections.Concurrent;
-using System.Reactive.Linq;
+using System.Reactive.Disposables;
 using DbgCensus.Core.Objects;
-using DbgCensus.EventStream.Abstractions.Objects.Control;
-using DbgCensus.EventStream.Abstractions.Objects.Events.Worlds;
 using DynamicData;
-using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using ReactiveUI;
 
 namespace CensusRx.EventStream;
 
-internal class WorldStatusService : IWorldStatusService
+internal sealed class WorldStatusService : IWorldStatusService, IDisposable
 {
 	public IObservableCache<IWorldStatusInstance, WorldDefinition> Worlds => _worlds;
-
 	private readonly SourceCache<IWorldStatusInstance, WorldDefinition> _worlds;
-	private readonly IDictionary<string, WorldDefinition> _worldDefinitions;
 
-	public WorldStatusService(
-		ILogger<WorldStatusService> logger,
-		IPayloadObservable<IHeartbeat> heartbeat,
-		ILoggerFactory loggerFactory)
+	private readonly IServiceProvider _serviceProvider;
+	private readonly CompositeDisposable _disposable = new();
+
+	public WorldStatusService(IServiceProvider serviceProvider)
 	{
-		_worldDefinitions = new ConcurrentDictionary<string, WorldDefinition>();
-		_worlds = new SourceCache<IWorldStatusInstance, WorldDefinition>(instance => instance.Id);
+		_serviceProvider = serviceProvider;
+		_worlds = new SourceCache<IWorldStatusInstance, WorldDefinition>(instance => instance.Identifier);
 
+		// @todo move this into some hosted init service (EventSocketService?)
 		foreach (var worldDefinition in Enum.GetValues<WorldDefinition>())
 		{
-			var worldStatus = new WorldStatusStatusInstance(
-				loggerFactory.CreateLogger<WorldStatusStatusInstance>(),
-				heartbeat,
-				worldDefinition);
-
-			_worlds.AddOrUpdate(worldStatus);
-
-			if (logger.IsEnabled(LogLevel.Debug))
-			{
-				worldStatus.WhenAnyValue(world => world.IsOnline)
-					.Subscribe(isOnline => logger.LogInformation(
-						"{World} is {IsOnline}",
-						worldDefinition,
-						isOnline ? "Online" : "Offline"));
-			}
+			RegisterWorld(worldDefinition);
 		}
 	}
 
-	private static IWorldStatusInstance CreateWorldStatusInstance(
-		IServiceProvider serviceProvider, WorldDefinition worldDefinition) =>
-		ActivatorUtilities.CreateInstance<WorldStatusStatusInstance>(
-			serviceProvider, worldDefinition);
-
-	private WorldStatus CreateWorldStatus(KeyValuePair<string, bool> pair)
+	public IWorldStatusInstance RegisterWorld(WorldDefinition worldDefinition)
 	{
-		if (!_worldDefinitions.TryGetValue(pair.Key, out var world))
+		var status = _worlds.Items.FirstOrDefault(status => status.Identifier == worldDefinition);
+		if (status is not null)
 		{
-			world = Enum.GetValues<WorldDefinition>()
-				.First(definition => pair.Key.Contains(definition.ToString()));
-
-			_worldDefinitions.Add(pair.Key, world);
+			// We already did that
+			return status;
 		}
 
-		return new WorldStatus(world, pair.Value);
+		status = ActivatorUtilities.CreateInstance<WorldStatusInstance>(_serviceProvider, worldDefinition)
+			.DisposeWith(_disposable);
+
+		_worlds.AddOrUpdate(status);
+
+		return status;
 	}
+
+	public void Dispose() => _disposable.Dispose();
 }

@@ -2,30 +2,28 @@ using DbgCensus.Core.Objects;
 
 namespace CensusRx.EventStream;
 
-public record FacilityIdentifier(WorldDefinition World, ZoneDefinition Zone, long Facility);
+public record FacilityIdentifier(WorldDefinition World, ZoneDefinition Zone, uint Facility)
+{
+	public static FacilityIdentifier Null(WorldDefinition world, ZoneDefinition zone) => new(world, zone, 0);
+}
 
 public interface IFacilityStatusInstance
 {
-	public static FacilityIdentifier GetIdentifier(IFacilityStatusInstance facilityStatus)
-	{
-		return new FacilityIdentifier(facilityStatus.World, facilityStatus.Zone, facilityStatus.Facility);
-	}
+	FacilityIdentifier Identifier { get; }
 
-	WorldDefinition World { get; }
-	ZoneDefinition Zone { get; }
-	long Facility { get; }
+	FactionDefinition OwningFaction { get; }
+
+	ulong OwningOutfit { get; }
 }
 
-internal class NullFacilityStatusInstance : IFacilityStatusInstance
+internal sealed class NullFacilityStatusInstance : IFacilityStatusInstance
 {
-	public WorldDefinition World { get; }
-	public ZoneDefinition Zone { get; }
-	public long Facility { get; }
+	public FacilityIdentifier Identifier { get; }
+	public FactionDefinition OwningFaction { get; set; }
+	public ulong OwningOutfit { get; set; }
 
-	public NullFacilityStatusInstance(WorldDefinition world, ZoneDefinition zone, long facility)
+	public NullFacilityStatusInstance(FacilityIdentifier identifier)
 	{
-		World = world;
-		Zone = zone;
-		Facility = facility;
+		Identifier = identifier;
 	}
 }

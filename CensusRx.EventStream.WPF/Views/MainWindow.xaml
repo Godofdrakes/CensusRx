@@ -17,7 +17,7 @@
 		ItemsSource="{Binding WorldStatus, Mode=OneWay}">
 		<DataGrid.Columns>
 
-			<DataGridTextColumn Binding="{Binding Id}"
+			<DataGridTextColumn Binding="{Binding Identifier}"
 				Header="World" Width="100" />
 
 			<DataGridTemplateColumn Header="Status">

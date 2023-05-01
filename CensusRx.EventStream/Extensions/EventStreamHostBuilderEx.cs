@@ -16,12 +16,16 @@ public static class EventStreamHostBuilderEx
 			collection.Configure<EventStreamOptions>(context.Configuration
 				.GetSection(nameof(EventStreamOptions)));
 
+			collection
+				.AddSingleton<IWorldStatusService, WorldStatusService>()
+				.AddSingleton<IZoneStatusService, ZoneStatusService>()
+				.AddSingleton<IFacilityStatusService, FacilityStatusService>();
+
 			collection.AddCensusEventHandlingServices()
 				.AddPayloadObservable<IHeartbeat>()
 				.AddPayloadObservable<IContinentLock>()
 				.AddPayloadObservable<IFacilityControl>()
 				.AddPayloadObservable<IMetagameEvent>()
-				.AddSingleton<IWorldStatusService, WorldStatusService>()
 				.AddHostedService<EventStreamWorker>();
 		});
 	}

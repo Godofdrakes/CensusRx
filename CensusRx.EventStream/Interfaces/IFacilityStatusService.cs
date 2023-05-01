@@ -8,6 +8,7 @@ public interface IFacilityStatusService
 	public static IFacilityStatusService Null { get; } = new NullFacilityStatusService();
 
 	public IObservableCache<IFacilityStatusInstance, FacilityIdentifier> Facilities { get; }
+	IFacilityStatusInstance RegisterFacility(FacilityIdentifier facilityIdentifier);
 }
 
 internal class NullFacilityStatusService : IFacilityStatusService
@@ -16,14 +17,20 @@ internal class NullFacilityStatusService : IFacilityStatusService
 
 	public NullFacilityStatusService()
 	{
-		var facilities = new SourceCache<IFacilityStatusInstance, FacilityIdentifier>(
-			IFacilityStatusInstance.GetIdentifier);
+		var facilities = new SourceCache<IFacilityStatusInstance, FacilityIdentifier>(status => status.Identifier);
 
 		facilities.AddOrUpdate(Enum.GetValues<WorldDefinition>()
 			.SelectMany(world => Enum.GetValues<ZoneDefinition>()
 				.SelectMany(zone => Enumerable.Range(1, 100)
-					.Select(facility => new NullFacilityStatusInstance(world, zone, facility)))));
+					.Select(Convert.ToUInt32)
+					.Select(facility => new FacilityIdentifier(world, zone, facility))
+					.Select(identifier => new NullFacilityStatusInstance(identifier)))));
 
 		Facilities = facilities;
+	}
+
+	public IFacilityStatusInstance RegisterFacility(FacilityIdentifier facilityIdentifier)
+	{
+		throw new NotImplementedException();
 	}
 }

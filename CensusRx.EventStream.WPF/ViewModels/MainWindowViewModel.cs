@@ -20,7 +20,7 @@ public class MainWindowViewModel : WindowViewModel
 		worldStatusService.Worlds
 			.Connect()
 			.ObserveOn(RxApp.MainThreadScheduler)
-			.SortBy(status => status.Id)
+			.SortBy(status => status.Identifier)
 			.Bind(_worldStatus)
 			.Subscribe();
 	}
