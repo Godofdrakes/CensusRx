@@ -22,7 +22,7 @@
 
 			<DataGridTemplateColumn Header="Status">
 				<DataGridTemplateColumn.CellTemplate>
-					<DataTemplate DataType="{x:Type eventStream:IWorldStatusInstance}">
+					<DataTemplate DataType="{x:Type eventStream:IWorldStatus}">
 
 						<TextBlock x:Name="TextBlock" Text="Online" />
 

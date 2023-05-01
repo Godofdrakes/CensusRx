@@ -1,10 +1,13 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using DbgCensus.EventStream.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CensusRx.EventStream;
+namespace CensusRx.EventStream.WPF.Workers;
 
-internal class EventStreamWorker : BackgroundService
+public class EventStreamWorker : BackgroundService
 {
 	private readonly ILogger<EventStreamWorker> _logger;
 	private readonly IEventStreamClientFactory _clientFactory;

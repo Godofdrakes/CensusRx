@@ -20,13 +20,12 @@ public static class EventStreamHostBuilderEx
 				.AddSingleton<IWorldStatusService, WorldStatusService>()
 				.AddSingleton<IZoneStatusService, ZoneStatusService>()
 				.AddSingleton<IFacilityStatusService, FacilityStatusService>();
-
+			
 			collection.AddCensusEventHandlingServices()
 				.AddPayloadObservable<IHeartbeat>()
 				.AddPayloadObservable<IContinentLock>()
 				.AddPayloadObservable<IFacilityControl>()
-				.AddPayloadObservable<IMetagameEvent>()
-				.AddHostedService<EventStreamWorker>();
+				.AddPayloadObservable<IMetagameEvent>();
 		});
 	}
 }

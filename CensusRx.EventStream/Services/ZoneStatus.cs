@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace CensusRx.EventStream;
 
-internal sealed class ZoneStatusInstance : ReactiveObject, IZoneStatusInstance, IDisposable
+internal sealed class ZoneStatus : ReactiveObject, IZoneStatus, IDisposable
 {
 	public ZoneIdentifier Identifier { get; }
 	public bool IsUnlocked => _isUnlocked.Value;
@@ -13,7 +13,7 @@ internal sealed class ZoneStatusInstance : ReactiveObject, IZoneStatusInstance, 
 
 	private readonly CompositeDisposable _disposable = new();
 
-	public ZoneStatusInstance(ZoneIdentifier identifier)
+	public ZoneStatus(ZoneIdentifier identifier)
 	{
 		Identifier = identifier;
 

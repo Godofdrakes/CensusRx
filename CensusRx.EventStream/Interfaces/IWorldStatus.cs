@@ -4,20 +4,20 @@ using ReactiveUI;
 
 namespace CensusRx.EventStream;
 
-public interface IWorldStatusInstance
+public interface IWorldStatus
 {
 	WorldDefinition Identifier { get; }
 
 	bool IsOnline { get; }
 }
 
-internal sealed class NullWorldStatusInstance : ReactiveObject, IWorldStatusInstance
+internal sealed class NullWorldStatus : ReactiveObject, IWorldStatus
 {
 	public WorldDefinition Identifier { get; }
 
 	public bool IsOnline { get; set; }
 
-	public NullWorldStatusInstance(WorldDefinition identifier)
+	public NullWorldStatus(WorldDefinition identifier)
 	{
 		Identifier = identifier;
 	}

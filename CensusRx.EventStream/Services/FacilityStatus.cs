@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace CensusRx.EventStream;
 
-internal sealed class FacilityStatusInstance : ReactiveObject, IFacilityStatusInstance, IDisposable
+internal sealed class FacilityStatus : ReactiveObject, IFacilityStatus, IDisposable
 {
 	public FacilityIdentifier Identifier { get; }
 	public FactionDefinition OwningFaction => _owningFaction.Value;
@@ -18,10 +18,10 @@ internal sealed class FacilityStatusInstance : ReactiveObject, IFacilityStatusIn
 
 	private readonly CompositeDisposable _disposable = new();
 
-	public FacilityStatusInstance(
+	public FacilityStatus(
 		FacilityIdentifier identifier,
 		IPayloadObservable<IFacilityControl> facilityControl,
-		ILogger<FacilityStatusInstance> logger)
+		ILogger<FacilityStatus> logger)
 	{
 		Identifier = identifier;
 

@@ -7,8 +7,8 @@ namespace CensusRx.EventStream;
 
 internal sealed class FacilityStatusService : IFacilityStatusService, IDisposable
 {
-	public IObservableCache<IFacilityStatusInstance, FacilityIdentifier> Facilities => _facilities;
-	private readonly SourceCache<IFacilityStatusInstance, FacilityIdentifier> _facilities;
+	public IObservableCache<IFacilityStatus, FacilityIdentifier> Facilities => _facilities;
+	private readonly SourceCache<IFacilityStatus, FacilityIdentifier> _facilities;
 
 	private readonly IServiceProvider _serviceProvider;
 
@@ -17,7 +17,7 @@ internal sealed class FacilityStatusService : IFacilityStatusService, IDisposabl
 	public FacilityStatusService(IServiceProvider serviceProvider)
 	{
 		_serviceProvider = serviceProvider;
-		_facilities = new SourceCache<IFacilityStatusInstance, FacilityIdentifier>(status => status.Identifier)
+		_facilities = new SourceCache<IFacilityStatus, FacilityIdentifier>(status => status.Identifier)
 			.DisposeWith(_disposable);
 
 		// @todo move this into some hosted init service (EventSocketService?)
@@ -34,7 +34,7 @@ internal sealed class FacilityStatusService : IFacilityStatusService, IDisposabl
 		}
 	}
 
-	public IFacilityStatusInstance RegisterFacility(FacilityIdentifier facilityIdentifier)
+	public IFacilityStatus RegisterFacility(FacilityIdentifier facilityIdentifier)
 	{
 		var status = _facilities.Items.FirstOrDefault(status => status.Identifier == facilityIdentifier);
 
@@ -44,7 +44,7 @@ internal sealed class FacilityStatusService : IFacilityStatusService, IDisposabl
 			return status;
 		}
 
-		status = ActivatorUtilities.CreateInstance<FacilityStatusInstance>(_serviceProvider, facilityIdentifier)
+		status = ActivatorUtilities.CreateInstance<FacilityStatus>(_serviceProvider, facilityIdentifier)
 			.DisposeWith(_disposable);
 
 		_facilities.AddOrUpdate(status);

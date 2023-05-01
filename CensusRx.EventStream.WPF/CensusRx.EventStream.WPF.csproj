@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CensusRx.EventStream\CensusRx.EventStream.csproj" />
+      <ProjectReference Include="..\CensusRx.Rest\CensusRx.Rest.csproj" />
       <ProjectReference Include="..\CensusRx.WPF.Common\CensusRx.WPF.Common.csproj" />
     </ItemGroup>
 

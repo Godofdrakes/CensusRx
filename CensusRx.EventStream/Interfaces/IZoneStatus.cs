@@ -4,19 +4,19 @@ namespace CensusRx.EventStream;
 
 public record ZoneIdentifier(WorldDefinition World, ZoneDefinition Zone);
 
-public interface IZoneStatusInstance
+public interface IZoneStatus
 {
 	ZoneIdentifier Identifier { get; }
 	
 	bool IsUnlocked { get; }
 }
 
-internal sealed class NullZoneStatusInstance : IZoneStatusInstance
+internal sealed class NullZoneStatus : IZoneStatus
 {
 	public ZoneIdentifier Identifier { get; }
 	public bool IsUnlocked { get; set; } = true;
 
-	public NullZoneStatusInstance(ZoneIdentifier identifier)
+	public NullZoneStatus(ZoneIdentifier identifier)
 	{
 		Identifier = identifier;
 	}

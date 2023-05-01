@@ -1,13 +1,12 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reflection;
 using DbgCensus.EventStream.Abstractions.Objects;
 using DbgCensus.EventStream.EventHandlers.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CensusRx.EventStream;
 
-internal class ObservablePayloadHandler<T> : IPayloadHandler<T>, IPayloadObservable<T>
+internal sealed class ObservablePayloadHandler<T> : IPayloadHandler<T>, IPayloadObservable<T>
 	where T : IPayload
 {
 	private readonly ILogger<ObservablePayloadHandler<T>> _logger;

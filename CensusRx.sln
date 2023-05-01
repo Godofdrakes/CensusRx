@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.EventStream", "Cen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.EventStream.WPF", "CensusRx.EventStream.WPF\CensusRx.EventStream.WPF.csproj", "{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CensusRx.Rest", "CensusRx.Rest\CensusRx.Rest.csproj", "{43D76EAA-8C7C-4FE4-802A-D6961D0DABC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D49FD8D7-02FB-41CE-B47D-1E040BCF0D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D76EAA-8C7C-4FE4-802A-D6961D0DABC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D76EAA-8C7C-4FE4-802A-D6961D0DABC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D76EAA-8C7C-4FE4-802A-D6961D0DABC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D76EAA-8C7C-4FE4-802A-D6961D0DABC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

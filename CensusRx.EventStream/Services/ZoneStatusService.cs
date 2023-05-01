@@ -6,8 +6,8 @@ namespace CensusRx.EventStream;
 
 internal sealed class ZoneStatusService : IZoneStatusService, IDisposable
 {
-	public IObservableCache<IZoneStatusInstance, ZoneIdentifier> Zones => _zones;
-	private readonly SourceCache<IZoneStatusInstance, ZoneIdentifier> _zones;
+	public IObservableCache<IZoneStatus, ZoneIdentifier> Zones => _zones;
+	private readonly SourceCache<IZoneStatus, ZoneIdentifier> _zones;
 
 	private readonly IServiceProvider _serviceProvider;
 	private readonly CompositeDisposable _disposable = new();
@@ -15,10 +15,10 @@ internal sealed class ZoneStatusService : IZoneStatusService, IDisposable
 	public ZoneStatusService(IServiceProvider serviceProvider)
 	{
 		_serviceProvider = serviceProvider;
-		_zones = new SourceCache<IZoneStatusInstance, ZoneIdentifier>(status => status.Identifier);
+		_zones = new SourceCache<IZoneStatus, ZoneIdentifier>(status => status.Identifier);
 	}
 
-	public IZoneStatusInstance RegisterZone(ZoneIdentifier zoneIdentifier)
+	public IZoneStatus RegisterZone(ZoneIdentifier zoneIdentifier)
 	{
 		var status = _zones.Items.FirstOrDefault(status => status.Identifier == zoneIdentifier);
 		if (status is not null)
@@ -27,7 +27,7 @@ internal sealed class ZoneStatusService : IZoneStatusService, IDisposable
 			return status;
 		}
 
-		status = ActivatorUtilities.CreateInstance<ZoneStatusInstance>(_serviceProvider, zoneIdentifier)
+		status = ActivatorUtilities.CreateInstance<ZoneStatus>(_serviceProvider, zoneIdentifier)
 			.DisposeWith(_disposable);
 		
 		_zones.AddOrUpdate(status);

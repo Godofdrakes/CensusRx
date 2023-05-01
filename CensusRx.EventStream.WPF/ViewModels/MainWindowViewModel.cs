@@ -10,13 +10,13 @@ namespace CensusRx.EventStream.WPF;
 
 public class MainWindowViewModel : WindowViewModel
 {
-	private readonly ObservableCollectionExtended<IWorldStatusInstance> _worldStatus;
+	private readonly ObservableCollectionExtended<IWorldStatus> _worldStatus;
 
-	public IEnumerable<IWorldStatusInstance> WorldStatus => _worldStatus;
+	public IEnumerable<IWorldStatus> WorldStatus => _worldStatus;
 
 	public MainWindowViewModel(IWorldStatusService worldStatusService)
 	{
-		_worldStatus = new ObservableCollectionExtended<IWorldStatusInstance>();
+		_worldStatus = new ObservableCollectionExtended<IWorldStatus>();
 		worldStatusService.Worlds
 			.Connect()
 			.ObserveOn(RxApp.MainThreadScheduler)

@@ -7,7 +7,7 @@ public record FacilityIdentifier(WorldDefinition World, ZoneDefinition Zone, uin
 	public static FacilityIdentifier Null(WorldDefinition world, ZoneDefinition zone) => new(world, zone, 0);
 }
 
-public interface IFacilityStatusInstance
+public interface IFacilityStatus
 {
 	FacilityIdentifier Identifier { get; }
 
@@ -16,13 +16,13 @@ public interface IFacilityStatusInstance
 	ulong OwningOutfit { get; }
 }
 
-internal sealed class NullFacilityStatusInstance : IFacilityStatusInstance
+internal sealed class NullFacilityStatus : IFacilityStatus
 {
 	public FacilityIdentifier Identifier { get; }
 	public FactionDefinition OwningFaction { get; set; }
 	public ulong OwningOutfit { get; set; }
 
-	public NullFacilityStatusInstance(FacilityIdentifier identifier)
+	public NullFacilityStatus(FacilityIdentifier identifier)
 	{
 		Identifier = identifier;
 	}

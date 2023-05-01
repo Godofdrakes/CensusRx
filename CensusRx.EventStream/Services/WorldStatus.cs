@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace CensusRx.EventStream;
 
-internal sealed class WorldStatusInstance : ReactiveObject, IWorldStatusInstance, IDisposable
+internal sealed class WorldStatus : ReactiveObject, IWorldStatus, IDisposable
 {
 	public WorldDefinition Identifier { get; }
 
@@ -16,9 +16,9 @@ internal sealed class WorldStatusInstance : ReactiveObject, IWorldStatusInstance
 	private readonly ObservableAsPropertyHelper<bool> _isOnline;
 	private readonly CompositeDisposable _disposable = new();
 
-	public WorldStatusInstance(WorldDefinition world,
+	public WorldStatus(WorldDefinition world,
 		IPayloadObservable<IHeartbeat> heartbeat,
-		ILogger<WorldStatusInstance> logger)
+		ILogger<WorldStatus> logger)
 	{
 		Identifier = world;
 
